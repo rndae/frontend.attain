@@ -3,8 +3,6 @@ let drawnPolylines = [];
 
 export function fetchDataAndDrawPolyline(map) {
     const mapApiKey = JSON.parse(document.getElementById('map-key').textContent);
-    console.log(mapApiKey)
-    console.log(mapApiKey['crashRiskAPI'])
 
     fetch(mapApiKey['crashRiskAPI'])
       .then(response => response.json())
