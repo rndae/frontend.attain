@@ -1,8 +1,27 @@
-<nav>
-  <ul>
-    <li>
-        <a alt="SST logo">
-          <img id="logo" src="/images/logo.png"/>
-        </a>
-    </li>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      <img class="logo-image" src="/images/logo.png" alt="Logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">CPED</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/cped">CCTV</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/report">Report</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/third">Third-Party</a>
+        </li>
+      </ul>
+      <span class="navbar-text" id="info-weather"></span>
+    </div>
+  </div>
 </nav>
