@@ -1,0 +1,71 @@
+<div id="leftSidebar" class="sidenav">
+  <div class="container-fluid">
+    <h5 class="mt-2 text-white">System Status:</h5>
+    <h5 id="updateTime" class="text-muted">loading...</h5>
+    <div class="card bg-dark mb-3 text-white">
+      <div class="card-header bg-secondary">Real-Time Diagnostics</div>
+      <div class="card-body bg-dark">
+        <div class="list-group bg-dark" id="primaryCrashList" role="tablist">
+          <a class="list-group-item list-group-item-action list-group-item-dark active" data-toggle="collapse" href="#primaryCrashContent" role="button" aria-expanded="true">Primary Crash Locations</a>
+          <div class="collapse show" id="primaryCrashContent">
+            <div class="list-group-item bg-dark text-white">
+              <span id="basic">0</span> Freeway-basic
+              <span id="weaving">0</span> Freeway-weaving
+              <span id="ramp">0</span> Freeway-ramp
+              <span id="severe" class="text-danger">0</span> High Severe Crash Locations
+            </div>
+            <div class="list-group-item bg-dark">
+              <canvas id="basicChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="list-group bg-dark" id="secondaryCrashList" role="tablist">
+          <a class="list-group-item list-group-item-action list-group-item-dark" data-toggle="collapse" href="#secondaryCrashContent" role="button" aria-expanded="false">Secondary Crash Locations</a>
+          <div class="collapse" id="secondaryCrashContent">
+            <div class="list-group-item bg-dark text-white">
+              <span id="predicted">0</span> Predicted Crashes
+              <span id="events">0</span> Crash Events
+            </div>
+            <div class="list-group-item bg-dark">
+              <canvas id="predictedChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card bg-dark mb-3 text-white">
+      <div class="card-header bg-secondary">Visualization Options</div>
+      <div class="card-body bg-dark">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="crashOption">
+          <label class="custom-control-label" for="crashOption">High Severe Crash Locations</label>
+        </div>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="eventOption" checked>
+          <label class="custom-control-label" for="eventOption">Crash Events</label>
+        </div>
+      </div>
+    </div>
+    <div class="card bg-dark text-white">
+      <div class="card-header bg-secondary">Traffic Events</div>
+      <div class="card-body bg-dark">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="crashEvent">
+          <label class="custom-control-label" for="crashEvent">Crash Event</label>
+        </div>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="roadworkEvent">
+          <label class="custom-control-label" for="roadworkEvent">Road Work Event</label>
+        </div>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="incidentEvent">
+          <label class="custom-control-label" for="incidentEvent">Incident Event</label>
+        </div>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="congestionEvent">
+          <label class="custom-control-label" for="congestionEvent">Congestion Event</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
