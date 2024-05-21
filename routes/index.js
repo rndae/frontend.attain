@@ -22,7 +22,7 @@ router.get('/calendar', function(req, res) {
 });
 
 router.get('/report', function(req, res) {
-  res.render('report copy', {}); 
+  res.render('report', {}); 
 });
 
 
