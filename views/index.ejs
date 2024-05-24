@@ -3,11 +3,14 @@
 
 <head>
   <%- include('../partials/head.ejs') %>
+  <button class="openbtn" onclick="openNav()">&#9776;</button>
+  <script src="/scripts/openNav.js"></script>
 </head>
 
 <body>
   <%- include('../partials/navbar.ejs') %>
   <%- include('../partials/leftSidebar.ejs') %>
+  <%- include('../partials/rightSidebar.ejs') %>
   <div id="map"></div>
   <div id="loading-indicator" style="display: none;">
     Loading...
@@ -16,6 +19,9 @@
   <script src="/scripts/papaparse.js"></script>
   <script id="map-key" type="application/json"><%-mapApiKey%></script>
   <script type="module" src="/scripts/mapLoader.js"></script>
+  <script src="/scripts/closeNav.js"></script>
 </body>
+
+
 
 </html>

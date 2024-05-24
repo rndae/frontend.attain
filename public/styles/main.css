@@ -27,11 +27,37 @@
 }
 
 #rightSidebar {
-    width: 250px;
+    width: 0px;
     color: white;
     text-align: center;
     right: 0;
 }
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  /* The button used to open the sidebar */
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    color: black;
+    background-color: white;
+    padding: 10px 15px;
+    border: none;
+    position:fixed;
+    right:0;
+    z-index: 3;
+  }
+  
+  .openbtn:hover {
+    background-color: #444;
+  }
 
 /* Sidebar links */
 .sidenav a {
@@ -46,6 +72,51 @@
 .sidenav a:hover {
     color: #f1f1f1;
 }
+
+#speedChart{
+    padding: 10px;
+    width:80%;
+    max-width:600px;
+    height:650px;
+}
+
+#trafficChart{
+    padding: 10px;
+    width:80%;
+    max-width:600px;
+    height:10px;
+}
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+  
+  .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+  }
+  
+  .tab button:hover {
+    background-color: #ddd;
+  }
+  
+  .tab button.active {
+    background-color: #ccc;
+  }
+  
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
 
 /* Sidebar dropdowns */
 .dropdown-container {
