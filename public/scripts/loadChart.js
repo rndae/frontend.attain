@@ -1,7 +1,7 @@
 //ou zheng
 //5/7/2019
 var volumeChart=null
-function drawvolumeChart(type,array)
+function drawVolumeChart(type,array)
 {
 	if(array.lenght<=0)
 	{
