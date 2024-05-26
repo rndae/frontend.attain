@@ -1,27 +1,48 @@
 <div id="leftSidebar" class="sidenav">
   <div class="container-fluid">
-    <h5 class="mt-2 text-white">System Status:</h5>
-    <h5 id="updateTime" class="text-muted">loading...</h5>
-    <div class="card bg-dark mb-3 text-white">
-      <div class="card-header bg-secondary">Real-Time Diagnostics</div>
-      <div class="card-body bg-dark">
-        <div class="list-group bg-dark" id="primaryCrashList" role="tablist">
-          <a class="list-group-item list-group-item-action list-group-item-dark active" data-toggle="collapse" href="#primaryCrashContent" role="button" aria-expanded="true">Primary Crash Locations</a>
-          <div class="collapse show" id="primaryCrashContent">
-            <div class="list-group-item bg-dark text-white">
-              <span id="basic">0</span> Freeway-basic
-              <span id="weaving">0</span> Freeway-weaving
-              <span id="ramp">0</span> Freeway-ramp
-              <span id="severe" class="text-danger">0</span> High Severe Crash Locations
-            </div>
-            <div class="list-group-item bg-dark">
-              <canvas id="basicChart"></canvas>
+    <div class="card mb-3 text-white">
+      <div class="card-header bottom-border">Real-Time Diagnostics</div>
+      <div class="card-body">
+        <div id="primaryCrashList" role="tablist">
+          <a class="card-link dropdown-toggle active" data-toggle="collapse" href="#primaryCrashContent" role="button" aria-expanded="true">Primary Prone Crash Locations</a>
+          <div class="list-group collapse show" id="primaryCrashContent">
+            <div class="text-white list-group-item bg-dark">
+                <ul class="list-group ">                
+                  <li class="list-group-item"><span id="basic-realtime-info" class="text-info">0</span> Freeway-basic</li>
+                  <li class="list-group-item"><span id="weaving-realtime-info" class="text-info">0</span> Freeway-weaving</li>
+                  <li class="list-group-item"><span id="ramp-realtime-info" class="text-info">0</span> Freeway-ramp</li>
+                  <li class="list-group-item"><span id="severe-realtime-info" class="text-danger">0</span> High severe crash locations</li>                                   
+                </ul>
+              </div>
+            <div class="bg-dark list-group-item">
+              <ul class="nav nav-tabs" id="crashDataTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link active" type="button" id="basic-tab" data-toggle="tab" data-target="#basic-chart-id" role="tab" aria-controls="basic-chart-id" aria-selected="true">Basic</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link" type="button" id="ramp-tab" data-toggle="tab" data-target="#ramp-chart-id" role="tab" aria-controls="ramp-chart-id" aria-selected="false">Ramp</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link" type="button" id="weaving-tab" data-toggle="tab" data-target="#weaving-chart-id" role="tab" aria-controls="weaving-chart-id" aria-selected="false">Weaving</a>
+                </li>
+              </ul>
+              <div class="tab-content bg-black" id="crashDataTabContent">
+                <div class="tab-pane fade show active" id="basic-chart-id" role="tabpanel" aria-labelledby="basic-tab">
+                  <canvas id="basicChart"></canvas>
+                </div>
+                <div class="tab-pane fade" id="ramp-chart-id" role="tabpanel" aria-labelledby="ramp-tab">
+                  <canvas id="rampChart"></canvas>
+                </div>
+                <div class="tab-pane fade" id="weaving-chart-id" role="tabpanel" aria-labelledby="weaving-tab">
+                  <canvas id="weavingChart"></canvas>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="list-group bg-dark" id="secondaryCrashList" role="tablist">
-          <a class="list-group-item list-group-item-action list-group-item-dark" data-toggle="collapse" href="#secondaryCrashContent" role="button" aria-expanded="false">Secondary Crash Locations</a>
-          <div class="collapse" id="secondaryCrashContent">
+        <div id="secondaryCrashList" role="tablist">
+          <a class="dropdown-toggle" data-toggle="collapse" href="#secondaryCrashContent" role="button" aria-expanded="false">Secondary Prone Crash Locations</a>
+          <div class="list-group collapse" id="secondaryCrashContent">
             <div class="list-group-item bg-dark text-white">
               <span id="predicted">0</span> Predicted Crashes
               <span id="events">0</span> Crash Events
@@ -33,9 +54,9 @@
         </div>
       </div>
     </div>
-    <div class="card bg-dark mb-3 text-white">
-      <div class="card-header bg-secondary">Visualization Options</div>
-      <div class="card-body bg-dark">
+    <div class="card mb-3 text-white">
+      <div class="card-header bottom-border">Visualization Options</div>
+      <div class="card-body">
         <div class="custom-control custom-checkbox">
           <input type="checkbox" class="custom-control-input" id="crashOption">
           <label class="custom-control-label" for="crashOption">High Severe Crash Locations</label>
@@ -46,9 +67,9 @@
         </div>
       </div>
     </div>
-    <div class="card bg-dark text-white">
-      <div class="card-header bg-secondary">Traffic Events</div>
-      <div class="card-body bg-dark">
+    <div class="card text-white">
+      <div class="card-header bottom-border">Traffic Events</div>
+      <div class="card-body">
         <div class="custom-control custom-checkbox">
           <input type="checkbox" class="custom-control-input" id="crashEvent">
           <label class="custom-control-label" for="crashEvent">Crash Event</label>
