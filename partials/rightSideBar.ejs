@@ -12,6 +12,9 @@
         <div>
             <canvas id="speedChart" width="290" height="290"></canvas>
         </div>
+        <div>
+            <canvas id="volumeChart" width="290" height="290"></canvas>
+        </div>
     </div>
     <div id="SpeedStd" class="tabcontent">
         <div>
@@ -20,21 +23,59 @@
     </div>
 
     <hr>
-    <div>
-        <canvas id="volumeChart" width="290" height="290"></canvas>
-    </div>
+
     <hr>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        drawSpeedChart();
-        drawStdChart();
-        drawVolumeChart();
-    setInterval(function() {
-            drawSpeedChart();
-            drawStdChart();
-            drawVolumeChart();
-        }, 60000);
-    });
+    //document.addEventListener('DOMContentLoaded', function() {
+    //var jsonPath='http://10.32.93.91:8085/rawData/getDataByLinkId/1041009'
+    
+    //fetch(jsonPath).then(response => response.json()).then(data => drawSpeedChart('intersection', data));
+  //});
+//setInterval(() => {
+  //fetch(jsonPath)
+    //.then(response => response.json())
+    //.then(data => drawSpeedChart('intersection', data));
+//}, 60000);
+// Sample JSON data
+var data = [
+  {
+    "_id": "66562dc0c1e0f644cb1d1b3c",
+    "time": "2024-05-28T19:17:00.000Z",
+    "link_ID": 1041009,
+    "lane_ID": 0,
+    "speed": 50,
+    "volume": -1,
+    "occupancy": -1,
+    "createdDate": "2024-05-28T19:17:20.606Z",
+    "__v": 0
+  },
+  {
+    "_id": "66562dfdc1e0f644cb1d2b67",
+    "time": "2024-05-28T19:18:00.000Z",
+    "link_ID": 1041009,
+    "lane_ID": 0,
+    "speed": 60,
+    "volume": -1,
+    "occupancy": -1,
+    "createdDate": "2024-05-28T19:18:21.186Z",
+    "__v": 0
+  },
+  {
+    "_id": "66562e25c1e0f644cb1d371b",
+    "time": "2024-05-28T19:19:00.000Z",
+    "link_ID": 1041009,
+    "lane_ID": 0,
+    "speed": 70,
+    "volume": -1,
+    "occupancy": -1,
+    "createdDate": "2024-05-28T19:19:21.855Z",
+    "__v": 0
+  }
+];
+
+// Call drawSpeedChart to create the chart
+drawSpeedChart('intersection', data);
+drawVolumeChart('intersection', data);
 </script>

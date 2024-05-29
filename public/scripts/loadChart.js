@@ -1,639 +1,95 @@
-//ou zheng
-//5/7/2019
 var volumeChart=null
-function drawVolumeChart(type,array)
-{
-	if(array.lenght<=0)
-	{
-		return
-	}
-
-	var labelset=[]
-	var data1=[]
-	var data2=[]
-	var data1name=null
-	var data2name=null
-	var title=null
-
-	var start=0
-
-for (var i = 0; i < array.length; i++)
-{
-		labelset.push(i)
-if(type=="intersection")
-{
-	data2.push(array[i].minorTotalVolume)
-	data1.push(array[i].majorTotalVolume)
-	data2name="mi_vol"
-	data1name="mj_vol"
-	title="intersection"
-}
-else {
-	if(type=="arterial")
-	{
-		data1.push(array[i].upTotalVolume)
-		data2.push(array[i].downTotalVolume)
-		data1name="uvol"
-		data2name="dvol"
-		title="Arterial"
-
-	}
-	else if(type=="ramp")
-	{
-		data1.push(array[i].volume)
-		data2.push(null)
-		data1name="vol"
-		data2name=""
-		title="Ramp"
-	}
-	else  {
-		data1.push(array[i].upVolume)
-		data2.push(array[i].downVolume)
-		data1name="uvol"
-		data2name="dvol"
-		title="Freeway"
-
-	}
-}
-
-
-
-			//console.log("Freeway")
-
-			// data1.push(riskScore[i][j].lt_volume_roll)
-			// data2.push(riskScore[i][j].th_volume_roll)
-			// data1name="lt_volume_roll"
-			// data2name="th_volume_roll"
-			// title="Arterial"
-			//console.log("Arterial")
-}
-
-	 if(volumeChart!=null){
-	 	var pos = $(document).scrollTop();
-		 volumeChart.destroy();
-		$(document).scrollTop(pos);
-    }
-
-
-
-if(type=="ramp")
-{
-	var chartData={
-		labels: labelset,
-		datasets: [{
-				data: data1,
-				label: data1name,
-				 backgroundColor:'rgba(255, 183, 30, 0.2)',
-				borderColor: 'rgba(255, 183, 30, 1.0)',
-				fill: false,
-				 borderWidth: 1
-			}
-
-		]
-	}
-}
-else {
-	var chartData={
-		labels: labelset,
-		datasets: [{
-				data: data1,
-				label: data1name,
-				 backgroundColor:'rgba(255, 183, 30, 0.2)',
-				borderColor: 'rgba(255, 183, 30, 1.0)',
-				fill: false,
-				 borderWidth: 1
-			},
-			{
-				data: data2,
-				label: data2name,
-				backgroundColor:'rgba(10, 211, 173, 0.2)',
-				borderColor: 'rgba(10, 211, 173, 1.0)',
-				fill: false,
-				 borderWidth: 1
-			}
-
-		]
-	}
-
-}
-
-	volumeChart= new Chart(document.getElementById("volumeChart"), {
-	  type: 'bar',
-	  data: chartData,
-	  options: {
-	  	animation: false,
-	  	responsive: true,
-	  	legend: {
-          position: 'top',
-           labels: {
-                fontColor: 'white',
-                fontSize:12
-            }
-        },
-	    title: {
-	    	fontColor: 'white',
-	      display: true,
-	      text: 'Real-Time Traffic Volume ('+title+')'
-	    },scales: {
-				yAxes: [{
-
-                  fontColor: 'white',
-                 scaleLabel: {
-				        display: true,
-				        labelString: 'Volume',
-				         fontColor: 'white'
-				      },
-				       ticks: {
-				       	beginAtZero: true,
-                  fontColor: "orange", // this here
-                }
-            }]
-            ,
-xAxes: [{
-                  fontColor: 'white',
-                 scaleLabel: {
-				        display: true,
-				        labelString: 'Time',
-				         fontColor: 'white'
-				      },
-				       ticks: {
-                  fontColor: "white", // this here
-                }
-            }]
-   			 }
-	  }
-	});
-}
-////////////////////////////////////speed chart/////////
 var speedChart=null
 var stdChart=null
-function drawSpeedChart(type,array)
-{
-if(array.lenght<=0)
-{
-	return
-}
-	var labelset=[]
-	var riskSetDspd=[]
-	var riskSetUspd=[]
-	var riskSetDstdspd=[]
-	var riskSetUstdspd=[]
-	var data1=[]
-	var data2=[]
-	var start=0
-	var maptype=0
-	var data1name=""
-	var data2name=""
-	var title=""
- if(speedChart!=null){
- 	var pos = $(document).scrollTop();
-		speedChart.destroy();
-		$(document).scrollTop(pos);
-    }
-
-		if(stdChart!=null){
-		 var pos = $(document).scrollTop();
-			 stdChart.destroy();
-			 $(document).scrollTop(pos);
-			 }
-if(type == "intersection"  )
-{
-	for (var i = 0; i < array.length; i++)
-	{
-		labelset.push(i)
-		// if(type == "intersection")
-		// {
-			data2.push(array[i].minorAvgSpd)
-			data1.push(array[i].majorAvgSpd)
-			data2name="mi_spd"
-			data1name="mj_spd"
-			title="Intersection"
-		// }
-		// else if(type == "arterial"){
-		// 	data1.push(array[i].avgSpd)
-		// 	data2.push(array[i].stdSpd)
-		// 	data1name="avgSpd"
-		// 	data2name="stdSpd"
-		// 	title="Arterial"
-		// }
-
+function drawSpeedChart(type, array) {
+	if (array.length === 0) {
+	  return;
 	}
-speedChart= new Chart(document.getElementById("speedChart"), {
+  
+	const ctx = document.getElementById('speedChart').getContext('2d');
+	const labels = array.map((item, index) => index);
+	const speedData = array.map((item) => item.speed);
+  
+	if (speedChart !== null) {
+	  speedChart.destroy();
+	}
+  
+	speedChart = new Chart(ctx, {
 	  type: 'line',
 	  data: {
-	    labels: labelset,
-	    datasets: [{
-	        data: data1,
-	        label: data1name,
-	        borderColor: 'rgba(25, 289, 255,1.0)',
-	        fill: false
-	      },
-				{
-		        data: data2,
-		        label: data2name,
-		        borderColor: 'rgba(255, 150, 12,1.0)',
-		        fill: false
-		      }
-	    ]
+		labels: labels,
+		datasets: [{
+		  label: 'Speed',
+		  data: speedData,
+		  borderColor: 'rgba(75, 192, 192, 1)',
+		  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+		  borderWidth: 1
+		}]
 	  },
 	  options: {
-	  	animation: false,
-	  	responsive: true,
-	  	tooltips: {
-     	 mode: 'label'
-    	},
-	    title: {
-	    	fontColor: "white", // this here
-	      display: true,
-	      text:  'Real-Time Traffic Speed ('+title+')'
-	    },
-	    legend: {
-          position: 'top',
-           labels: {
-   					usePointStyle:true,
-                // This more specific font property overrides the global property
-                fontColor: 'white',
-                fontSize:10
-            }},
-	    scales:{yAxes: [{
-                barThickness : 13,
-                fontColor: 'white',
-                ticks: {
-                	beginAtZero: true,
-                  fontColor: "white", // this here
-                },scaleLabel: {
-				        display: true,
-				        labelString: 'Speed(mph)',
-				        fontColor: 'white'
-				      }
-            //      categoryPercentage: 0.5,
-            // barPercentage: 0.5
-    		}],
-    		xAxes: [{
-
-                fontColor: 'white',
-                ticks: {
-                  fontColor: "white", // this here
-                },
-                scaleLabel: {
-				        display: true,
-				        labelString: 'Time',
-				        fontColor: 'white'
-				      }
-            //      categoryPercentage: 0.5,
-            // barPercentage: 0.5
-    		}]}
+		responsive: true,
+		scales: {
+		  x: {
+			type: 'time',
+			time: {
+			  displayFormats: {
+				hour: 'HH:mm'
+			  }
+			}
+		  },
+		  y: {
+			beginAtZero: true,
+			min: 0
+		  }
+		}
 	  }
 	});
-}
-else if(type == "ramp"|| type=="arterial")
-{
-
-
-	for (var i = 0; i < array.length; i++)
-	{
-		labelset.push(i)
-		data1.push(array[i].avgSpd)
-		data2.push(array[i].stdSpd)
-		data1name="avgSpd"
-		data2name="stdSpd"
-		if(type == "ramp")
-		{
-			title="Ramp"
-		}
-		else {
-			title="Arterial"
-		}
-
+  }
+  
+  function drawVolumeChart(type, array) {
+	if (array.length === 0) {
+	  return;
 	}
-	speedChart= new Chart(document.getElementById("speedChart"), {
+  
+	const ctx = document.getElementById('volumeChart').getContext('2d');
+	const labels = array.map((item, index) => index);
+	const volumeData = array.map((item) => item.volume);
+  
+	if (stdChart !== null) {
+	  stdChart.destroy();
+	}
+  
+	stdChart = new Chart(ctx, {
 	  type: 'line',
 	  data: {
-	    labels: labelset,
-	    datasets: [{
-	        data: data1,
-	       label: data1name,
-	        borderColor: 'rgba(255, 194, 12, 1.0)',
-	        //yAxisID: "y-axis-0",
-	        fill: false
-	      }
-	    ]
+		labels: labels,
+		datasets: [{
+		  label: 'Volume',
+		  data: volumeData,
+		  borderColor: 'rgba(255, 99, 132, 1)',
+		  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+		  borderWidth: 1
+		}]
 	  },
 	  options: {
-	  	animation: false,
-	  	responsive: true,
-	  	tooltips: {
-     	 mode: 'label'
-    	},
-	    title: {
-	    fontColor: 'white',
-	      display: true,
-	      text:  'Real-Time Traffic Speed ('+title+')'
-	    },
-	    legend: {
-          position: 'top',
-           labels: {
-   usePointStyle:true,
-                // This more specific font property overrides the global property
-                fontColor: 'white',
-                fontSize:9.5
-            }
-        },
-	    scales: {
-				yAxes: [{
-
-
-                type: 'linear',
-                 position: 'left',
-                  fontColor: 'white',
-                 scaleLabel: {
-				        display: true,
-				        labelString: 'Speed(mph)',
-				         fontColor: 'white'
-				      },
-				       ticks: {
-				       	beginAtZero: true,
-                  fontColor: "orange", // this here
-                }
-            }],
-
-xAxes: [{
-                  fontColor: 'white',
-                 scaleLabel: {
-				        display: true,
-				        labelString: 'Time',
-				         fontColor: 'white'
-				      },
-				       ticks: {
-                  fontColor: "white", // this here
-                }
-
-            }]
-   			 }
+		responsive: true,
+		scales: {
+		  x: {
+			type: 'time',
+			time: {
+			  displayFormats: {
+				hour: 'HH:mm'
+			  }
+			}
+		  },
+		  y: {
+			beginAtZero: true,
+			min: 0
+		  }
+		}
 	  }
 	});
-
-
-
-
-	stdChart= new Chart(document.getElementById("stdChart"), {
-		type: 'line',
-		data: {
-			labels: labelset,
-			datasets: [
-				{
-					data: data2,
-					label: data2name,
-					borderColor: 'rgba(23, 186, 132, 1.0)',
-					fill: false
-				}
-			]
-		},
-		options: {
-			animation: false,
-			responsive: true,
-			tooltips: {
-			 mode: 'label'
-			},
-			title: {
-			fontColor: 'white',
-				display: true,
-				text:  'Real-Time Traffic Speed Std ('+title+')'
-			},
-			legend: {
-					position: 'top',
-					 labels: {
-	 usePointStyle:true,
-								// This more specific font property overrides the global property
-								fontColor: 'white',
-								fontSize:9.5
-						}
-				},
-			scales: {
-				yAxes: [{
-
-								type: 'linear',
-								 position: 'left',
-									fontColor: 'white',
-								 scaleLabel: {
-								display: true,
-								labelString: 'Standard Deviation of Speed.',
-								 fontColor: 'white'
-							},
-							 ticks: {
-								beginAtZero: true,
-									fontColor: "orange", // this here
-								}
-						}],
-
-	xAxes: [{
-									fontColor: 'white',
-								 scaleLabel: {
-								display: true,
-								labelString: 'Time',
-								 fontColor: 'white'
-							},
-							 ticks: {
-									fontColor: "white", // this here
-								}
-
-						}]
-				 }
-		}
-	});
-
-
-
-
-
-
-
-
-
-}
-else {
-
-
-	for (var i = 0; i < array.length; i++)
-	{
-				labelset.push(i)
-				riskSetDspd.push(array[i].downAvgSpd)
-				riskSetUspd.push(array[i].upAvgSpd)
-				riskSetDstdspd.push(array[i].downStdSpd)
-				riskSetUstdspd.push(array[i].upStdSpd)
-				// maptype="Freeway"
-				title="Freeway"
-	}
-	speedChart= new Chart(document.getElementById("speedChart"), {
-	  type: 'line',
-	  data: {
-	    labels: labelset,
-	    datasets: [{
-	        data: riskSetUspd,
-	        label: "Up_Spd",
-	        borderColor: 'rgba(255, 194, 12, 1.0)',
-	        //yAxisID: "y-axis-0",
-	        fill: false
-	      },
-	      {
-	        data: riskSetDspd,
-	        label: "Down_Spd",
-	        borderColor: 'rgba(23, 186, 132, 1.0)',
-	        //yAxisID: "y-axis-0",
-	        fill: false
-	      }
-	    ]
-	  },
-	  options: {
-	  	animation: false,
-	  	responsive: true,
-	  	tooltips: {
-     	 mode: 'label'
-    	},
-	    title: {
-	    fontColor: 'white',
-	      display: true,
-	      text:  'Real-Time Traffic Speed ('+title+')'
-	    },
-	    legend: {
-          position: 'top',
-           labels: {
-   usePointStyle:true,
-                // This more specific font property overrides the global property
-                fontColor: 'white',
-                fontSize:9.5
-            }
-        },
-	    scales: {
-				yAxes: [{
-
-
-                type: 'linear',
-                 position: 'left',
-                  fontColor: 'white',
-                 scaleLabel: {
-				        display: true,
-				        labelString: 'Speed',
-				         fontColor: 'white'
-				      },
-				       ticks: {
-				       	beginAtZero: true,
-                  fontColor: "orange", // this here
-                }
-            }],
-
-xAxes: [{
-                  fontColor: 'white',
-                 scaleLabel: {
-				        display: true,
-				        labelString: 'Time',
-				         fontColor: 'white'
-				      },
-				       ticks: {
-                  fontColor: "white", // this here
-                }
-
-            }]
-   			 }
-	  }
-	});
-
-
-
-
-	stdChart= new Chart(document.getElementById("stdChart"), {
-		type: 'line',
-		data: {
-			labels: labelset,
-			datasets: [
-				{
-					data: riskSetUstdspd,
-					label: "Up_Std_Spd",
-					borderColor: 'rgba(255, 194, 12, 1.0)',
-					fill: false
-				},
-				{
-					data: riskSetDstdspd,
-					label: "Down_Std_Spd",
-					borderColor: 'rgba(23, 186, 132, 1.0)',
-					fill: false
-				}
-			]
-		},
-		options: {
-			animation: false,
-			responsive: true,
-			tooltips: {
-			 mode: 'label'
-			},
-			title: {
-			fontColor: 'white',
-				display: true,
-				text:  'Real-Time Traffic Speed Std ('+title+')'
-			},
-			legend: {
-					position: 'top',
-					 labels: {
-	 usePointStyle:true,
-								// This more specific font property overrides the global property
-								fontColor: 'white',
-								fontSize:9.5
-						}
-				},
-			scales: {
-				yAxes: [{
-
-								type: 'linear',
-								 position: 'left',
-									fontColor: 'white',
-								 scaleLabel: {
-								display: true,
-								labelString: 'Standard Deviation of Speed.',
-								 fontColor: 'white'
-							},
-							 ticks: {
-								beginAtZero: true,
-									fontColor: "orange", // this here
-								}
-						}],
-
-	xAxes: [{
-									fontColor: 'white',
-								 scaleLabel: {
-								display: true,
-								labelString: 'Time',
-								 fontColor: 'white'
-							},
-							 ticks: {
-									fontColor: "white", // this here
-								}
-
-						}]
-				 }
-		}
-	});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-}
-//////////////risk chart/////////////////
+  }
 var riskChart=null
 function drawRiskChart(type,array)
 {
