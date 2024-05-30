@@ -7,3 +7,91 @@
     width: 8%;
     height: 8%;
 }
+
+.bg-black {
+    background-color: #111;
+}
+
+.sidenav {
+    height: 95%;
+    position: fixed;
+    z-index: 1;
+    top: 52px; 
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    opacity: 0.9;
+}
+
+.sidenav .card {
+    background-color: #111;
+}
+
+.sidenav .list-group-item {
+    background-color: inherit;
+}
+
+#leftSidebar {
+    color: white;
+    text-align: left;
+    left: 0;
+    width: 340px;
+}
+
+#rightSidebar {
+    width: 250px;
+    color: white;
+    text-align: left;
+    right: 0;
+}
+
+.bottom-border {
+    content: "";
+    display: block;
+    border-bottom: 1px solid white;
+    margin: 0 15px;
+}
+
+/* Sidebar links */
+.sidenav a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #007bff;
+    background-color: #111;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #595757cc;
+}
+
+/* Bootstrap overrides */
+.nav-tabs>li>a {
+    line-height: 1.5;
+    font-size: 11px;
+    color: #eec443;
+}
+
+.nav-tabs>li>a:hover {
+    color: #121211;
+}
+
+/* navbar won't overlap sidebar */
+.navbar {
+    margin-bottom: 0 !important;
+    z-index: 2;
+}
+
+/* sidebar responsiveness */
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 16px;
+    }
+}

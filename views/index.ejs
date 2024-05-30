@@ -7,6 +7,7 @@
 
 <body>
   <%- include('../partials/navbar.ejs') %>
+  <%- include('../partials/leftSidebar.ejs') %>
   <div id="map"></div>
   <div id="loading-indicator" style="display: none;">
     Loading...
@@ -15,6 +16,10 @@
   <script src="/scripts/papaparse.js"></script>
   <script id="map-key" type="application/json"><%-mapApiKey%></script>
   <script type="module" src="/scripts/mapLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="text/javascript" src="/scripts/realtimeDataChartGenerator.js"></script>
+  <script type="text/javascript" src="/scripts/realtimeDataChartLoader.js"></script>
+  <script type="text/javascript" src="/scripts/realtimeRiskThresholdLogger.js"></script>
 </body>
 
 </html>
