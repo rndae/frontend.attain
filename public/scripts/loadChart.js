@@ -1,96 +1,93 @@
 var volumeChart=null
 var speedChart=null
 var stdChart=null
-function drawSpeedChart(type, array) {
-	if (array.length === 0) {
-	  return;
-	}
-  
-	const ctx = document.getElementById('speedChart').getContext('2d');
-	const labels = array.map((item, index) => index);
-	const speedData = array.map((item) => item.speed);
-  
-	if (speedChart !== null) {
-	  speedChart.destroy();
-	}
-  
-	speedChart = new Chart(ctx, {
-	  type: 'line',
-	  data: {
-		labels: labels,
-		datasets: [{
-		  label: 'Speed',
-		  data: speedData,
-		  borderColor: 'rgba(75, 192, 192, 1)',
-		  backgroundColor: 'rgba(75, 192, 192, 0.2)',
-		  borderWidth: 1
-		}]
-	  },
-	  options: {
-		responsive: true,
-		scales: {
-		  x: {
-			type: 'time',
-			time: {
-			  displayFormats: {
-				hour: 'HH:mm'
-			  }
-			}
-		  },
-		  y: {
-			beginAtZero: true,
-			min: 0
-		  }
-		}
-	  }
-	});
-  }
-  
-  function drawVolumeChart(type, array) {
-	if (array.length === 0) {
-	  return;
-	}
-  
-	const ctx = document.getElementById('volumeChart').getContext('2d');
-	const labels = array.map((item, index) => index);
-	const volumeData = array.map((item) => item.volume);
-  
-	if (stdChart !== null) {
-	  stdChart.destroy();
-	}
-  
-	stdChart = new Chart(ctx, {
-	  type: 'line',
-	  data: {
-		labels: labels,
-		datasets: [{
-		  label: 'Volume',
-		  data: volumeData,
-		  borderColor: 'rgba(255, 99, 132, 1)',
-		  backgroundColor: 'rgba(255, 99, 132, 0.2)',
-		  borderWidth: 1
-		}]
-	  },
-	  options: {
-		responsive: true,
-		scales: {
-		  x: {
-			type: 'time',
-			time: {
-			  displayFormats: {
-				hour: 'HH:mm'
-			  }
-			}
-		  },
-		  y: {
-			beginAtZero: true,
-			min: 0
-		  }
-		}
-	  }
-	});
-  }
 var riskChart=null
+function drawSpeedChart(type, data) {
+	const ctx = document.getElementById('speedChart').getContext('2d');
+	const labels = data.map((item, index) => index.toString());
+	const speeds = data.map(item => item.speed);
+  
+	const speedChart = new Chart(ctx, {
+	  type: 'line',
+	  data: {
+		labels,
+		datasets: [
+		  {
+			label: 'Speed',
+			data: speeds,
+			backgroundColor: 'rgba(75, 192, 192, 0.2)',
+			borderColor: 'rgba(75, 192, 192, 1)',
+			borderWidth: 1,
+		  },
+		],
+	  },
+	  options: {
+		scales: {
+		  x: {
+			type: 'time',
+			ticks: {
+			  maxTicksLimit: 5,
+			  callback: (value, index, values) => {
+				if (index === values.length - 1) {
+				  return values.length - 1;
+				} else {
+				  return index;
+				}
+			  },
+			},
+		  },
+		  y: {
+			beginAtZero: true,
+		  },
+		},
+	  },
+	});
+  }
+  
+  function drawVolumeChart(type, data) {
+    const ctx = document.getElementById('volumeChart').getContext('2d');
+    const labels = data.map((item, index) => index.toString());
+    const upVol = data.map(item => item.volume > 0 ? item.volume : 0);
+    const downVol = data.map(item => item.volume < 0 ? -item.volume : 0);
+
+    const chartData = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Up Volumes',
+                data: upVol,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Down Volumes',
+                data: downVol,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }
+        ]
+    };
+
+    const chartOptions = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+
+    if (volumeChart) {
+        volumeChart.destroy();
+    }
+
+    volumeChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: chartOptions
+    });
+}
 function drawRiskChart(type,array)
 {
 	if(array.length<=0)

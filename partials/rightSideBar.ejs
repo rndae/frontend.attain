@@ -10,10 +10,10 @@
     </div>
     <div id="Speed" class="tabcontent">
         <div>
-            <canvas id="speedChart" width="290" height="290"></canvas>
+            <canvas id="speedChart" width="400" height="300"></canvas>
         </div>
         <div>
-            <canvas id="volumeChart" width="290" height="290"></canvas>
+            <canvas id="volumeChart" width="400" height="300"></canvas>
         </div>
     </div>
     <div id="SpeedStd" class="tabcontent">
@@ -40,13 +40,15 @@
 //}, 60000);
 // Sample JSON data
 var data = [
+  
+
   {
     "_id": "66562dc0c1e0f644cb1d1b3c",
     "time": "2024-05-28T19:17:00.000Z",
     "link_ID": 1041009,
     "lane_ID": 0,
     "speed": 50,
-    "volume": -1,
+    "volume":6,
     "occupancy": -1,
     "createdDate": "2024-05-28T19:17:20.606Z",
     "__v": 0
@@ -72,7 +74,30 @@ var data = [
     "occupancy": -1,
     "createdDate": "2024-05-28T19:19:21.855Z",
     "__v": 0
+  },
+  {
+    "_id": "66562e25c1e0f644cb1d371b",
+    "time": "2024-05-28T19:19:00.000Z",
+    "link_ID": 1041009,
+    "lane_ID": 0,
+    "speed": 70,
+    "volume": -1,
+    "occupancy": -1,
+    "createdDate": "2024-05-28T19:19:21.855Z",
+    "__v": 0
+  },
+  {
+    "_id": "66562e25c1e0f644cb1d371b",
+    "time": "2024-05-28T19:19:00.000Z",
+    "link_ID": 1041009,
+    "lane_ID": 0,
+    "speed": 70,
+    "volume": -1,
+    "occupancy": -1,
+    "createdDate": "2024-05-28T19:19:21.855Z",
+    "__v": 0
   }
+  
 ];
 
 // Call drawSpeedChart to create the chart
