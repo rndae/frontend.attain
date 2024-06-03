@@ -1,38 +1,34 @@
-const basicRiskThreshold1=0.276
-const basicRiskThreshold2=0.11
-const basicSevereRiskThreshold1=0.00341905865030657
-const basicSevereRiskThreshold2=0.0000959943908851817
-const weavingRiskThreshold1=0.067
-const weavingRiskThreshold2=0.005
-const weavingSevereRiskThreshold1=0.00223284519047619
-const weavingSevereRiskThreshold2=0.000166630238095238
-const rampRiskThreshold1=0.005
-const rampRiskThreshold2=0.002
-const rampSevereRiskThreshold1=0.0001403616167698182
-const rampSevereRiskThreshold2=0.0000701808083849091
+const basicType = "Basic";
+const mergeType = "Merge";
+const divergeType = "Diverge";
+const expressType = "Express";
+const weavingType = "Weaving";
+const rampType = "Ramp";
 
-async function valuesAboveThreshold(predictionPoints, threshold) {
-  return predictionPoints.filter(point => point.Total_Prediction > threshold).length;
+const timeIntervalInMS = 300000;
+
+async function valuesAboveThresholdFromArray(riskType, predictionArray) {
+  const filteredArray = predictionArray.filter(item => item.rank.includes(riskType));
+  return filteredArray.length;
 }
 
 async function updatePrimaryRiskInformation() {
   const realtimeDiagnosticsSource = JSON.parse(document.getElementById('map-key').textContent)['realtimeDiagnosticsAPI'];
-  const basicRiskData = await (await fetch(realtimeDiagnosticsSource + '/basic/getData/999')).json();
-  const rampRiskData = await (await fetch(realtimeDiagnosticsSource + '/ramp/getData/999')).json();
-  const weavingRiskData = await (await fetch(realtimeDiagnosticsSource + '/weaving/getData/999')).json();
-
-  const basicAboveThreshold = await valuesAboveThreshold(basicRiskData, basicRiskThreshold1);
-  const weavingAboveThreshold = await valuesAboveThreshold(weavingRiskData, weavingRiskThreshold1);
-  const rampAboveThreshold = await valuesAboveThreshold(rampRiskData, rampRiskThreshold1);
-
-  const totalSevereAboveThreshold = await valuesAboveThreshold(basicRiskData, basicSevereRiskThreshold1)
-    + await valuesAboveThreshold(weavingRiskData, weavingSevereRiskThreshold1)
-    + await valuesAboveThreshold(rampRiskData, rampSevereRiskThreshold1);
+  const riskDataArray = await (await fetch(realtimeDiagnosticsSource + '/crashprone')).json();
+  const basicAboveThreshold = await valuesAboveThresholdFromArray(basicType, riskDataArray);
+  const mergeAboveThreshold = await valuesAboveThresholdFromArray(mergeType, riskDataArray);;
+  const divergeAboveThreshold = await valuesAboveThresholdFromArray(divergeType, riskDataArray);
+  const expressAboveThreshold = await valuesAboveThresholdFromArray(expressType, riskDataArray);
+  const weavingAboveThreshold = await valuesAboveThresholdFromArray(weavingType, riskDataArray);
+  const rampAboveThreshold = await valuesAboveThresholdFromArray(rampType, riskDataArray);
 
   document.getElementById('basic-realtime-info').textContent = basicAboveThreshold;
+  document.getElementById('merge-realtime-info').textContent = mergeAboveThreshold;
+  document.getElementById('diverge-realtime-info').textContent = divergeAboveThreshold;
+  document.getElementById('express-realtime-info').textContent = expressAboveThreshold;
   document.getElementById('weaving-realtime-info').textContent = weavingAboveThreshold;
   document.getElementById('ramp-realtime-info').textContent = rampAboveThreshold;
-  document.getElementById('severe-realtime-info').textContent = totalSevereAboveThreshold;
 }
 
 updatePrimaryRiskInformation();
+setInterval(updatePrimaryRiskInformation, timeIntervalInMS);
