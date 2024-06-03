@@ -1,0 +1,99 @@
+<div id="rightSidebar" class="sidenav">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script type="text/javascript" src="/scripts/loadChart.js"></script>
+  <script type="text/javascript" src="/scripts/realTime.js"></script>
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div class="tab">
+    <script src="/scripts/openTab.js"></script>
+    <button class="tablinks" onclick="openTab(event, 'Speed')">Speed</button>
+    <button class="tablinks" onclick="openTab(event, 'SpeedStd')">Speed std</button>
+  </div>
+  <div id="Speed" class="tabcontent">
+    <div>
+      <canvas id="speedChart" width="400" height="300"></canvas>
+    </div>
+    <div>
+      <canvas id="volumeChart" width="400" height="300"></canvas>
+    </div>
+    <div>
+      <canvas id="riskChart" width="400" height="300"></canvas>
+    </div>
+  </div>
+  <div id="SpeedStd" class="tabcontent">
+    <div>
+      <canvas id="stdChart" width="290" height="290"></canvas>
+    </div>
+  </div>
+  <hr>
+  <hr>
+</div>
+
+<script>
+  var data = [
+    {
+      "_id": "66562dc0c1e0f644cb1d1b3c",
+      "time": "2024-05-28T19:17:00.000Z",
+      "link_ID": 1041009,
+      "lane_ID": 0,
+      "speed": 50,
+      "volume": 6,
+      "occupancy": -1,
+      "createdDate": "2024-05-28T19:17:20.606Z",
+      "__v": 0
+    },
+    {
+      "_id": "66562dfdc1e0f644cb1d2b67",
+      "time": "2024-05-28T19:18:00.000Z",
+      "link_ID": 1041009,
+      "lane_ID": 0,
+      "speed": 60,
+      "volume": -1,
+      "occupancy": -1,
+      "createdDate": "2024-05-28T19:18:21.186Z",
+      "__v": 0
+    },
+    {
+      "_id": "66562e25c1e0f644cb1d371b",
+      "time": "2024-05-28T19:19:00.000Z",
+      "link_ID": 1041009,
+      "lane_ID": 0,
+      "speed": 70,
+      "volume": -1,
+      "occupancy": -1,
+      "createdDate": "2024-05-28T19:19:21.855Z",
+      "__v": 0
+    },
+    {
+      "_id": "66562e25c1e0f644cb1d371b",
+      "time": "2024-05-28T19:19:00.000Z",
+      "link_ID": 1041009,
+      "lane_ID": 0,
+      "speed": 70,
+      "volume": -1,
+      "occupancy": -1,
+      "createdDate": "2024-05-28T19:19:21.855Z",
+      "__v": 0
+    },
+    {
+      "_id": "66562e25c1e0f644cb1d371b",
+      "time": "2024-05-28T19:19:00.000Z",
+      "link_ID": 1041009,
+      "lane_ID": 0,
+      "speed": 70,
+      "volume": -1,
+      "occupancy": -1,
+      "createdDate": "2024-05-28T19:19:21.855Z",
+      "__v": 0
+    }
+  ];
+
+  var riskData = [
+  {"_id":"6657480ee0b27dd4b38829e5","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.04204310163855553,"isHistorical":true,"createdDate":"2024-05-29T15:21:50.211Z","__v":0},{"_id":"665747d2e0b27dd4b3881a52","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.06904149976372719,"isHistorical":true,"createdDate":"2024-05-29T15:20:50.438Z","__v":0},{"_id":"66574795e0b27dd4b3880aca","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.01104353004693985,"isHistorical":true,"createdDate":"2024-05-29T15:19:49.828Z","__v":0},{"_id":"6657475ae0b27dd4b387fb03","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.034041723281145096,"isHistorical":true,"createdDate":"2024-05-29T15:18:50.578Z","__v":0},{"_id":"6657471fe0b27dd4b387eb27","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.057040829211473465,"isHistorical":true,"createdDate":"2024-05-29T15:17:51.011Z","__v":0},
+  ];
+
+  document.addEventListener('drawCharts', function() {
+    drawSpeedChart('intersection', data);
+    drawVolumeChart('intersection', data);
+    drawRiskChart('intersection', riskData);
+  });
+</script>
