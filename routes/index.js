@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
     crashRiskAPIRamp: process.env.CRASH_RISK_API_RAMP,
     crashRiskAPISpecific: process.env.CRASH_RISK_API_SPECIFIC,
     crashRiskAPIWeaving: process.env.CRASH_RISK_API_WEAVING,
-
+    realtimeDiagnosticsAPI: process.env.REALTIME_DIAGNOSTICS_API,
   };
   res.render('index', { mapApiKey: JSON.stringify(mapApiKey) });
 });
