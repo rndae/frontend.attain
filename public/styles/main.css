@@ -73,6 +73,10 @@
     color: #f1f1f1;
 }
 
+#Speed{
+    display:block
+}
+
 #speedChart{
     padding: 10px;
     width:80%;
