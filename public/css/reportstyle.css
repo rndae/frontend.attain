@@ -1,0 +1,268 @@
+        body {
+            font-family: "Lato", sans-serif;
+            text-align: center;
+        }
+
+        .sidenav {
+            height: 95%;
+            width: 290px;
+            position: absolute;
+            z-index: 1;
+            top: 52px;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+        }
+
+        .sidenav .underline {
+            color: #fc0 !important;
+        }
+        #report{
+                /*border: 2px solid black;*/
+                margin: auto;
+                padding:20px;
+                text-align: center;
+                width: 1024px;
+        }
+
+        #mySidenav1 {
+          color: white;
+          text-align: center;
+            left: 0;
+            opacity: 0.9;
+            filter: alpha(opacity=70); /* For IE8 and earlier */
+        }
+        #mySidenav2, #mySidenav3 {
+          width: 0px;
+          color: white;
+          text-align: center;
+          right: 0;
+          opacity: 0.9;
+          filter: alpha(opacity=70); /* For IE8 and earlier */
+        }
+        #mySidenav1 a {
+            display: inline;
+            /* font-size: 10px; */
+        }
+        .real-time-crash-risk-title {
+            border: 1px solid;
+        }
+        .nav-tabs>li>a {
+            line-height: 3.18571;
+            font-size: 11px;
+            color: #777777;
+        }
+        #mySidenav2 a {
+            line-height: 1.4;
+        }
+
+        #mySidenav2 .speed-tab, .speed-std-tab {
+            width: 110px;
+        }
+        .container-report {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .divider {
+            display: block;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            margin-left: auto;
+            margin-right: auto;
+            border-style: inset;
+            border-top: solid;
+        }
+        .nav-tabs > li {
+          float:none;
+          display:inline-block;
+          zoom:1;
+        }
+            .nav-tabs {
+            text-align:center;
+        }
+        .nav-tabs>li>a:hover {
+            color: #eec443;
+        }
+
+        .paocai-icon {
+            width: 27px;
+        }
+
+        .num-content {
+            text-align: left;
+            margin-left: 20px;
+        }
+
+        .bus-information {
+            text-align: left;
+            padding-left: 14px;
+        }
+
+        .sidenav a {
+            padding: 8px 8px 8px 8px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: -4px;
+            right: 0px;
+            font-size: 20px;
+            margin-left: 50px;
+        }
+
+        .navbar {
+            margin-bottom: 0 !important;
+        }
+
+        .navbar .navbar-center {
+            position: absolute;
+            left: 50%;
+            transform: translatex(-50%);
+        }
+
+        .header-right {
+            height: 50px;
+            left:50%;
+        }
+        .navbar-brand{
+          transform: translateX(-50%);
+          left: 50%;
+          position: absolute;
+}
+        .navbar-right {
+            text-align: right;
+        }
+        /* .tabTiltle a {
+          padding:-10px
+        } */
+
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+            .sidenav a {
+                font-size: 18px;
+            }
+        }
+
+
+
+body{
+
+}
+.bg-img{
+
+
+  /*background:#e3e2df;*/
+}
+
+.navbar-custom{
+    background-color: #f8f8f8;
+}
+
+.reTitle{
+    text-align: center;
+    padding-bottom: 20px;
+    font-size: 30px;
+}
+
+label{
+    padding-left: 15px;
+}
+
+
+.nav-item{
+    font-size: 14px;
+    font-family: "Lato", sans-serif;
+}
+
+.text-color1{
+    font-size: 30px;
+    font-family: Tahoma, Geneva, sans-serif;
+
+}
+
+.text-color2{
+    font-size: 22px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 15px;
+
+}
+.glowp{
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    padding-bottom: 0px;
+}
+
+.row{
+  padding:30px 30px 30px 30px;
+
+}
+
+
+.board{
+  border-top-style: solid;
+  border-top-color:  #fc0;
+}
+
+table.top5 {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+    margin-left: auto; 
+  margin-right: auto;
+  width: 85%;
+}
+
+table.top5 td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 10px;
+}
+
+table.top5 tr:nth-child(even) {
+  background-color: #e9ebed;
+}
+
+table.details {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table.details td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 12px;
+}
+table.details tr:nth-child(odd) {
+  background-color: #e9ebed;
+}
+.bg-color {background-color: #e9ebed}
+.bg-color2 {background-color:white}
+.bg-color3 {background-color: white}
+
+.table-name{
+    padding-top: 15px;
+    font-size: 18px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+.mychart {
+    width: 680px;
+
+}
+
+
+
+
+
