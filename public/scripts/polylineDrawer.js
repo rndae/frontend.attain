@@ -17,7 +17,7 @@ export async function setSegmentsOnMap(map) {
 
 export function coloRiskSegmentsOnMap() {
   getCrashRiskDataArray().then(arrayCrashRiskData => {
-    let segmentMaxRiskDict = getSegmentMaxRiskDict(arrayCrashRiskData);
+    let segmentMaxRiskDict; //= getSegmentMaxRiskDict(arrayCrashRiskData);
 
     //delete when access to vpn normalizes
     segmentMaxRiskDict = fakeFillMaxPred();
@@ -78,11 +78,7 @@ function drawMapSegments(segmentData, map) {
 
     google.maps.event.addListener(segmentPolyline, 'click', function(event) {
       showSegmentInfoPopup(segmentId, event.latLng.lat(), event.latLng.lng(), map);
-      //turn this into a function that says displaySegmentCharts
-      //updateCharts(chart, newData, chartId);
-      //updateCharts(chart, newData, chartId);
-      //updateCharts(chart, newData, chartId);
-      openNav(); //opens right tab, this implies that rightBar page has loaded succesfully the function
+      openNav(segmentId);
     });
     drawnSegments[segmentId] = segmentPolyline;
   });
@@ -104,14 +100,14 @@ async function getCrashRiskDataArray() {
   const mapApiKeys = JSON.parse(document.getElementById('map-key').textContent);
 
   const results = await Promise.allSettled([
-    'ZcrashRiskAPIBasic',
-    'ZcrashRiskAPIMerge',
-    'ZcrashRiskAPIDiverge',
-    'ZcrashRiskAPIRamp',
-    'ZcrashRiskAPISpecific',
-    'ZcrashRiskAPIWeaving'
-  ].map(apiKey => {
-    const apiUrl = mapApiKeys[apiKey];
+    'crashRiskAPIBasic',
+    'crashRiskAPIMerge',
+    'crashRiskAPIDiverge',
+    'crashRiskAPIRamp',
+    'crashRiskAPISpecific',
+    'crashRiskAPIWeaving'
+  ].map(apiRoute => {
+    const apiUrl = mapApiKeys[apiRoute];
     return apiUrl ? fetch(apiUrl).then(response => response.json()) : Promise.resolve(null);
   }));
   return results
@@ -134,11 +130,16 @@ function getSegmentMaxRiskDict(arrayCrashRiskData) {
   return segmentMaxRiskDict;
 }
 
-//TODO: Close other info popup windows before opening new one
+
+let currentInfoWindow = null;
 function showSegmentInfoPopup(segmentId, latitude, longitude, map) {
+  if (currentInfoWindow) {
+    currentInfoWindow.close();
+  }
   const infoWindow = new google.maps.InfoWindow({
-      content: `<div id="current-segment-id">${segmentId}</div><div>Latitude: ${latitude}</div><div>Longitude: ${longitude}</div>`
+    content: `<div id="current-segment-id">${segmentId}</div><div>Latitude: ${latitude}</div><div>Longitude: ${longitude}</div>`
   });
   infoWindow.setPosition({ lat: latitude, lng: longitude });
   infoWindow.open(map);
+  currentInfoWindow = infoWindow;
 }
