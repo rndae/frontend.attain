@@ -110,15 +110,15 @@ async function getCrashRiskDataArray() {
     ].map(apiKey => {
       const apiUrl = mapApiKeys[apiKey];
       if (apiUrl) {
-          return fetch(apiUrl)
-              .then(response => response.json())
-              .catch(error => {
-                  console.error(`Error fetching data from "${apiUrl}":`, error);
-                  return null; 
-              });
+        return fetch(apiUrl)
+          .then(response => response.json())
+          .catch(error => {
+            console.error(`Error fetching data from "${apiUrl}":`, error);
+            return null; 
+          });
       } else {
-          console.error(`No URL provided for "${apiKey}".`);
-          return null;
+        console.error(`No URL provided for "${apiKey}".`);
+        return null;
       }
     });
     return crashRiskPromises;

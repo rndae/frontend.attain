@@ -214,9 +214,10 @@
   let rightChartInstanced = false;
 
   document.addEventListener('drawCharts', function(e) {
-    document.getElementById('current-segment-clicked').textContent = e.detail.segmentId;
-    if (!rightChartInstanced) {
-      getDataBySegmentId(e.detail.segmentId)
+    try {
+      document.getElementById('current-segment-clicked').textContent = e.detail.segmentId;
+      if (!rightChartInstanced) {
+        getDataBySegmentId(e.detail.segmentId)
         .then(segmentData => {
           if (!segmentData)
             chartData = data;
@@ -239,21 +240,25 @@
           updateCharts("riskChart", "riskChart", newFakeRiskData);     
       });
     }
+    } catch (error) {
+      console.error(error);
+    }   
   });
 
   async function getDataBySegmentId(segmentId) {
-  try {
-    const mapApiKey = JSON.parse(document.getElementById('map-key').textContent);
-    let httpSourcePath = mapApiKey['realtimeDiagnosticsAPI'];
-    let response = await fetch(httpSourcePath + "/rawData/getDataByLinkId/" + segmentId);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const mapApiKey = JSON.parse(document.getElementById('map-key').textContent);
+      let httpSourcePath = mapApiKey['realtimeDiagnosticsAPI'];
+      return fetch(httpSourcePath + "/rawData/getDataByLinkId/" + segmentId)
+        .then(response => response.json())
+        .catch(error => {
+            console.error("Segment data URL is not available", error);
+            return null; 
+        });
+    } catch (error) {
+      console.error('Error fetching segment data:', error);
+      return null;
     }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching segment data:', error);
-    return null;
-  }
 }
 
 
