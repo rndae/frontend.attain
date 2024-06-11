@@ -2,6 +2,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <script type="text/javascript" src="/scripts/loadChart.js"></script>
   <script type="text/javascript" src="/scripts/realTime.js"></script>
+  <script type="text/javascript" src="/scripts/updateChart.js"> </script>
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <div class="tab">
     <script src="/scripts/openTab.js"></script>
@@ -9,6 +10,8 @@
     <button class="tablinks" onclick="openTab(event, 'SpeedStd')">Speed std</button>
   </div>
   <div id="Speed" class="tabcontent">
+    <span>Segment ID: <span id="current-segment-clicked">N/A</span></span>
+
     <div>
       <canvas id="speedChart" width="400" height="300"></canvas>
     </div>
@@ -27,7 +30,6 @@
   <hr>
   <hr>
 </div>
-
 <script>
   var data = [
     {
@@ -87,13 +89,172 @@
     }
   ];
 
+  var newFakeData = [
+  {
+    "_id": "1930dc0c1e0f644cb1d1b3c",
+    "time": "1930-05-28T19:17:00.000Z",
+    "link_ID": 1041009,
+    "lane_ID": 0,
+    "speed": 50,
+    "volume": 6,
+    "occupancy": -1,
+    "createdDate": "1930-05-28T19:17:20.606Z",
+    "__v": 0
+  },
+  {
+    "_id": "1950dfdc1e0f644cb1d2b67",
+    "time": "1950-05-28T19:18:00.000Z",
+    "link_ID": 1041009,
+    "lane_ID": 0,
+    "speed": 60,
+    "volume": -1,
+    "occupancy": -1,
+    "createdDate": "1950-05-28T19:18:21.186Z",
+    "__v": 0
+  },
+  {
+    "_id": "1930e25c1e0f644cb1d371b",
+    "time": "1930-05-28T19:19:00.000Z",
+    "link_ID": 1041009,
+    "lane_ID": 0,
+    "speed": 70,
+    "volume": -1,
+    "occupancy": -1,
+    "createdDate": "1930-05-28T19:19:21.855Z",
+    "__v": 0
+  },
+  {
+    "_id": "1950e25c1e0f644cb1d371b",
+    "time": "1950-05-28T19:19:00.000Z",
+    "link_ID": 1041009,
+    "lane_ID": 0,
+    "speed": 70,
+    "volume": -1,
+    "occupancy": -1,
+    "createdDate": "1950-05-28T19:19:21.855Z",
+    "__v": 0
+  },
+  {
+    "_id": "1930e25c1e0f644cb1d371b",
+    "time": "1930-05-28T19:19:00.000Z",
+    "link_ID": 1041009,
+    "lane_ID": 0,
+    "speed": 70,
+    "volume": -1,
+    "occupancy": -1,
+    "createdDate": "1930-05-28T19:19:21.855Z",
+    "__v": 0
+  }
+];
+
+
   var riskData = [
   {"_id":"6657480ee0b27dd4b38829e5","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.04204310163855553,"isHistorical":true,"createdDate":"2024-05-29T15:21:50.211Z","__v":0},{"_id":"665747d2e0b27dd4b3881a52","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.06904149976372719,"isHistorical":true,"createdDate":"2024-05-29T15:20:50.438Z","__v":0},{"_id":"66574795e0b27dd4b3880aca","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.01104353004693985,"isHistorical":true,"createdDate":"2024-05-29T15:19:49.828Z","__v":0},{"_id":"6657475ae0b27dd4b387fb03","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.034041723281145096,"isHistorical":true,"createdDate":"2024-05-29T15:18:50.578Z","__v":0},{"_id":"6657471fe0b27dd4b387eb27","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.057040829211473465,"isHistorical":true,"createdDate":"2024-05-29T15:17:51.011Z","__v":0},
   ];
 
-  document.addEventListener('drawCharts', function() {
-    drawSpeedChart('intersection', data);
-    drawVolumeChart('intersection', data);
-    drawRiskChart('intersection', riskData);
+  var newFakeRiskData = [
+  {
+    "_id": "6657480ee0b27dd4b38829e5",
+    "SegmentType": "Basic",
+    "id": 1041007,
+    "Rear_End_Prediction": 0,
+    "Sideswipe_Angle_Prediction": 0,
+    "Total_Prediction": 0.19304310163855553,
+    "isHistorical": true,
+    "createdDate": "2024-05-29T15:21:50.211Z",
+    "__v": 0
+  },
+  {
+    "_id": "665747d2e0b27dd4b3881a52",
+    "SegmentType": "Basic",
+    "id": 1041007,
+    "Rear_End_Prediction": 0,
+    "Sideswipe_Angle_Prediction": 0,
+    "Total_Prediction": 0.19504149976372719,
+    "isHistorical": true,
+    "createdDate": "2024-05-29T15:20:50.438Z",
+    "__v": 0
+  },
+  {
+    "_id": "66574795e0b27dd4b3880aca",
+    "SegmentType": "Basic",
+    "id": 1041007,
+    "Rear_End_Prediction": 0,
+    "Sideswipe_Angle_Prediction": 0,
+    "Total_Prediction": 0.19304353004693985,
+    "isHistorical": true,
+    "createdDate": "2024-05-29T15:19:49.828Z",
+    "__v": 0
+  },
+  {
+    "_id": "6657475ae0b27dd4b387fb03",
+    "SegmentType": "Basic",
+    "id": 1041007,
+    "Rear_End_Prediction": 0,
+    "Sideswipe_Angle_Prediction": 0,
+    "Total_Prediction": 0.195041723281145096,
+    "isHistorical": true,
+    "createdDate": "2024-05-29T15:18:50.578Z",
+    "__v": 0
+  },
+  {
+    "_id": "6657471fe0b27dd4b387eb27",
+    "SegmentType": "Basic",
+    "id": 1041007,
+    "Rear_End_Prediction": 0,
+    "Sideswipe_Angle_Prediction": 0,
+    "Total_Prediction": 0.193040829211473465,
+    "isHistorical": true,
+    "createdDate": "2024-05-29T15:17:51.011Z",
+    "__v": 0
+  }
+];
+
+
+  let rightChartInstanced = false;
+
+  document.addEventListener('drawCharts', function(e) {
+    document.getElementById('current-segment-clicked').textContent = e.detail.segmentId;
+    if (!rightChartInstanced) {
+      getDataBySegmentId(e.detail.segmentId)
+        .then(segmentData => {
+          if (!segmentData)
+            chartData = data;
+          else 
+            chartData = segmentData;
+          drawSpeedChart('intersection', chartData);
+          drawVolumeChart('intersection', chartData);
+          drawRiskChart('intersection', riskData);
+          rightChartInstanced = true;
+        });
+    } else {
+      getDataBySegmentId(e.detail.segmentId)
+        .then(segmentData => {
+          if (!segmentData)
+            chartData = newFakeData;
+          else 
+            chartData = segmentData;
+          updateCharts("speedChart", "speedChart", chartData);
+          updateCharts("volumeChart", "volumeChart", chartData);
+          updateCharts("riskChart", "riskChart", newFakeRiskData);     
+      });
+    }
   });
+
+  async function getDataBySegmentId(segmentId) {
+  try {
+    const mapApiKey = JSON.parse(document.getElementById('map-key').textContent);
+    let httpSourcePath = mapApiKey['realtimeDiagnosticsAPI'];
+    let response = await fetch(httpSourcePath + "/rawData/getDataByLinkId/" + segmentId);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching segment data:', error);
+    return null;
+  }
+}
+
+
 </script>
