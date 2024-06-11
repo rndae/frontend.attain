@@ -13,8 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
     setSegmentsOnMap(map)
       .then(()=> {
         coloRiskSegmentsOnMap();
-      })
+      });
     setInterval(function(){coloRiskSegmentsOnMap();}, 60000);
+
   };
   document.head.appendChild(script);
 });

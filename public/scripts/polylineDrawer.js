@@ -17,11 +17,9 @@ export async function setSegmentsOnMap(map) {
 
 export function coloRiskSegmentsOnMap() {
   getCrashRiskDataArray().then(arrayCrashRiskData => {
-    let segmentMaxRiskDict; //= getSegmentMaxRiskDict(arrayCrashRiskData);
-
-    //delete when access to vpn normalizes
-    segmentMaxRiskDict = fakeFillMaxPred();
-
+    let segmentMaxRiskDict = getSegmentMaxRiskDict(arrayCrashRiskData);
+    if (!segmentMaxRiskDict)
+      segmentMaxRiskDict = fakeFillMaxPred();
     colorRiskSegments(segmentMaxRiskDict);
   })
   .catch(error => {
@@ -75,59 +73,85 @@ function drawMapSegments(segmentData, map) {
 
     segmentPolyline.setMap(map);
     const segmentId = segment.All_ID;
-
+    drawnSegments[segmentId] = segmentPolyline;
+    
     google.maps.event.addListener(segmentPolyline, 'click', function(event) {
       showSegmentInfoPopup(segmentId, event.latLng.lat(), event.latLng.lng(), map);
       openNav(segmentId);
     });
-    drawnSegments[segmentId] = segmentPolyline;
   });
 }
 
-function colorRiskSegments(segmentData){
-  Object.keys(segmentData).forEach(segmentId => {
-    if(!segmentData[segmentId] || isNaN(segmentData[segmentId]) || segmentData[segmentId] < 0) {
+function colorRiskSegments(segmentMaxRiskDict){
+  let count = 0;
+  Object.keys(segmentMaxRiskDict).forEach(segmentId => {
+    if (isNaN(segmentMaxRiskDict[segmentId]) || segmentMaxRiskDict[segmentId] < 0) {
       drawnSegments[segmentId].strokeColor = riskPredictionNotFoundColor;
-    } else if (segmentData[segmentId] > 0.8) {
+    } else if (segmentMaxRiskDict[segmentId] > 0.8) {
       drawnSegments[segmentId].strokeColor = riskColor;
+      drawnSegments[segmentId].strokeWeight = 4;
     } else {
       drawnSegments[segmentId].strokeColor = noRiskColor;
     }
+    count++;
   });
 }
 
 async function getCrashRiskDataArray() {
-  const mapApiKeys = JSON.parse(document.getElementById('map-key').textContent);
-
-  const results = await Promise.allSettled([
-    'crashRiskAPIBasic',
-    'crashRiskAPIMerge',
-    'crashRiskAPIDiverge',
-    'crashRiskAPIRamp',
-    'crashRiskAPISpecific',
-    'crashRiskAPIWeaving'
-  ].map(apiRoute => {
-    const apiUrl = mapApiKeys[apiRoute];
-    return apiUrl ? fetch(apiUrl).then(response => response.json()) : Promise.resolve(null);
-  }));
-  return results
-    .filter(result_1 => result_1.status === 'fulfilled' && result_1.value !== null)
-    .map(result_2 => result_2.value);
-}
-
-function getSegmentMaxRiskDict(arrayCrashRiskData) {
-  let segmentMaxRiskDict = {};
-  arrayCrashRiskData.forEach(crashRiskDataSet => {
-    crashRiskDataSet.forEach(crashRiskDataPoint => {
-      if(!segmentMaxRiskDict[crashRiskDataPoint.id]) {
-        segmentMaxRiskDict[crashRiskDataPoint.id] = -1;
-      }
-      if (crashRiskDataPoint.Total_Prediction > segmentMaxRiskDict[crashRiskDataPoint.id]) {
-        segmentMaxRiskDict[crashRiskDataPoint.id] = crashRiskEntry.Total_Prediction;
+  try {
+    const mapApiKeys = JSON.parse(document.getElementById('map-key').textContent);
+    const crashRiskPromises = [
+      'crashRiskAPIBasic',
+      'crashRiskAPIMerge',
+      'crashRiskAPIDiverge',
+      'crashRiskAPIRamp',
+      'crashRiskAPISpecific',
+      'crashRiskAPIWeaving'
+    ].map(apiKey => {
+      const apiUrl = mapApiKeys[apiKey];
+      if (apiUrl) {
+        return fetch(apiUrl)
+          .then(response => response.json())
+          .catch(error => {
+            console.error(`Error fetching data from "${apiUrl}":`, error);
+            return null; 
+          });
+      } else {
+        console.error(`No URL provided for "${apiKey}".`);
+        return null;
       }
     });
-  });
-  return segmentMaxRiskDict;
+    return crashRiskPromises;
+  }
+  catch (error) {
+    console.error("There is no access to crash risk routes " + error);
+    return null;
+  }
+}
+
+
+function getSegmentMaxRiskDict(arrayCrashRiskData) {
+  try {
+    let segmentMaxRiskDict = {};
+    if (arrayCrashRiskData) {
+      arrayCrashRiskData.forEach(crashRiskDataSet => {
+        if (crashRiskDataSet) {
+          crashRiskDataSet.forEach(crashRiskDataPoint => {
+            if(!segmentMaxRiskDict[crashRiskDataPoint.id]) {
+              segmentMaxRiskDict[crashRiskDataPoint.id] = -1;
+            }
+            if (crashRiskDataPoint.Total_Prediction > segmentMaxRiskDict[crashRiskDataPoint.id]) {
+              segmentMaxRiskDict[crashRiskDataPoint.id] = crashRiskEntry.Total_Prediction;
+            }
+          }); 
+        }
+      });
+    }
+    return segmentMaxRiskDict;
+  } catch (error) {
+    console.error("Not able to iterate over non-found objects: " + error);
+    return null;
+  }
 }
 
 
