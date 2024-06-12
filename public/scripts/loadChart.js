@@ -70,7 +70,7 @@ function drawVolumeChart(type, data) {
                 borderWidth: 1
             },
             {
-                label: 'Downstrea Volume',
+                label: 'Downstream Volume',
                 data: downVol,
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
