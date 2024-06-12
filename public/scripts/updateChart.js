@@ -1,15 +1,17 @@
-function updateCharts(chart, newData, chartId) {
-    if (chart) {
+function updateCharts(newData, chartId) {
+    newData = newData.slice(0, 5);
         if (chartId == "speedChart") {
-            chart.data.datasets[0].data = newData.map(item => item.speed);
+            speedChart.data.datasets[0].data = newData.map(item => item.speed);
+            speedChart.data.labels = newData.map(item => item.time);
+            speedChart.update();
         } else if (chartId == "riskChart") {
-            chart.data.datasets[0].data = newData.map(item => item.Total_Prediction);
+            riskChart.data.datasets[0].data = newData.map(item => item.crash_risk);
+            riskChart.data.labels = newData.map(item => item.time);
+            riskChart.update();
         } else if (chartId == "volumeChart") {
-            chart.data.datasets[0].data = newData.map(item => item.volume > 0 ? item.volume : 0);
-            chart.data.datasets[1].data = newData.map(item => item.volume < 0 ? -item.volume : 0);
+            volumeChart.data.datasets[0].data = newData.map(item => item.upstream_volume);
+            volumeChart.data.datasets[1].data = newData.map(item => item.downstream_volume);
+            volumeChart.data.labels = newData.map(item => item.time);
+            volumeChart.update();
         }
-
-        chart.data.labels = newData.map(item => item.time);
-        chart.update();
     }
-}
