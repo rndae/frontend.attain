@@ -2,6 +2,7 @@ let speedChart;
 let volumeChart;
 let riskChart;
 function drawSpeedChart(type, data) {
+    data = data.slice(0, 5);
     const ctx = document.getElementById('speedChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
     const speeds = data.map(item => item.speed);
@@ -52,10 +53,11 @@ function drawSpeedChart(type, data) {
 }
 
 function drawVolumeChart(type, data) {
+    data = data.slice(0, 5);
     const ctx = document.getElementById('volumeChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
-    const upVol = data.map(item => item.volume > 0 ? item.volume : 0);
-    const downVol = data.map(item => item.volume < 0 ? -item.volume : 0);
+    const upVol = data.map(item => item.upstream_volume );
+    const downVol = data.map(item => item.downstream_volume);
 
     const chartData = {
         labels: labels,
@@ -110,16 +112,17 @@ function drawVolumeChart(type, data) {
 }
 
 function drawRiskChart(type, data) {
+    data = data.slice(0, 5);
     const ctx = document.getElementById('riskChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
-    const speeds = data.map(item => item.Total_Prediction);
+    const riskScores = data.map(item => item.crash_risk);
 
     const chartData = {
         labels: labels,
         datasets: [
             {
                 label: 'Risk Score',
-                data: speeds,
+                data: riskScores,
                 backgroundColor: 'rgba(255, 0, 1, 0.2)',
                 borderColor: 'rgba(255, 0, 1, 1)',
                 borderWidth: 1
@@ -152,7 +155,7 @@ function drawRiskChart(type, data) {
         riskChart.destroy();
     }
 
-    speedChart = new Chart(ctx, {
+    riskChart = new Chart(ctx, {
         type: 'line',
         data: chartData,
         options: chartOptions
