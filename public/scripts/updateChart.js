@@ -13,5 +13,9 @@ function updateCharts(newData, chartId) {
             volumeChart.data.datasets[1].data = newData.map(item => item.downstream_volume);
             volumeChart.data.labels = newData.map(item => item.time);
             volumeChart.update();
+        }else if (chartId == "stdChart") {
+            stdChart.data.datasets[0].data = newData.map(item => item.speed_std);
+            stdChart.data.labels = newData.map(item => item.time);
+            stdChart.update();
         }
     }
