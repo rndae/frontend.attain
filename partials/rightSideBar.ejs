@@ -1,8 +1,8 @@
 <div id="rightSidebar" class="sidenav">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <script type="text/javascript" src="/scripts/loadChart.js"></script>
   <script type="text/javascript" src="/scripts/realTime.js"></script>
+  <script type="text/javascript" src="/scripts/updateChart.js"> </script>
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <div class="tab">
     <script src="/scripts/openTab.js"></script>
@@ -10,6 +10,8 @@
     <button class="tablinks" onclick="openTab(event, 'SpeedStd')">Speed std</button>
   </div>
   <div id="Speed" class="tabcontent">
+    <span>Segment ID: <span id="current-segment-clicked">N/A</span></span>
+
     <div>
       <canvas id="speedChart" width="400" height="300"></canvas>
     </div>
@@ -22,79 +24,69 @@
   </div>
   <div id="SpeedStd" class="tabcontent">
     <div>
-      <canvas id="stdChart" width="290" height="290"></canvas>
+      <canvas id="stdChart" width="400" height="300"></canvas>
     </div>
   </div>
   <hr>
   <hr>
 </div>
-
 <script>
-  var data = [
-    {
-      "_id": "66562dc0c1e0f644cb1d1b3c",
-      "time": "2024-05-28T19:17:00.000Z",
-      "link_ID": 1041009,
-      "lane_ID": 0,
-      "speed": 50,
-      "volume": 6,
-      "occupancy": -1,
-      "createdDate": "2024-05-28T19:17:20.606Z",
-      "__v": 0
-    },
-    {
-      "_id": "66562dfdc1e0f644cb1d2b67",
-      "time": "2024-05-28T19:18:00.000Z",
-      "link_ID": 1041009,
-      "lane_ID": 0,
-      "speed": 60,
-      "volume": -1,
-      "occupancy": -1,
-      "createdDate": "2024-05-28T19:18:21.186Z",
-      "__v": 0
-    },
-    {
-      "_id": "66562e25c1e0f644cb1d371b",
-      "time": "2024-05-28T19:19:00.000Z",
-      "link_ID": 1041009,
-      "lane_ID": 0,
-      "speed": 70,
-      "volume": -1,
-      "occupancy": -1,
-      "createdDate": "2024-05-28T19:19:21.855Z",
-      "__v": 0
-    },
-    {
-      "_id": "66562e25c1e0f644cb1d371b",
-      "time": "2024-05-28T19:19:00.000Z",
-      "link_ID": 1041009,
-      "lane_ID": 0,
-      "speed": 70,
-      "volume": -1,
-      "occupancy": -1,
-      "createdDate": "2024-05-28T19:19:21.855Z",
-      "__v": 0
-    },
-    {
-      "_id": "66562e25c1e0f644cb1d371b",
-      "time": "2024-05-28T19:19:00.000Z",
-      "link_ID": 1041009,
-      "lane_ID": 0,
-      "speed": 70,
-      "volume": -1,
-      "occupancy": -1,
-      "createdDate": "2024-05-28T19:19:21.855Z",
-      "__v": 0
+  var data = [{"_id":"666899439c03f2116485e8e1","time":"2024-06-11T18:35:00.000Z","link_ID":1043094,"lane_ID":0,"speed":54.44000000000001,"volume":74.4,"occupancy":4.88,"speed_std":1.3983783099329414,"upstream_volume":74.4,"downstream_volume":77.4,"crash_risk":0.484000876545906,"createdDate":"2024-06-11T18:36:51.175Z","__v":0},{"_id":"6668997f9c03f211648603ee","time":"2024-06-11T18:36:00.000Z","link_ID":1043094,"lane_ID":0,"speed":53.9,"volume":72.60000000000001,"occupancy":4.4799999999999995,"speed_std":3.5854846711033006,"upstream_volume":72.60000000000001,"downstream_volume":82.4,"crash_risk":0.4868098944425582,"createdDate":"2024-06-11T18:37:51.085Z","__v":0},{"_id":"666899bb9c03f21164861f1c","time":"2024-06-11T18:37:00.000Z","link_ID":1043094,"lane_ID":0,"speed":53.5,"volume":74.6,"occupancy":4.96,"speed_std":3.1946659347987754,"upstream_volume":74.6,"downstream_volume":78.4,"crash_risk":0.4838441908359527,"createdDate":"2024-06-11T18:38:51.053Z","__v":0},{"_id":"666899f69c03f21164863a89","time":"2024-06-11T18:38:00.000Z","link_ID":1043094,"lane_ID":0,"speed":53.48,"volume":74.2,"occupancy":4.779999999999999,"speed_std":3.1936027924656805,"upstream_volume":74.2,"downstream_volume":80.8,"crash_risk":0.4837624579668044,"createdDate":"2024-06-11T18:39:50.955Z","__v":0},{"_id":"66689a339c03f2116486562d","time":"2024-06-11T18:39:00.000Z","link_ID":1043094,"lane_ID":0,"speed":53.7,"volume":74.00000000000001,"occupancy":5.04,"speed_std":3.174578689348904,"upstream_volume":74.00000000000001,"downstream_volume":80,"crash_risk":0.4843102991580962,"createdDate":"2024-06-11T18:40:51.152Z","__v":0},{"_id":"66689a6f9c03f211648671aa","time":"2024-06-11T18:40:00.000Z","link_ID":1043094,"lane_ID":0,"speed":54.2,"volume":73.60000000000001,"occupancy":4.9799999999999995,"speed_std":1.5121238266665065,"upstream_volume":73.60000000000001,"downstream_volume":76.80000000000001,"crash_risk":0.4842016696929931,"createdDate":"2024-06-11T18:41:51.301Z","__v":0},{"_id":"66689aaa9c03f21164868d1f","time":"2024-06-11T18:41:00.000Z","link_ID":1043094,"lane_ID":0,"speed":52.96,"volume":74,"occupancy":5.14,"speed_std":3.399851860435824,"upstream_volume":74,"downstream_volume":78.4,"crash_risk":0.4864013046026229,"createdDate":"2024-06-11T18:42:50.228Z","__v":0},{"_id":"66689ae79c03f2116486a891","time":"2024-06-11T18:42:00.000Z","link_ID":1043094,"lane_ID":0,"speed":52.02,"volume":72.8,"occupancy":4.94,"speed_std":3.781443480369204,"upstream_volume":72.8,"downstream_volume":78.8,"crash_risk":0.4841941818594932,"createdDate":"2024-06-11T18:43:51.181Z","__v":0},{"_id":"66689b239c03f2116486c426","time":"2024-06-11T18:43:00.000Z","link_ID":1043094,"lane_ID":0,"speed":51.71999999999999,"volume":74.4,"occupancy":5,"speed_std":3.6127232973686865,"upstream_volume":74.4,"downstream_volume":78.99999999999999,"crash_risk":0.4834047555923461,"createdDate":"2024-06-11T18:44:51.283Z","__v":0},{"_id":"66689b5d9c03f2116486dfa3","time":"2024-06-11T18:44:00.000Z","link_ID":1043094,"lane_ID":0,"speed":51.720000000000006,"volume":72.8,"occupancy":5.12,"speed_std":3.7995608585361156,"upstream_volume":72.8,"downstream_volume":77.39999999999999,"crash_risk":0.4824034348130225,"createdDate":"2024-06-11T18:45:49.989Z","__v":0},{"_id":"66689b9b9c03f2116486facd","time":"2024-06-11T18:45:00.000Z","link_ID":1043094,"lane_ID":0,"speed":52.6,"volume":76,"occupancy":5.459999999999999,"speed_std":3.3675323757505824,"upstream_volume":76,"downstream_volume":82.6,"crash_risk":0.4803020358085632,"createdDate":"2024-06-11T18:46:51.251Z","__v":0},{"_id":"66689bd69c03f2116487168e","time":"2024-06-11T18:46:00.000Z","link_ID":1043094,"lane_ID":0,"speed":53.620000000000005,"volume":77.2,"occupancy":5.32,"speed_std":1.4512553809271798,"upstream_volume":77.2,"downstream_volume":87.19999999999999,"crash_risk":0.4833228737115859,"createdDate":"2024-06-11T18:47:50.344Z","__v":0},{"_id":"66689c129c03f211648731db","time":"2024-06-11T18:47:00.000Z","link_ID":1043094,"lane_ID":0,"speed":51.4,"volume":78.39999999999999,"occupancy":5.46,"speed_std":5.119050891270069,"upstream_volume":78.39999999999999,"downstream_volume":89.4,"crash_risk":0.4868051260709762,"createdDate":"2024-06-11T18:48:50.418Z","__v":0},{"_id":"66689c4f9c03f21164874d26","time":"2024-06-11T18:48:00.000Z","link_ID":1043094,"lane_ID":0,"speed":51.519999999999996,"volume":81.4,"occupancy":5.7,"speed_std":3.3562707921900925,"upstream_volume":81.4,"downstream_volume":90.2,"crash_risk":0.4800610467791557,"createdDate":"2024-06-11T18:49:51.021Z","__v":0},{"_id":"66689c8b9c03f21164876806","time":"2024-06-11T18:49:00.000Z","link_ID":1043094,"lane_ID":0,"speed":51.75999999999999,"volume":80.19999999999999,"occupancy":5.18,"speed_std":3.4501467181423493,"upstream_volume":80.19999999999999,"downstream_volume":93,"crash_risk":0.4841701537370681,"createdDate":"2024-06-11T18:50:51.044Z","__v":0}]
+
+  var newData = [{"_id":"666899439c03f2116485e8e1","time":"2024-06-11T18:35:00.000Z","link_ID":1043094,"lane_ID":0,"speed":9.44000000000001,"volume":20.4,"occupancy":4.88,"speed_std":4.3983783099329414,"upstream_volume":66,"downstream_volume":66,"crash_risk":0.6921374638756,"createdDate":"2024-06-11T18:36:51.175Z","__v":0},{"_id":"6668997f9c03f211648603ee","time":"2024-06-11T18:36:00.000Z","link_ID":1043094,"lane_ID":0,"speed":53.9,"volume":72.60000000000001,"occupancy":4.4799999999999995,"speed_std":3.5854846711033006,"upstream_volume":72.60000000000001,"downstream_volume":82.4,"crash_risk":0.4868098944425582,"createdDate":"2024-06-11T18:37:51.085Z","__v":0},{"_id":"666899bb9c03f21164861f1c","time":"2024-06-11T18:37:00.000Z","link_ID":1043094,"lane_ID":0,"speed":53.5,"volume":74.6,"occupancy":4.96,"speed_std":3.1946659347987754,"upstream_volume":74.6,"downstream_volume":78.4,"crash_risk":0.4838441908359527,"createdDate":"2024-06-11T18:38:51.053Z","__v":0},{"_id":"666899f69c03f21164863a89","time":"2024-06-11T18:38:00.000Z","link_ID":1043094,"lane_ID":0,"speed":53.48,"volume":74.2,"occupancy":4.779999999999999,"speed_std":3.1936027924656805,"upstream_volume":74.2,"downstream_volume":80.8,"crash_risk":0.4837624579668044,"createdDate":"2024-06-11T18:39:50.955Z","__v":0},{"_id":"66689a339c03f2116486562d","time":"2024-06-11T18:39:00.000Z","link_ID":1043094,"lane_ID":0,"speed":53.7,"volume":74.00000000000001,"occupancy":5.04,"speed_std":3.174578689348904,"upstream_volume":74.00000000000001,"downstream_volume":80,"crash_risk":0.4843102991580962,"createdDate":"2024-06-11T18:40:51.152Z","__v":0},{"_id":"66689a6f9c03f211648671aa","time":"2024-06-11T18:40:00.000Z","link_ID":1043094,"lane_ID":0,"speed":54.2,"volume":73.60000000000001,"occupancy":4.9799999999999995,"speed_std":1.5121238266665065,"upstream_volume":73.60000000000001,"downstream_volume":76.80000000000001,"crash_risk":0.4842016696929931,"createdDate":"2024-06-11T18:41:51.301Z","__v":0},{"_id":"66689aaa9c03f21164868d1f","time":"2024-06-11T18:41:00.000Z","link_ID":1043094,"lane_ID":0,"speed":52.96,"volume":74,"occupancy":5.14,"speed_std":3.399851860435824,"upstream_volume":74,"downstream_volume":78.4,"crash_risk":0.4864013046026229,"createdDate":"2024-06-11T18:42:50.228Z","__v":0},{"_id":"66689ae79c03f2116486a891","time":"2024-06-11T18:42:00.000Z","link_ID":1043094,"lane_ID":0,"speed":52.02,"volume":72.8,"occupancy":4.94,"speed_std":3.781443480369204,"upstream_volume":72.8,"downstream_volume":78.8,"crash_risk":0.4841941818594932,"createdDate":"2024-06-11T18:43:51.181Z","__v":0},{"_id":"66689b239c03f2116486c426","time":"2024-06-11T18:43:00.000Z","link_ID":1043094,"lane_ID":0,"speed":51.71999999999999,"volume":74.4,"occupancy":5,"speed_std":3.6127232973686865,"upstream_volume":74.4,"downstream_volume":78.99999999999999,"crash_risk":0.4834047555923461,"createdDate":"2024-06-11T18:44:51.283Z","__v":0},{"_id":"66689b5d9c03f2116486dfa3","time":"2024-06-11T18:44:00.000Z","link_ID":1043094,"lane_ID":0,"speed":51.720000000000006,"volume":72.8,"occupancy":5.12,"speed_std":3.7995608585361156,"upstream_volume":72.8,"downstream_volume":77.39999999999999,"crash_risk":0.4824034348130225,"createdDate":"2024-06-11T18:45:49.989Z","__v":0},{"_id":"66689b9b9c03f2116486facd","time":"2024-06-11T18:45:00.000Z","link_ID":1043094,"lane_ID":0,"speed":52.6,"volume":76,"occupancy":5.459999999999999,"speed_std":3.3675323757505824,"upstream_volume":76,"downstream_volume":82.6,"crash_risk":0.4803020358085632,"createdDate":"2024-06-11T18:46:51.251Z","__v":0},{"_id":"66689bd69c03f2116487168e","time":"2024-06-11T18:46:00.000Z","link_ID":1043094,"lane_ID":0,"speed":53.620000000000005,"volume":77.2,"occupancy":5.32,"speed_std":1.4512553809271798,"upstream_volume":77.2,"downstream_volume":87.19999999999999,"crash_risk":0.4833228737115859,"createdDate":"2024-06-11T18:47:50.344Z","__v":0},{"_id":"66689c129c03f211648731db","time":"2024-06-11T18:47:00.000Z","link_ID":1043094,"lane_ID":0,"speed":51.4,"volume":78.39999999999999,"occupancy":5.46,"speed_std":5.119050891270069,"upstream_volume":78.39999999999999,"downstream_volume":89.4,"crash_risk":0.4868051260709762,"createdDate":"2024-06-11T18:48:50.418Z","__v":0},{"_id":"66689c4f9c03f21164874d26","time":"2024-06-11T18:48:00.000Z","link_ID":1043094,"lane_ID":0,"speed":51.519999999999996,"volume":81.4,"occupancy":5.7,"speed_std":3.3562707921900925,"upstream_volume":81.4,"downstream_volume":90.2,"crash_risk":0.4800610467791557,"createdDate":"2024-06-11T18:49:51.021Z","__v":0},{"_id":"66689c8b9c03f21164876806","time":"2024-06-11T18:49:00.000Z","link_ID":1043094,"lane_ID":0,"speed":51.75999999999999,"volume":80.19999999999999,"occupancy":5.18,"speed_std":3.4501467181423493,"upstream_volume":80.19999999999999,"downstream_volume":93,"crash_risk":0.4841701537370681,"createdDate":"2024-06-11T18:50:51.044Z","__v":0}]
+
+
+  let rightChartInstanced = false;
+
+  document.addEventListener('drawCharts', function(e) {
+    try {
+      document.getElementById('current-segment-clicked').textContent = e.detail.segmentId;
+      if (!rightChartInstanced) {
+        getDataBySegmentId(e.detail.segmentId)
+        .then(segmentData => {
+          if (!segmentData)
+            chartData = data;
+          else 
+            chartData = segmentData;
+          drawSpeedChart('intersection', chartData);
+          drawVolumeChart('intersection', chartData);
+          drawRiskChart('intersection', chartData);
+          drawStdChart('intersection', chartData);
+          rightChartInstanced = true;
+        });
+    } else {
+      getDataBySegmentId(e.detail.segmentId)
+        .then(segmentData => {
+          if (!segmentData)
+            chartData = newFakeData;
+          else 
+            chartData = segmentData;
+          updateCharts("speedChart", chartData);
+          updateCharts("volumeChart", chartData);
+          updateCharts("riskChart", chartData);  
+          updatecCharts("stdChart", chartData);   
+      });
     }
-  ];
-
-  var riskData = [
-  {"_id":"6657480ee0b27dd4b38829e5","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.04204310163855553,"isHistorical":true,"createdDate":"2024-05-29T15:21:50.211Z","__v":0},{"_id":"665747d2e0b27dd4b3881a52","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.06904149976372719,"isHistorical":true,"createdDate":"2024-05-29T15:20:50.438Z","__v":0},{"_id":"66574795e0b27dd4b3880aca","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.01104353004693985,"isHistorical":true,"createdDate":"2024-05-29T15:19:49.828Z","__v":0},{"_id":"6657475ae0b27dd4b387fb03","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.034041723281145096,"isHistorical":true,"createdDate":"2024-05-29T15:18:50.578Z","__v":0},{"_id":"6657471fe0b27dd4b387eb27","SegmentType":"Basic","id":1041007,"Rear_End_Prediction":0,"Sideswipe_Angle_Prediction":0,"Total_Prediction":0.057040829211473465,"isHistorical":true,"createdDate":"2024-05-29T15:17:51.011Z","__v":0},
-  ];
-
-  document.addEventListener('drawCharts', function() {
-    drawSpeedChart('intersection', data);
-    drawVolumeChart('intersection', data);
-    drawRiskChart('intersection', riskData);
+    } catch (error) {
+      console.error(error);
+    }   
   });
+
+  async function getDataBySegmentId(segmentId) {
+    try {
+      const mapApiKey = JSON.parse(document.getElementById('map-key').textContent);
+      let httpSourcePath = mapApiKey['realtimeDiagnosticsAPI'];
+      return fetch(httpSourcePath + "/rawData/getDataByLinkId/" + segmentId)
+        .then(response => response.json())
+        .catch(error => {
+            console.error("Segment data URL is not available", error);
+            return null;
+        });
+    } catch (error) {
+      console.error('Error fetching segment data:', error);
+      return null;
+    }
+}
+
+
 </script>
