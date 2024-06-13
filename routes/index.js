@@ -17,4 +17,13 @@ router.get('/', (req, res) => {
   res.render('index', { mapApiKey: JSON.stringify(mapApiKey) });
 });
 
+router.get('/calendar', function(req, res) {
+  res.render('report', {}); 
+});
+
+router.get('/report', function(req, res) {
+  res.render('report', {}); 
+});
+
+
 module.exports = router;

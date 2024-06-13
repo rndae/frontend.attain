@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Report</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="scripts/2pdf/html2pdf.bundle.min.js"></script>
+    <script src="scripts/2pdf/utils.js"></script>
+     <link rel="stylesheet" type="text/css" href="/css/reportstyle.css">
+        <script>
+      function generatePDF() {
+        // Choose the element that our invoice is rendered in.
+        const element = document.getElementById("report");
+        // Choose the element and save the PDF for our user.
+
+        var opt = {
+        margin:       -1,
+        filename:     'report.pdf',
+        image:        { type: 'jpeg', quality: 1 },
+        html2canvas:  { dpi: 300, letterRendering: true ,width: 1040},
+        jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
+      };
+        html2pdf()
+          .from(element)
+          .set(opt)
+          .save();
+      }
+    </script>
+
+<!-- Nav bar  -->
+    <nav class="navbar navbar-custom navbar-expand-lg navbar-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-brand navbar-nav mb-2">
+          <a href="/">
+                    <img class="logo-image" src="/img/logo.png" alt="" style="
+                    width: 110px;
+                    height: 30px;
+                    margin-top: 10px;
+                  ">
+                </a>
+        </div>
+        <div class="navbar-nav ml-auto" >
+          <a class="nav-item nav-link" href="/">CPED</a>
+          <a class="nav-item nav-link" href="/cped">CCTV</a>
+          <a class="nav-item nav-link" href="/report">Report</a>
+        </div>
+      </div>
+    </nav>
+<!-- end of Nav bar  -->
+  </head>
+
+  <body>
+    <ul class="nav nav-tabs justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#home">System Report</a></li>
+      <!-- <li class="nav-item ">
+        <a class="nav-link"data-toggle="tab" href="#menu1">PATM Report</a></li> -->
+    </ul>
+    <div class="row justify-content-center mb-0">
+      <div class="tab-content">
+        <div id="home" class="tab-pane fade show active " >
+        <h3 class="reTitle">System Report</h3>
+        <form class="form" >
+            <label for="startDay">Start Day:</label>
+            <input type="date" id="startDay" name="startDay" >
+            <label for="endDay">End Day:</label>
+            <input type="date" id="endDay" name="endDay" min="startDay">
+             <button type='button' onclick="datechecker()">Submit</button>
+
+        </form>
+
+        <script>
+
+       </script>
+      <section class="product-section bg-img">
+       <button class="mb-4 mt-5" onclick="generatePDF()">Download as PDF</button>
+       <hr>
+       <div  id="report">
+       <div class="container">
+        <div class="row justify-content-center pb-4 pt-0">
+          <div class="col-md-7 heading-section text-center">
+
+             <p class=" glowp mt-0 mb-1" id="myPeriod"></p>
+             <p class=" glowp mb-1"id="Time"></p>
+             <p class=" glowp "id="Roadway"></p>
+          </div>
+        </div>
+        <div class="board"></div>
+         <div class="row justify-content-center pb-4 pt-4">
+          <div class="heading-section text-center">
+             <h2 class="font-weight-bold text-color2 glow mt-3 mb-0 text-uppercase" id="topTitle"></h2>
+          </div>
+        </div>
+
+        <div id="aa"><div>
+          <div class="row justify-content-center">
+            <div class="heading-section text-center">
+            <canvas class="mychart mb-2" id="myChart"></canvas>
+            </div>
+          </div>
+
+        <script>
+              function datechecker(){
+              var myStartDate = document.getElementById("startDay").value;
+              var myEndDate = document.getElementById("endDay").value;
+              document.getElementById("myPeriod").innerHTML = "Period: "+ myStartDate +" - "+myEndDate;
+              document.getElementById("Time").innerHTML = "Time: Full Day";
+              document.getElementById("Roadway").innerHTML = "Roadway Facility Type: All";
+              document.getElementById("topTitle").innerHTML = "Top Crash Prone Location by Facility Type";
+
+              var getJSON = function(url, callback) {
+              var xhr = new XMLHttpRequest();
+              xhr.open('GET', url, true);
+              xhr.responseType = 'json';
+
+              xhr.onload = function() {
+
+                  var status = xhr.status;
+
+                  if (status == 200) {
+                      callback(null, xhr.response);
+                  } else {
+                      callback(status);
+                  }
+              };
+              xhr.send();
+              }; //end of getJson
+              var urlbasic = 'http://10.32.93.91:8085/highCrashFreq/getDataOrderByDur/'+myStartDate+'/'+myEndDate+'/merge';
+              var urlramp = 'http://10.32.93.91:8085/highCrashFreq/getDataOrderByDur/'+myStartDate+'/'+myEndDate+'/diverge';
+              var urlweaving = 'http://10.32.93.91:8085/highCrashFreq/getDataOrderByDur/'+myStartDate+'/'+myEndDate+'/weaving';
+
+              var url = [urlbasic,urlramp,urlweaving];
+              console.log('url'+urlbasic);
+
+              //  for (var i = 0; i<url.length;i++){
+              var html = "";
+              html += '<table class="top5 mb-5">'+'<tr>'+'<th>Road ID</th>'+'<th>Road Type</th>'+'<th>Reported Cases</th>'+'</tr>'
+
+                getJSON(urlbasic,  function(err, data) {
+                  if (err != null) {
+                     console.error(err);
+                  } else{
+                    console.log(data)
+
+                    html += '<tr>'+' <td>' + data[0].roadName +'</td>' + '<td>' + data[0].roadwayType +'</td>' + ' <td>' + data[0].total +'</td></tr>';
+
+                    var basicResult=[];
+
+                    if(data.length>5){
+                        for(var i = 0; i < 5;i++)
+                        basicResult.push(data[i]);
+                      }
+                    else{
+                        for(var i = 0; i< data.length;i++){
+                        basicResult.push(data[i]);
+                      }
+                    }
+                    console.log(basicResult);
+
+                  getJSON(urlweaving,  function(err, data) {
+                  if (err != null) {
+                     console.error(err);
+                  } else{
+
+                      html += '<tr>'+' <td>' + data[0].roadName +'</td>' + '<td>' + data[0].roadwayType +'</td>' + ' <td>' + data[0].total +'</td></tr>';
+
+                      var result = data[1].roadName;
+                      var weavingResult=[];
+
+                      if(data.length>5){
+                          for(var i = 0; i < 5;i++)
+                          weavingResult.push(data[i]);
+                        }
+                      else{
+                          for(var i = 0; i < data.length;i++){
+                          weavingResult.push(data[i]);
+                        }
+                      }
+
+                      console.log(weavingResult);
+
+                    getJSON(urlramp,  function(err, data) {
+                    if (err != null) {
+                       console.error(err);
+                    } else{
+
+                        html += '<tr>'+' <td>' + data[0].roadName +'</td>' + '<td>' + data[0].roadwayType +'</td>' + ' <td>' + data[0].total +'</td></tr></table>';
+
+                        var rampResult=[];
+
+                        if(data.length>5){
+                            for(var i = 0; i < 5;i++)
+                            rampResult.push(data[i]);
+                          }
+                        else{
+                            for(var i = 0; i < data.length;i++){
+                            rampResult.push(data[i]);
+                          }
+                        }
+
+                        console.log(rampResult);
+
+                        // Basic section
+                        html += '<div class="board"></div><div class=" heading-section text-center"><h2 class="font-weight-bold text-center text-color2 glow mt-5">TOP 5 CRASH PRONE LOCATION FOR FREEWAY-BASIC</h2></div>';
+
+                        html += '<div class="row justify-content-center"><div class="heading-section text-center"><canvas class="mychart mb-2" id="myChart"></canvas></div></div>';
+
+                        html += '<table class="details mb-5"><tr><th class = "bg-color3 text-center "></th><th class = "bg-color text-center "colspan="2">Peak</th><th class = "bg-color2 text-center" colspan="2">Non-Peak</th></tr><tr><th>Road ID</th><th>AM</th><th>PM</th><th>Daytime</th><th>Nighttime</th></tr>';
+
+                        for(var i = 0; i<basicResult.length;i++){
+                        html += '<tr><td>'+basicResult[i].roadName+'</td><td>'+basicResult[i].amPeak+'</td><td>'+basicResult[i].pmPeak+'</td><td>'+basicResult[i].dayTimeNonPeak+'</td><td>'+basicResult[i].nightTimeNonPeak+'</td></tr>';
+                        }
+
+
+                        // WEAVING section
+                        html += '</table><div class="board"><div class="board"></div><div class=" heading-section text-center"><h2 class="font-weight-bold text-center text-color2 glow mt-5">TOP 5 CRASH PRONE LOCATION FOR FREEWAY-WEAVING</h2></div>';
+
+                        html += '<div class="row justify-content-center"><div class="heading-section text-center"><canvas class="mychart mb-2" id="myChart2"></canvas></div></div>';
+
+                        html += '<table class="details mb-5"><tr><th class = "bg-color3 text-center "></th><th class = "bg-color text-center "colspan="2">Peak</th><th class = "bg-color2 text-center" colspan="2">Non-Peak</th></tr><tr><th>Road ID</th><th>AM</th><th>PM</th><th>Daytime</th><th>Nighttime</th></tr>';
+
+                        for(var i = 0; i<weavingResult.length;i++){
+                        html += '<tr><td>'+weavingResult[i].roadName+'</td><td>'+weavingResult[i].amPeak+'</td><td>'+weavingResult[i].pmPeak+'</td><td>'+weavingResult[i].dayTimeNonPeak+'</td><td>'+weavingResult[i].nightTimeNonPeak+'</td></tr>';
+                        }
+
+                        //Ramp section
+                        html += '</table><div class="board"><div class="board"></div><div class=" heading-section text-center"><h2 class="font-weight-bold text-center text-color2 glow mt-5">TOP 5 CRASH PRONE LOCATION FOR FREEWAY-RAMP</h2></div>';
+
+                        html += '<div class="row justify-content-center"><div class="heading-section text-center"><canvas class="mychart mb-2" id="myChart3"></canvas></div></div>';
+
+                        html += '<table class="details mb-5"><tr><th class = "bg-color3 text-center "></th><th class = "bg-color text-center "colspan="2">Peak</th><th class = "bg-color2 text-center" colspan="2">Non-Peak</th></tr><tr><th>Road ID</th><th>AM</th><th>PM</th><th>Daytime</th><th>Nighttime</th></tr>';
+
+                        for(var i = 0; i<rampResult.length;i++){
+                        html += '<tr><td>'+rampResult[i].roadName+'</td><td>'+rampResult[i].amPeak+'</td><td>'+rampResult[i].pmPeak+'</td><td>'+rampResult[i].dayTimeNonPeak+'</td><td>'+rampResult[i].nightTimeNonPeak+'</td></tr>';
+                        }
+
+                        html += '</table>';
+                        $('#aa').html(html);
+
+                       //Basic chart.js
+                       var nameBasic = [];
+                       for (var i = 0; i < basicResult.length; i++){
+                          nameBasic.push(basicResult[i].roadName);
+                       }
+                       var freqBasic = [];
+                       for (var i = 0; i < basicResult.length; i++){
+                          freqBasic.push(basicResult[i].total);
+                       }
+
+                       console.log(urlbasic);
+                       var ctx = document.getElementById('myChart').getContext('2d');
+                       var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: nameBasic,
+                                datasets: [
+                                {
+                                    label: 'Frequency',
+                                    yAxisID: 'Frequency',
+                                    data: freqBasic,
+                                    backgroundColor: [
+                                      '#ffc85c',
+                                        '#ffc85c',
+                                        '#ffc85c',
+                                        '#ffc85c',
+                                        '#ffc85c'
+                                    ],
+
+                                },
+                                // {
+                                //     label: 'Duration > 10 min',
+                                //     yAxisID: 'Duration',
+                                //     data: [12, 19, 3, 5, 2, 3],
+                                //     backgroundColor: [
+                                //         '#ffc85c',
+                                //         '#ffc85c',
+                                //         '#ffc85c',
+                                //         '#ffc85c',
+                                //         '#ffc85c'
+                                //     ],
+
+                                // }
+                                ]
+                            },
+                            options: {
+                                scales: {
+                            yAxes: [{
+                              id: 'Frequency',
+                              type: 'linear',
+                              position: 'left',
+                              ticks: {
+                beginAtZero: true
+            }
+
+                            },
+                             // {
+                             //  id: 'Duration',
+                             //  type: 'linear',
+                             //  position: 'right',
+                             //            ticks: {
+                             //                beginAtZero: true
+                             //            }
+                             //        }
+                                    ]
+                                }
+                            }
+                        });
+
+                        //Weaving chart.js
+                       var nameWeaving = [];
+                       for (var i = 0; i < weavingResult.length; i++){
+                          nameWeaving.push(weavingResult[i].roadName);
+                       }
+                       var freqWeaving = [];
+                       for (var i = 0; i < weavingResult.length; i++){
+                          freqWeaving.push(weavingResult[i].total);
+                       }
+
+                        var ctx2 = document.getElementById('myChart2').getContext('2d');
+                        var myChart2 = new Chart(ctx2, {
+                            type: 'bar',
+                            data: {
+                                labels: nameWeaving,
+                                datasets: [
+                                {
+                                    label: 'Frequency',
+                                    data: freqWeaving,
+                                    yAxisID: 'Frequency',
+                                    backgroundColor: [
+                                       '#ffc85c',
+                                        '#ffc85c',
+                                        '#ffc85c',
+                                        '#ffc85c',
+                                        '#ffc85c'
+                                    ],
+
+                                },
+                                // {
+                                //     label: 'Duration > 10 min',
+                                //     yAxisID: 'Duration',
+
+                                //     data: [12, 19, 3, 5, 2, 3],
+                                //     backgroundColor: [
+                                //         '#59886b',
+                                //        '#59886b',
+                                //        '#59886b',
+                                //        '#59886b',
+                                //        '#59886b'
+                                //     ],
+
+                                // }
+                                ]
+                            },
+                            options: {
+                                scales: {
+      yAxes: [{
+        id: 'Frequency',
+        type: 'linear',
+        position: 'left',
+        ticks: {
+beginAtZero: true
+}
+      },
+      // {
+      //   id: 'Duration',
+      //   type: 'linear',
+      //   position: 'right',
+      //                                   ticks: {
+      //                                       beginAtZero: true
+      //                                   }
+      //                               }
+                                    ]
+                                }
+                            }
+                        });
+
+                        //Ramp chart.js
+                       var nameRamp = [];
+                       for (var i = 0; i < rampResult.length; i++){
+                          nameRamp.push(rampResult[i].roadName);
+                       }
+                       var freqRamp = [];
+                       for (var i = 0; i < rampResult.length; i++){
+                          freqRamp.push(rampResult[i].total);
+                       }
+                        var ctx3 = document.getElementById('myChart3').getContext('2d');
+                        var myChart3 = new Chart(ctx3, {
+                            type: 'bar',
+                            data: {
+                                labels: nameRamp,
+                                datasets: [
+                                {
+                                    label: 'Frequency',
+                                    yAxisID: 'Frequency',
+                                    data: freqRamp,
+                                    backgroundColor: [
+                                       '#ffc85c',
+                                        '#ffc85c',
+                                        '#ffc85c',
+                                        '#ffc85c',
+                                        '#ffc85c'
+                                    ],
+
+                                },
+                                // {
+                                //     label: 'Duration > 10 min',
+                                //                                         yAxisID: 'Duration',
+
+                                //     data: [12, 19, 3, 5, 2, 3],
+                                //     backgroundColor: [
+                                //        '#59886b',
+                                //        '#59886b',
+                                //        '#59886b',
+                                //        '#59886b',
+                                //        '#59886b'
+                                //     ],
+
+                                // }
+                                ]
+                            },
+                            options: {
+                                scales: {
+                                         yAxes: [{
+        id: 'Frequency',
+        type: 'linear',
+        position: 'left',
+        ticks: {
+beginAtZero: true
+}
+      },
+      // {
+      //   id: 'Duration',
+      //   type: 'linear',
+      //   position: 'right',
+      //                                   ticks: {
+      //                                       beginAtZero: true
+      //                                   }
+      //                               }
+                                    ]
+                                }
+                            }
+                        });
+
+
+                    } //end of weaving else
+
+                    })//end of getjson weaving
+                  } //end of ramp else
+                }) //end of getson ramp
+               } //end of basic else
+              })//end of basic getjson
+
+            } //end of datachecker
+
+
+        </script>   <!--    end of chart.js -->
+ <!---->
+
+       </div> <!-- container   -->
+      </div>  <!-- crash report -->
+    </section>
+
+</div> <!-- id = home -->
+
+      <div id="menu1" class="tab-pane fade">
+        <h3 class="reTitle">PATM Report</h3>
+        <form class="form">
+            <label for="startDay">Start Day:</label>
+            <input type="date" id="startDay" name="startDay">
+            <label class="endday"for="endDay">End Day:</label>
+            <input type="date" id="endDay" name="endDay">
+             <button type='button' onclick="datechecker()">Submit</button>
+        </form>
+          <section class="product-section bg-img">
+             <button class="mb-4 mt-5" onclick="generatePDF()">Download as PDF</button>
+             <hr>
+             <div  id="report">
+             <div class="container">
+              <div class="row justify-content-center pb-4 pt-0">
+                <div class="col-md-7 heading-section text-center">
+                 <p class=" glowp mt-0 mb-1" >Period: 11/16/2020</p>
+                 <p class=" glowp mb-1">Time: Full Day</p>
+                 <p class=" glowp ">Roadway Facility Type: All</p>
+                </div>
+              </div>
+              <div class="board"></div>
+               <div class="row justify-content-center pb-4 pt-4">
+                <div class="col-md-7 heading-section text-center">
+                   <h2 class="font-weight-bold text-color2 glow mt-3">PATM Recommendation</h2>
+                </div>
+              </div>
+
+        <table class="details">
+                  <p class="table-name">(Recommended Countermeasures During Time of the Day) </p>
+          <tr>
+            <th class = "bg-color3 text-center "></th>
+            <th class = "bg-color3 text-center "></th>
+            <th class = "bg-color text-center "colspan="2">Peak</th>
+            <th class = "bg-color2 text-center" colspan="2">Non-Peak</th>
+          </tr>
+
+          <tr>
+            <th>Road ID</th>
+            <th>Road Type</th>
+            <th>AM</th>
+            <th>PM</th>
+            <th>Daytime</th>
+            <th>Nighttime</th>
+          </tr>
+          <tr>
+            <td>I-4 @ MM 084.3--WB</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Maria Anders</td>
+          </tr>
+          <tr>
+            <td>I-4 @ MM 084.3--WB</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Maria Anders</td>
+          </tr>
+          <tr>
+            <td>I-4 @ MM 084.3--WB</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Maria Anders</td>
+          </tr>
+          <tr>
+            <td>I-4 @ MM 084.3--WB</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Maria Anders</td>
+          </tr>
+          <tr>
+            <td>I-4 @ MM 084.3--WB</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Maria Anders</td>
+          </tr>
+          <tr>
+            <td>I-4 @ MM 084.3--WB</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Maria Anders</td>
+          </tr>
+        </table>
+             </div>
+             </div>
+         </section>
+      </div> <!-- id = menu1 -->
+
+      </div>
+    </div>
+
+  </body>
+</html>

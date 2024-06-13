@@ -1,6 +1,7 @@
 import { DefaultMapSettings } from "./defaultMapSettings.js";
 import { setSegmentsOnMap } from "./polylineDrawer.js";
-import {fetchDataAndDrawPolyline} from "./predictionLoader.js";
+import { coloRiskSegmentsOnMap } from "./polylineDrawer.js";
+
 
 document.addEventListener('DOMContentLoaded', function () {
   const mapApiKey = JSON.parse(document.getElementById('map-key').textContent);
@@ -9,8 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
   script.async = true;
   window.initMap = function () {
     const map = new google.maps.Map(document.getElementById('map'), DefaultMapSettings);
-    fetchDataAndDrawPolyline(map);
-    setInterval(function(){fetchDataAndDrawPolyline(map);}, 60000);
+    setSegmentsOnMap(map)
+      .then(()=> {
+        coloRiskSegmentsOnMap();
+      });
+    setInterval(function(){coloRiskSegmentsOnMap();}, 60000);
+
   };
   document.head.appendChild(script);
 });
