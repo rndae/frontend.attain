@@ -28,6 +28,19 @@
                 <li class="nav-item" role="presentation">
                   <a class="nav-link" type="button" id="weaving-tab" data-toggle="tab" data-target="#weaving-chart-id" role="tab" aria-controls="weaving-chart-id" aria-selected="false">Weaving</a>
                 </li>
+
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link" type="button" id="merge-tab" data-toggle="tab" data-target="#merge-chart-id" role="tab" aria-controls="merge-chart-id" aria-selected="false">Merge</a>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link" type="button" id="diverge-tab" data-toggle="tab" data-target="#diverge-chart-id" role="tab" aria-controls="diverge-chart-id" aria-selected="false">Diverge</a>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link" type="button" id="basic-tab" data-toggle="tab" data-target="#basic-chart-id" role="tab" aria-controls="basic-chart-id" aria-selected="false">Basic</a>
+                </li>
+
               </ul>
               <div class="tab-content bg-black" id="crashDataTabContent">
                 <div class="tab-pane fade show active" id="basic-chart-id" role="tabpanel" aria-labelledby="basic-tab">
@@ -38,6 +51,15 @@
                 </div>
                 <div class="tab-pane fade" id="weaving-chart-id" role="tabpanel" aria-labelledby="weaving-tab">
                   <canvas id="weavingChart"></canvas>
+                </div>
+                <div class="tab-pane fade" id="merge-chart-id" role="tabpanel" aria-labelledby="merge-tab">
+                  <canvas id="mergeChart"></canvas>
+                </div>
+                <div class="tab-pane fade" id="diverge-chart-id" role="tabpanel" aria-labelledby="diverge-tab">
+                  <canvas id="divergeChart"></canvas>
+                </div>
+                <div class="tab-pane fade" id="basic-chart-id" role="tabpanel" aria-labelledby="basic-tab">
+                  <canvas id="basicChart"></canvas>
                 </div>
               </div>
             </div>
