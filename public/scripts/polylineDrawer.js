@@ -78,6 +78,7 @@ function drawMapSegments(segmentData, map) {
     google.maps.event.addListener(segmentPolyline, 'click', function(event) {
       showSegmentInfoPopup(segmentId, event.latLng.lat(), event.latLng.lng(), map);
       openNav(segmentId);
+      zoomToSegment(segment, map);
     });
   });
 }
@@ -166,4 +167,16 @@ function showSegmentInfoPopup(segmentId, latitude, longitude, map) {
   infoWindow.setPosition({ lat: latitude, lng: longitude });
   infoWindow.open(map);
   currentInfoWindow = infoWindow;
+}
+
+function zoomToSegment(segment, map) {
+  const bounds = new google.maps.LatLngBounds();
+  for (let i = 0; i <= 20; i++) {
+    const pointKeyLat = `y_${i}`;
+    const pointKeyLng = `x_${i}`;
+    if (segment[pointKeyLat] !== undefined && segment[pointKeyLng] !== undefined) {
+      bounds.extend(new google.maps.LatLng(segment[pointKeyLat], segment[pointKeyLng]));
+    }
+  }
+  map.fitBounds(bounds);
 }
