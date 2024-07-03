@@ -1,5 +1,6 @@
 <div id="rightSidebar" class="sidenav">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script type="text/javascript" src="/scripts/loadChart.js"></script>
   <script type="text/javascript" src="/scripts/realTime.js"></script>
   <script type="text/javascript" src="/scripts/updateChart.js"> </script>
@@ -38,7 +39,6 @@
 
 
   let rightChartInstanced = false;
-
   document.addEventListener('drawCharts', function(e) {
     try {
       document.getElementById('current-segment-clicked').textContent = e.detail.segmentId;
@@ -47,7 +47,7 @@
         .then(segmentData => {
           if (!segmentData)
             chartData = data;
-          else 
+          else
             chartData = segmentData;
           drawSpeedChart('intersection', chartData);
           drawVolumeChart('intersection', chartData);
@@ -60,18 +60,20 @@
         .then(segmentData => {
           if (!segmentData)
             chartData = newFakeData;
-          else 
+          else
             chartData = segmentData;
           updateCharts("speedChart", chartData);
           updateCharts("volumeChart", chartData);
           updateCharts("riskChart", chartData);  
-          updatecCharts("stdChart", chartData);   
+          updateCharts("stdChart", chartData);  
       });
     }
     } catch (error) {
       console.error(error);
-    }   
+    }  
   });
+
+
 
   async function getDataBySegmentId(segmentId) {
     try {
