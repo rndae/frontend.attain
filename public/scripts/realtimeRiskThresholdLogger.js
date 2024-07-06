@@ -5,7 +5,7 @@ const expressType = "Express";
 const weavingType = "Weaving";
 const rampType = "Ramp";
 
-const timeIntervalInMS = 300000;
+const timeIntervalInMS = 60000;
 
 async function valuesAboveThresholdFromArray(riskType, predictionArray) {
   const filteredArray = predictionArray.filter(item => item.rank.includes(riskType));
@@ -28,7 +28,43 @@ async function updatePrimaryRiskInformation() {
   document.getElementById('express-realtime-info').textContent = expressAboveThreshold;
   document.getElementById('weaving-realtime-info').textContent = weavingAboveThreshold;
   document.getElementById('ramp-realtime-info').textContent = rampAboveThreshold;
+  populateSegmentDropdowns(riskDataArray);
 }
+
+function populateSegmentDropdowns(riskDataArray) {
+  const segmentTypes = [basicType, mergeType, divergeType, expressType, weavingType, rampType];
+  segmentTypes.forEach(type => {
+    const dropdownMenu = document.getElementById(`${type.toLowerCase()}-segments-list`);
+    dropdownMenu.innerHTML = ''; 
+    const filteredArray = riskDataArray.filter(item => item.rank.includes(type));
+    filteredArray.forEach(segment => {
+      const segmentId = segment.segment_id;
+      const dropdownItem = document.createElement('a');
+      dropdownItem.className = 'dropdown-item';
+      dropdownItem.href = '#';
+      dropdownItem.textContent = segmentId;
+      dropdownItem.addEventListener('click', () => {
+        if (drawnSegments[segmentId]) {
+          triggerSegmentClick(segmentId);
+        }
+      });
+      dropdownMenu.appendChild(dropdownItem);
+    });
+  });
+}
+
+function triggerSegmentClick(segmentId) {
+  const segmentPolyline = drawnSegments[segmentId];
+  if (segmentPolyline) {
+    const latLng = segmentPolyline.getPath().getAt(0);
+    const event = {
+      latLng: latLng
+    };
+    google.maps.event.trigger(segmentPolyline, 'click', event);
+  }
+}
+
+
 
 updatePrimaryRiskInformation();
 setInterval(updatePrimaryRiskInformation, timeIntervalInMS);

@@ -8,12 +8,30 @@
           <div class="list-group collapse show" id="primaryCrashContent">
             <div class="text-white list-group-item">
                 <ul class="list-group">                
-                  <li class="list-group-item d-flex p-0 border-0"><span id="merge-realtime-info" class="text-warning ml-2 my-0">0</span> <span class="my-0 ml-2 w-100"> Merge Segments</span></li>
-                  <li class="list-group-item d-flex p-0 border-0"><span id="basic-realtime-info" class="text-warning ml-2 my-0">0</span> <span class="my-0 ml-2 w-100"> Basic Segments</span></li>
-                  <li class="list-group-item d-flex p-0 border-0"><span id="diverge-realtime-info" class="text-warning ml-2 my-0">0</span> <span class="my-0 ml-2 w-100"> Diverge Segments</span></li>
-                  <li class="list-group-item d-flex p-0 border-0"><span id="express-realtime-info" class="text-warning ml-2 my-0">0</span> <span class="my-0 ml-2 w-100"> Express Segments</span></li>
-                  <li class="list-group-item d-flex p-0 border-0"><span id="weaving-realtime-info" class="text-warning ml-2 my-0">0</span> <span class="my-0 ml-2 w-100"> Weaving Segments</span></li>
-                  <li class="list-group-item d-flex p-0 border-0"><span id="ramp-realtime-info" class="text-warning ml-2 my-0">0</span> <span class="my-0 ml-2 w-100"> Ramp Segments</span></li>
+                  <li class="list-group-item d-flex p-0 border-0"><span id="merge-realtime-info" class="text-warning ml-2 my-0">0</span>
+                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="mergeDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Merge Segments</span>
+                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="mergeDropdown" id="merge-segments-list"></div>
+                  </li>
+                  <li class="list-group-item d-flex p-0 border-0"><span id="basic-realtime-info" class="text-warning ml-2 my-0">0</span> 
+                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="basicDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Basic Segments</span>
+                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="basicDropdown" id="basic-segments-list"></div>
+                  </li>
+                  <li class="list-group-item d-flex p-0 border-0"><span id="express-realtime-info" class="text-warning ml-2 my-0">0</span>
+                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="expressDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Express Segments</span>
+                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="expressDropdown" id="express-segments-list"></div>
+                  </li>
+                  <li class="list-group-item d-flex p-0 border-0"><span id="diverge-realtime-info" class="text-warning ml-2 my-0">0</span>
+                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="divergeDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Diverge Segments</span>
+                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="divergeDropdown" id="diverge-segments-list"></div>
+                  </li>
+                  <li class="list-group-item d-flex p-0 border-0"><span id="weaving-realtime-info" class="text-warning ml-2 my-0">0</span>
+                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="weavingDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Weaving Segments</span>
+                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="weavingDropdown" id="weaving-segments-list"></div>
+                  </li>
+                  <li class="list-group-item d-flex p-0 border-0"><span id="ramp-realtime-info" class="text-warning ml-2 my-0">0</span>
+                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="rampDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Ramp Segments</span>
+                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="rampDropdown" id="ramp-segments-list"></div>
+                  </li>
                 </ul>
               </div>
             <div class="list-group-item">
