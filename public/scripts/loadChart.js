@@ -103,7 +103,7 @@ function drawStdChart(type, data) {
                     color: 'white',
                     font: {
                       family: 'Arial',
-                      size: 14,
+                      size: 12,
                       weight: 'bold',
                     },
                 },
