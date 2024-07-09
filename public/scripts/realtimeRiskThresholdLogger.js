@@ -42,7 +42,7 @@ function populateSegmentDropdowns(riskDataArray) {
       const dropdownItem = document.createElement('a');
       dropdownItem.className = 'dropdown-item';
       dropdownItem.href = '#';
-      dropdownItem.textContent = segmentId;
+      dropdownItem.textContent = "id:" + segmentId + " at " + segment.segment_name;
       dropdownItem.addEventListener('click', () => {
         if (drawnSegments[segmentId]) {
           triggerSegmentClick(segmentId);
