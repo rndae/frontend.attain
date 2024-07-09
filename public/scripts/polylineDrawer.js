@@ -1,4 +1,4 @@
-let drawnSegments = {};
+export let drawnSegments = {};
 const riskColor= '#FF0000';
 const noRiskColor = '#00FF00';
 const riskPredictionNotFoundColor = "#D8D8D8";
@@ -73,13 +73,17 @@ function drawMapSegments(segmentData, map) {
 
     segmentPolyline.setMap(map);
     const segmentId = segment.All_ID;
-    drawnSegments[segmentId] = segmentPolyline;
-    
+
     google.maps.event.addListener(segmentPolyline, 'click', function(event) {
-      showSegmentInfoPopup(segmentId, event.latLng.lat(), event.latLng.lng(), map);
+      const latLng = event ? event.latLng : this.getPath().getAt(0);
+      showSegmentInfoPopup(segmentId, latLng.lat(), latLng.lng(), map);
       openNav(segmentId);
       zoomToSegment(segment, map);
     });
+    
+
+    drawnSegments[segmentId] = segmentPolyline;
+
   });
 }
 
@@ -180,3 +184,5 @@ function zoomToSegment(segment, map) {
   }
   map.fitBounds(bounds);
 }
+
+window.drawnSegments = drawnSegments;
