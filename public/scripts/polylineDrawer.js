@@ -1,4 +1,5 @@
 export let drawnSegments = {};
+let segmentPaths = {};
 const riskColor= '#FF0000';
 const noRiskColor = '#00FF00';
 const riskPredictionNotFoundColor = "#D8D8D8";
@@ -15,12 +16,11 @@ export async function setSegmentsOnMap(map) {
     });
 }
 
-export function coloRiskSegmentsOnMap() {
-  getCrashRiskDataArray().then(arrayCrashRiskData => {
-    let segmentMaxRiskDict = getSegmentMaxRiskDict(arrayCrashRiskData);
+export function coloRiskSegmentsOnMap(map) {
+  getSegmentMaxRiskDictSimpleFormat().then(segmentMaxRiskDict => {
     if (!segmentMaxRiskDict)
       segmentMaxRiskDict = fakeFillMaxPred();
-    colorRiskSegments(segmentMaxRiskDict);
+    colorRiskSegmentsRedrawn(segmentMaxRiskDict, map);
   })
   .catch(error => {
     console.error('Error fetching crash risk data: ', error);
@@ -37,34 +37,35 @@ function fakeFillMaxPred(){
 
 function drawMapSegments(segmentData, map) {
   Object.values(segmentData).forEach(segment => {
-    let strokeColor = noRiskColor;
-    let strokeWeight = 2;
-    let strokeOpacity = 0.44;
+    const strokeColor = noRiskColor;
+    const strokeWeight = 2;
+    const strokeOpacity = 0.44;
+    const segmentPath = [
+      { lat: segment.y_0, lng: segment.x_0 },
+      { lat: segment.y_1, lng: segment.x_1 },
+      { lat: segment.y_2, lng: segment.x_2 },
+      { lat: segment.y_3, lng: segment.x_3 },
+      { lat: segment.y_4, lng: segment.x_4 },
+      { lat: segment.y_5, lng: segment.x_5 },
+      { lat: segment.y_6, lng: segment.x_6 },
+      { lat: segment.y_7, lng: segment.x_7 },
+      { lat: segment.y_8, lng: segment.x_8 },
+      { lat: segment.y_9, lng: segment.x_9 },
+      { lat: segment.y_10, lng: segment.x_10 },
+      { lat: segment.y_11, lng: segment.x_11 },
+      { lat: segment.y_12, lng: segment.x_12 },
+      { lat: segment.y_13, lng: segment.x_13 },
+      { lat: segment.y_14, lng: segment.x_14 },
+      { lat: segment.y_15, lng: segment.x_15 },
+      { lat: segment.y_16, lng: segment.x_16 },
+      { lat: segment.y_17, lng: segment.x_17 },
+      { lat: segment.y_18, lng: segment.x_18 },
+      { lat: segment.y_19, lng: segment.x_19 },
+      { lat: segment.y_20, lng: segment.x_20 }
+  ];
 
     const segmentPolyline = new google.maps.Polyline({
-        path: [
-            { lat: segment.y_0, lng: segment.x_0 },
-            { lat: segment.y_1, lng: segment.x_1 },
-            { lat: segment.y_2, lng: segment.x_2 },
-            { lat: segment.y_3, lng: segment.x_3 },
-            { lat: segment.y_4, lng: segment.x_4 },
-            { lat: segment.y_5, lng: segment.x_5 },
-            { lat: segment.y_6, lng: segment.x_6 },
-            { lat: segment.y_7, lng: segment.x_7 },
-            { lat: segment.y_8, lng: segment.x_8 },
-            { lat: segment.y_9, lng: segment.x_9 },
-            { lat: segment.y_10, lng: segment.x_10 },
-            { lat: segment.y_11, lng: segment.x_11 },
-            { lat: segment.y_12, lng: segment.x_12 },
-            { lat: segment.y_13, lng: segment.x_13 },
-            { lat: segment.y_14, lng: segment.x_14 },
-            { lat: segment.y_15, lng: segment.x_15 },
-            { lat: segment.y_16, lng: segment.x_16 },
-            { lat: segment.y_17, lng: segment.x_17 },
-            { lat: segment.y_18, lng: segment.x_18 },
-            { lat: segment.y_19, lng: segment.x_19 },
-            { lat: segment.y_20, lng: segment.x_20 }
-        ],
+        path: segmentPath,
         geodesic: true,
         strokeColor: strokeColor,
         strokeOpacity: strokeOpacity,
@@ -74,6 +75,10 @@ function drawMapSegments(segmentData, map) {
     segmentPolyline.setMap(map);
     const segmentId = segment.All_ID;
 
+    segmentPaths[segmentId] = segmentPath;
+
+    drawnSegments[segmentId] = segmentPolyline;
+
     google.maps.event.addListener(segmentPolyline, 'click', function(event) {
       const latLng = event ? event.latLng : this.getPath().getAt(0);
       showSegmentInfoPopup(segmentId, latLng.lat(), latLng.lng(), map);
@@ -82,7 +87,6 @@ function drawMapSegments(segmentData, map) {
     });
     
 
-    drawnSegments[segmentId] = segmentPolyline;
 
   });
 }
@@ -93,14 +97,67 @@ function colorRiskSegments(segmentMaxRiskDict){
     if (isNaN(segmentMaxRiskDict[segmentId]) || segmentMaxRiskDict[segmentId] < 0) {
       drawnSegments[segmentId].strokeColor = riskPredictionNotFoundColor;
     } else if (segmentMaxRiskDict[segmentId] > 0.8) {
-      drawnSegments[segmentId].strokeColor = riskColor;
       drawnSegments[segmentId].strokeWeight = 4;
+      drawnSegments[segmentId].strokeColor = riskColor;
     } else {
       drawnSegments[segmentId].strokeColor = noRiskColor;
     }
     count++;
   });
 }
+
+function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
+  Object.keys(segmentMaxRiskDict).forEach(segmentId => {
+    drawnSegments[segmentId].setMap(null);
+  });
+
+  Object.keys(segmentMaxRiskDict).forEach(segmentId => {
+    let strokeColor;
+    let strokeWeight = 2;
+
+    if (isNaN(segmentMaxRiskDict[segmentId]) || segmentMaxRiskDict[segmentId] < 0) {
+      strokeColor = riskPredictionNotFoundColor;
+    } else if (segmentMaxRiskDict[segmentId] > 0.8) {
+      strokeColor = riskColor;
+      strokeWeight = 4;
+    } else {
+      strokeColor = noRiskColor;
+    }
+
+    drawnSegments[segmentId] = new google.maps.Polyline({
+      path: segmentPaths[segmentId],
+      strokeColor: strokeColor,
+      strokeWeight: strokeWeight,
+      map: map
+    });
+
+    google.maps.event.addListener(drawnSegments[segmentId], 'click', function(event) {
+      const latLng = event ? event.latLng : this.getPath().getAt(0);
+      showSegmentInfoPopup(segmentId, latLng.lat(), latLng.lng(), map);
+      openNav(segmentId);
+      zoomToSegmentById(segmentId, map);
+    });
+
+  });
+}
+
+
+async function getSegmentMaxRiskDictSimpleFormat() {
+  try {
+    const realtimeDiagnosticsSource = JSON.parse(document.getElementById('map-key').textContent)['realtimeDiagnosticsAPI'];
+    const riskDataArray = await (await fetch(realtimeDiagnosticsSource + '/crashprone')).json();
+    let segmentMaxRiskDict = {};
+    riskDataArray.forEach(segment => {
+      segmentMaxRiskDict[segment.segment_id] = 1;
+    }); 
+    return segmentMaxRiskDict;
+  }
+  catch (error) {
+    console.error("There is no access to /crashprone route " + error);
+    return null;
+  }
+}
+
 
 async function getCrashRiskDataArray() {
   try {
@@ -159,7 +216,6 @@ function getSegmentMaxRiskDict(arrayCrashRiskData) {
   }
 }
 
-
 let currentInfoWindow = null;
 function showSegmentInfoPopup(segmentId, latitude, longitude, map) {
   if (currentInfoWindow) {
@@ -184,5 +240,20 @@ function zoomToSegment(segment, map) {
   }
   map.fitBounds(bounds);
 }
+
+function zoomToSegmentById(segmentId, map) {
+  const bounds = new google.maps.LatLngBounds();
+  const segmentPath = segmentPaths[segmentId];
+
+  if (segmentPath) {
+    segmentPath.forEach(point => {
+      bounds.extend(new google.maps.LatLng(point.lat, point.lng));
+    });
+    map.fitBounds(bounds);
+  } else {
+    console.error(`Segment path not found for segment ID: ${segmentId}`);
+  }
+}
+
 
 window.drawnSegments = drawnSegments;

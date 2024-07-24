@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const map = new google.maps.Map(document.getElementById('map'), DefaultMapSettings);
     setSegmentsOnMap(map)
       .then(()=> {
-        coloRiskSegmentsOnMap();
+        coloRiskSegmentsOnMap(map);
       });
-    setInterval(function(){coloRiskSegmentsOnMap();}, 60000);
+    setInterval(function(){coloRiskSegmentsOnMap(map);}, 60000);
 
   };
   document.head.appendChild(script);
