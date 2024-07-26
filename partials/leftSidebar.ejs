@@ -7,80 +7,33 @@
           <a class="card-link dropdown-toggle active" data-toggle="collapse" href="#primaryCrashContent" role="button" aria-expanded="true">Primary Prone Crash Locations</a>
           <div class="list-group collapse show" id="primaryCrashContent">
             <div class="text-white list-group-item">
-                <ul class="list-group">                
-                  <li class="list-group-item d-flex p-0 border-0"><span id="merge-realtime-info" class="text-warning ml-2 my-0">0</span>
-                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="mergeDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Merge Segments</span>
-                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="mergeDropdown" id="merge-segments-list"></div>
-                  </li>
-                  <li class="list-group-item d-flex p-0 border-0"><span id="basic-realtime-info" class="text-warning ml-2 my-0">0</span> 
-                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="basicDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Basic Segments</span>
-                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="basicDropdown" id="basic-segments-list"></div>
-                  </li>
-                  <li class="list-group-item d-flex p-0 border-0"><span id="express-realtime-info" class="text-warning ml-2 my-0">0</span>
-                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="expressDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Express Segments</span>
-                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="expressDropdown" id="express-segments-list"></div>
-                  </li>
-                  <li class="list-group-item d-flex p-0 border-0"><span id="diverge-realtime-info" class="text-warning ml-2 my-0">0</span>
-                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="divergeDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Diverge Segments</span>
-                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="divergeDropdown" id="diverge-segments-list"></div>
-                  </li>
-                  <li class="list-group-item d-flex p-0 border-0"><span id="weaving-realtime-info" class="text-warning ml-2 my-0">0</span>
-                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="weavingDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Weaving Segments</span>
-                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="weavingDropdown" id="weaving-segments-list"></div>
-                  </li>
-                  <li class="list-group-item d-flex p-0 border-0"><span id="ramp-realtime-info" class="text-warning ml-2 my-0">0</span>
-                    <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="rampDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Ramp Segments</span>
-                    <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="rampDropdown" id="ramp-segments-list"></div>
-                  </li>
-                </ul>
-              </div>
-            <div class="list-group-item">
-              <span>Latest Risk Prediction Points</span>
-              <ul class="nav nav-tabs" id="crashDataTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <a class="nav-link active" type="button" id="basic-tab" data-toggle="tab" data-target="#basic-chart-id" role="tab" aria-controls="basic-chart-id" aria-selected="true">Basic</a>
+              <ul class="list-group">                
+                <li class="list-group-item d-flex p-0 border-0"><span id="merge-realtime-info" class="text-warning ml-2 my-0">0</span>
+                  <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="mergeDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Merge Segments</span>
+                  <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="mergeDropdown" id="merge-segments-list"></div>
                 </li>
-                <li class="nav-item" role="presentation">
-                  <a class="nav-link" type="button" id="ramp-tab" data-toggle="tab" data-target="#ramp-chart-id" role="tab" aria-controls="ramp-chart-id" aria-selected="false">Ramp</a>
+                <li class="list-group-item d-flex p-0 border-0"><span id="basic-realtime-info" class="text-warning ml-2 my-0">0</span> 
+                  <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="basicDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Basic Segments</span>
+                  <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="basicDropdown" id="basic-segments-list"></div>
                 </li>
-                <li class="nav-item" role="presentation">
-                  <a class="nav-link" type="button" id="weaving-tab" data-toggle="tab" data-target="#weaving-chart-id" role="tab" aria-controls="weaving-chart-id" aria-selected="false">Weaving</a>
+                <li class="list-group-item d-flex p-0 border-0"><span id="express-realtime-info" class="text-warning ml-2 my-0">0</span>
+                  <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="expressDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Express Segments</span>
+                  <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="expressDropdown" id="express-segments-list"></div>
                 </li>
-
-                <li class="nav-item" role="presentation">
-                  <a class="nav-link" type="button" id="merge-tab" data-toggle="tab" data-target="#merge-chart-id" role="tab" aria-controls="merge-chart-id" aria-selected="false">Merge</a>
+                <li class="list-group-item d-flex p-0 border-0"><span id="diverge-realtime-info" class="text-warning ml-2 my-0">0</span>
+                  <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="divergeDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Diverge Segments</span>
+                  <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="divergeDropdown" id="diverge-segments-list"></div>
                 </li>
-
-                <li class="nav-item" role="presentation">
-                  <a class="nav-link" type="button" id="diverge-tab" data-toggle="tab" data-target="#diverge-chart-id" role="tab" aria-controls="diverge-chart-id" aria-selected="false">Diverge</a>
+                <li class="list-group-item d-flex p-0 border-0"><span id="weaving-realtime-info" class="text-warning ml-2 my-0">0</span>
+                  <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="weavingDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Weaving Segments</span>
+                  <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="weavingDropdown" id="weaving-segments-list"></div>
                 </li>
-
-                <li class="nav-item" role="presentation">
-                  <a class="nav-link" type="button" id="express-tab" data-toggle="tab" data-target="#express-chart-id" role="tab" aria-controls="express-chart-id" aria-selected="false">Express</a>
+                <li class="list-group-item d-flex p-0 border-0"><span id="ramp-realtime-info" class="text-warning ml-2 my-0">0</span>
+                  <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="rampDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Ramp Segments</span>
+                  <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="rampDropdown" id="ramp-segments-list"></div>
                 </li>
-
               </ul>
-              <div class="tab-content bg-black" id="crashDataTabContent">
-                <div class="tab-pane fade show active" id="basic-chart-id" role="tabpanel" aria-labelledby="basic-tab">
-                  <canvas id="basicChart"></canvas>
-                </div>
-                <div class="tab-pane fade" id="ramp-chart-id" role="tabpanel" aria-labelledby="ramp-tab">
-                  <canvas id="rampChart"></canvas>
-                </div>
-                <div class="tab-pane fade" id="weaving-chart-id" role="tabpanel" aria-labelledby="weaving-tab">
-                  <canvas id="weavingChart"></canvas>
-                </div>
-                <div class="tab-pane fade" id="merge-chart-id" role="tabpanel" aria-labelledby="merge-tab">
-                  <canvas id="mergeChart"></canvas>
-                </div>
-                <div class="tab-pane fade" id="diverge-chart-id" role="tabpanel" aria-labelledby="diverge-tab">
-                  <canvas id="divergeChart"></canvas>
-                </div>
-                <div class="tab-pane fade" id="express-chart-id" role="tabpanel" aria-labelledby="express-tab">
-                  <canvas id="expressChart"></canvas>
-                </div>
-              </div>
-            </div>
+            </div>              
           </div>
         </div>
         <div id="secondaryCrashList" role="tablist">
