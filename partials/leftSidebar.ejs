@@ -37,14 +37,15 @@
           </div>
         </div>
         <div id="secondaryCrashList" role="tablist">
-          <a class="dropdown-toggle" data-toggle="collapse" href="#secondaryCrashContent" role="button" aria-expanded="false">Secondary Prone Crash Locations</a>
-          <div class="list-group collapse" id="secondaryCrashContent">
-            <div class="list-group-item bg-dark text-white">
-              <span id="predicted">0</span> Predicted Crashes
-              <span id="events">0</span> Crash Events
-            </div>
-            <div class="list-group-item bg-dark">
-              <canvas id="predictedChart"></canvas>
+          <a class="dropdown-toggle active" data-toggle="collapse" href="#secondaryCrashContent" role="button" aria-expanded="true">Secondary Prone Crash Locations</a>
+          <div class="list-group collapse show" id="secondaryCrashContent">
+            <div class="list-group-item bg-black text-white">
+              <ul class="list-group">
+                <li class="list-group-item d-flex p-0 border-0"><span id="secondary-realtime-info" class="text-warning ml-2 my-0">0</span>
+                  <span class="my-0 ml-2 w-100 dropdown-toggle" type="button" id="secondaryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Segments</span>
+                  <div class="bg-black dropdown-menu collapse border border-secondary" aria-labelledby="secondaryDropdown" id="secondary-segments-list"></div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
