@@ -2,11 +2,12 @@ let speedChart;
 let volumeChart;
 let riskChart;
 let stdChart;
+
 function drawSpeedChart(type, data) {
     data = data.slice(0, 5);
     const ctx = document.getElementById('speedChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
-    const speeds = data.map(item => item.speed);
+    const speeds = data.map(item => item.speed > 0 ? item.speed : 0);
 
     const chartData = {
         labels: labels,
@@ -27,7 +28,7 @@ function drawSpeedChart(type, data) {
                 title: {
                     display: true,
                     align: 'center',
-                    text: 'Speed (MPH)',
+                    text: 'Timesteps',
                     color: 'white',
                     font: {
                       family: 'Arial',
@@ -35,8 +36,10 @@ function drawSpeedChart(type, data) {
                       weight: 'bold',
                     },
                 },
+                beginAtZero: true,
                 type: 'category',
                 ticks: {
+                    min: 0,
                     maxTicksLimit: 5,
                     callback: function(value, index, ticks) {
                         if (index === ticks.length - 1) {
@@ -48,11 +51,11 @@ function drawSpeedChart(type, data) {
                 }
             },
             y: {
-                beginAtZero: true,
+                
                 title: {
                     display: true,
                     align: 'center',
-                    text: 'Time (m)',
+                    text: 'Speed (mph)',
                     color: 'white',
                     font: {
                       family: 'Arial',
@@ -60,6 +63,9 @@ function drawSpeedChart(type, data) {
                       weight: 'bold',
                     },
                 },
+                beginAtZero: true,
+                min: 0,
+
             }
         }
     };
@@ -78,14 +84,14 @@ function drawStdChart(type, data) {
     data = data.slice(0, 5);
     const ctx = document.getElementById('stdChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
-    const speeds = data.map(item => item.speed);
+    const speeds_std = data.map(item => item.speed_std > 0 ? item.speed_std : 0);
 
     const chartData = {
         labels: labels,
         datasets: [
             {
-                label: 'Speed_Std',
-                data: speeds,
+                label: 'SD of Speed',
+                data: speeds_std,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
@@ -99,7 +105,7 @@ function drawStdChart(type, data) {
                 title: {
                     display: true,
                     align: 'center',
-                    text: 'Speed_Std (MPH)',
+                    text: 'Timesteps',
                     color: 'white',
                     font: {
                       family: 'Arial',
@@ -107,8 +113,10 @@ function drawStdChart(type, data) {
                       weight: 'bold',
                     },
                 },
+                beginAtZero: true,
                 type: 'category',
                 ticks: {
+                    min: 0,
                     maxTicksLimit: 5,
                     callback: function(value, index, ticks) {
                         if (index === ticks.length - 1) {
@@ -120,18 +128,21 @@ function drawStdChart(type, data) {
                 }
             },
             y: {
+                
                 title: {
-                display: true,
-                align: 'center',
-                text: 'Time (m)',
-                color: 'white',
-                font: {
-                  family: 'Arial',
-                  size: 14,
-                  weight: 'bold',
+                    display: true,
+                    align: 'center',
+                    text: 'SD Speed (mph)',
+                    color: 'white',
+                    font: {
+                      family: 'Arial',
+                      size: 14,
+                      weight: 'bold',
+                    },
                 },
-            },
-                beginAtZero: true
+                beginAtZero: true,
+                min: 0,
+
             }
         }
     };
@@ -151,21 +162,21 @@ function drawVolumeChart(type, data) {
     data = data.slice(0, 5);
     const ctx = document.getElementById('volumeChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
-    const upVol = data.map(item => item.upstream_volume );
-    const downVol = data.map(item => item.downstream_volume);
+    const upVol = data.map(item => item.upstream_volume > 0 ? item.upstream_volume : 0);
+    const downVol = data.map(item => item.downstream_volume > 0 ? item.downstream_volume : 0);
 
     const chartData = {
         labels: labels,
         datasets: [
             {
-                label: 'Upstream Volume',
+                label: 'Upstream',
                 data: upVol,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             },
             {
-                label: 'Downstream Volume',
+                label: 'Downstream',
                 data: downVol,
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
@@ -180,7 +191,7 @@ function drawVolumeChart(type, data) {
                 title: {
                     display: true,
                     align: 'center',
-                    text: 'Volume (in cars)',
+                    text: 'Timesteps',
                     color: 'white',
                     font: {
                       family: 'Arial',
@@ -188,8 +199,10 @@ function drawVolumeChart(type, data) {
                       weight: 'bold',
                     },
                 },
+                beginAtZero: true,
                 type: 'category',
                 ticks: {
+                    min: 0,
                     maxTicksLimit: 5,
                     callback: function(value, index, ticks) {
                         if (index === ticks.length - 1) {
@@ -204,7 +217,7 @@ function drawVolumeChart(type, data) {
                 title: {
                 display: true,
                 align: 'center',
-                text: 'Time (m)',
+                text: 'Volume',
                 color: 'white',
                 font: {
                   family: 'Arial',
@@ -212,7 +225,9 @@ function drawVolumeChart(type, data) {
                   weight: 'bold',
                 },
             },
-                beginAtZero: true
+                beginAtZero: true,
+                min: 0,
+                
             }
         }
     };
@@ -232,7 +247,10 @@ function drawRiskChart(type, data) {
     data = data.slice(0, 5);
     const ctx = document.getElementById('riskChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
-    const riskScores = data.map(item => item.crash_risk);
+    
+
+    const riskScores = data.map(item => item.crash_risk > 0 ? Math.round(item.crash_risk * 10) / 10 : 0);
+    
 
     const chartData = {
         labels: labels,
@@ -253,7 +271,7 @@ function drawRiskChart(type, data) {
                 title: {
                     display: true,
                     align: 'center',
-                    text: 'Risk Score',
+                    text: 'Timesteps',
                     color: 'white',
                     font: {
                       family: 'Arial',
@@ -261,8 +279,10 @@ function drawRiskChart(type, data) {
                       weight: 'bold',
                     },
                 },
+                beginAtZero: true,
                 type: 'category',
                 ticks: {
+                    min: 0,
                     maxTicksLimit: 5,
                     callback: function(value, index, ticks) {
                         if (index === ticks.length - 1) {
@@ -277,7 +297,7 @@ function drawRiskChart(type, data) {
                 title: {
                     display: true,
                     align: 'center',
-                    text: 'Time (m)',
+                    text: 'Risk Score',
                     color: 'white',
                     font: {
                       family: 'Arial',
@@ -285,7 +305,9 @@ function drawRiskChart(type, data) {
                       weight: 'bold',
                     },
                 },
-                beginAtZero: true
+                beginAtZero: true,
+                min: 0,
+                
             }
         }
     };
