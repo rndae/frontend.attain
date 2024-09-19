@@ -4,6 +4,7 @@ const riskColor= '#FF0000';
 const noRiskColor = '#00FF00';
 const riskPredictionNotFoundColor = "#D8D8D8";
 
+
 export async function setSegmentsOnMap(map) {
   await fetch('data/base_map_final+pointinfo.json')
     .then(response => response.json())
@@ -114,10 +115,11 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
   Object.keys(segmentMaxRiskDict).forEach(segmentId => {
     let strokeColor;
     let strokeWeight = 2;
+    console.log(segmentMaxRiskDict[segmentId].risk)
 
-    if (isNaN(segmentMaxRiskDict[segmentId]) || segmentMaxRiskDict[segmentId] < 0) {
+    if (isNaN(segmentMaxRiskDict[segmentId].risk) || segmentMaxRiskDict[segmentId].risk < 0) {
       strokeColor = riskPredictionNotFoundColor;
-    } else if (segmentMaxRiskDict[segmentId] > 0.8) {
+    } else if (segmentMaxRiskDict[segmentId].risk > 0.8) {
       strokeColor = riskColor;
       strokeWeight = 4;
     } else {
@@ -138,6 +140,23 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
       zoomToSegmentById(segmentId, map);
     });
 
+    let cameraMarkers = {};
+    const cameras = segmentMaxRiskDict[segmentId].cameras;
+
+    if (cameras) {
+      cameraMarkers[segmentId] = []; // Initialize the array for storing markers
+      cameras.forEach(camera => {
+        const cameraPosition = new google.maps.LatLng(camera.latitude, camera.longitude);
+        const marker = new google.maps.Marker({
+          position: cameraPosition,
+          map: map,
+          icon: '/images/camera.jpg', // Use the URL for the external icon
+          title: camera.camera_name // Tooltip showing the camera name
+        });
+        cameraMarkers[segmentId].push(marker); // Store the marker in the array
+      });
+    }
+
   });
 }
 
@@ -148,8 +167,12 @@ async function getSegmentMaxRiskDictSimpleFormat() {
     const riskDataArray = await (await fetch(realtimeDiagnosticsSource + '/crashprone')).json();
     let segmentMaxRiskDict = {};
     riskDataArray.forEach(segment => {
-      segmentMaxRiskDict[segment.segment_id] = 1;
-    }); 
+      // Add each segment to the dictionary
+      segmentMaxRiskDict[segment.segment_id] = {
+        risk: 1, // Set this according to your needs, can be adjusted if actual risk data is available
+        cameras: segment.cameras // Directly use cameras from API response
+      };
+    });
     return segmentMaxRiskDict;
   }
   catch (error) {
@@ -254,6 +277,8 @@ function zoomToSegmentById(segmentId, map) {
     console.error(`Segment path not found for segment ID: ${segmentId}`);
   }
 }
+
+
 
 
 window.drawnSegments = drawnSegments;

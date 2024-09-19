@@ -8,22 +8,26 @@ export const DefaultMapSettings = {
     {
       featureType: "administrative.locality",
       elementType: "labels.text.fill",
-      stylers: [{ color: "#d59563" }],
+      stylers: [{ visibility: "off" }],
     },
+    // {
+    //   featureType: "poi",
+    //   elementType: "labels.text.fill",
+    //   stylers: [{ color: "#d59563" }],
+    // },
+    // {
+    //   featureType: "poi.park",
+    //   elementType: "geometry",
+    //   stylers: [{ color: "#263c3f" }],
+    // },
+    // {
+    //   featureType: "poi.park",
+    //   elementType: "labels.text.fill",
+    //   stylers: [{ color: "#6b9a76" }],
+    // },
     {
       featureType: "poi",
-      elementType: "labels.text.fill",
-      stylers: [{ color: "#d59563" }],
-    },
-    {
-      featureType: "poi.park",
-      elementType: "geometry",
-      stylers: [{ color: "#263c3f" }],
-    },
-    {
-      featureType: "poi.park",
-      elementType: "labels.text.fill",
-      stylers: [{ color: "#6b9a76" }],
+      stylers: [{ visibility: "off" }], // Hide all POIs
     },
     {
       featureType: "road",
