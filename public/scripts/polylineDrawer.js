@@ -165,7 +165,7 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
 
     google.maps.event.addListener(drawnSegments[segmentId], 'click', function (event) {
       const latLng = event ? event.latLng : this.getPath().getAt(0);
-      showSegmentInfoPopup(segmentId, latLng.lat(), latLng.lng(), map);
+      //showSegmentInfoPopup(segmentId, latLng.lat(), latLng.lng(), map);
       openNav(segmentId);
       zoomToSegmentById(segmentId, map);
     });
