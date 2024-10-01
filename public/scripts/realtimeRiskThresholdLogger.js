@@ -8,6 +8,8 @@ const secondaryType = "secondary";
 
 const timeIntervalInMS = 60000;
 
+const capitalizeFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1);
+
 async function valuesAboveThresholdFromArray(riskType, predictionArray) {
   const filteredArray = predictionArray.filter(item => item.rank != undefined && item.rank.includes(riskType) && item.type.includes("primary"));
   return filteredArray.length;
@@ -51,13 +53,10 @@ function extractTopSegmentsByType(dataArray) {
       result[rankType] = item;
     }
   });
-  console.log(Object.keys(result)[0])
 
-  // const ctx1 = document.getElementById('mergeChart').getContext('2d');
-  // displayTwoScoresBarChart(ctx1, Object.keys(result)[0], result[Object.keys(result)[0]]);
+
   for (let i = 0; i < Object.keys(result).length; i++) {
     const canvasId = `Chart${i + 1}`; // Chart1, Chart2, ..., Chart6
-    console.log(canvasId)
     const ctx = document.getElementById(canvasId).getContext('2d');
     const segmentType = Object.keys(result)[i]; // e.g., "basic", "merge", etc.
     const segment = result[segmentType]; // Get the corresponding segment data
@@ -111,7 +110,11 @@ function displayTwoScoresBarChart(ctx, canvasID, segmentType, segmentName, segme
           plugins: {
               title: {
                   display: true,
-                  text: 'Top '+segmentType+' Segment: '+segmentName
+                  text: 'Top '+capitalizeFirstLetter(segmentType)+' Segment: '+segmentName,
+                  color: "white",
+                  font: {
+                    color: 'rgba(44, 44, 44, 1)' // Change title color here
+                }
               },
               legend: {
                   display: false // Hides the legend
