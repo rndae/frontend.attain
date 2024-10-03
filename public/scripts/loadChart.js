@@ -164,24 +164,37 @@ function drawVolumeChart(type, data) {
     const labels = data.map((item, index) => index.toString());
     const upVol = data.map(item => item.upstream_volume > 0 ? item.upstream_volume : 0);
     const downVol = data.map(item => item.downstream_volume > 0 ? item.downstream_volume : 0);
+    const targetVol = data.map(item => item.volume > 0 ? item.volume : 0);
+    console.log(upVol);
+    console.log(targetVol);
+    console.log(downVol);
 
     const chartData = {
         labels: labels,
         datasets: [
-            {
-                label: 'Upstream',
-                data: upVol,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            },
+
             {
                 label: 'Downstream',
                 data: downVol,
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 1
-            }
+            },
+            {
+                label: 'Target',
+                data: targetVol,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Upstream',
+                data: upVol,
+                backgroundColor: 'rgba(255, 192, 192, 0.2)',
+                borderColor: 'rgba(255, 192, 192, 1)',
+                borderWidth: 1
+            },
+
         ]
     };
 
@@ -192,12 +205,15 @@ function drawVolumeChart(type, data) {
                     display: true,
                     align: 'center',
                     text: 'Timesteps',
-                    color: 'white',
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 1)', // Set y-axis label color
+                    },
                     font: {
                       family: 'Arial',
                       size: 14,
                       weight: 'bold',
                     },
+
                 },
                 beginAtZero: true,
                 type: 'category',

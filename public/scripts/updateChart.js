@@ -11,8 +11,11 @@ function updateCharts(chartId, newData) {
         riskChart.data.labels = newData.map(item => item.time);
         riskChart.update();
     } else if (chartId === "volumeChart") {
+        console.log(newData);
         volumeChart.data.datasets[0].data = newData.map(item => item.upstream_volume);
-        volumeChart.data.datasets[1].data = newData.map(item => item.downstream_volume);
+        volumeChart.data.datasets[1].data = newData.map(item => item.volume);
+        volumeChart.data.datasets[2].data = newData.map(item => item.downstream_volume);
+
         volumeChart.data.labels = newData.map(item => item.time);
         volumeChart.update();
     } else if (chartId === "stdChart") {

@@ -48,9 +48,11 @@ async function updatePrimaryRiskInformation() {
 function extractTopSegmentsByType(dataArray) {
   const result = {};
   dataArray.forEach(item => {
-    const rankType = item.rank.split('_')[1]; // Extract the type from the rank (e.g., "basic", "ramp")
-    if (item.rank.startsWith("1_") && !result[rankType]) {
-      result[rankType] = item;
+    if (item.rank){
+      const rankType = item.rank.split('_')[1]; // Extract the type from the rank (e.g., "basic", "ramp")
+      if (item.rank.startsWith("1_") && !result[rankType]) {
+        result[rankType] = item;
+      }
     }
   });
 
@@ -104,7 +106,25 @@ function displayTwoScoresBarChart(ctx, canvasID, segmentType, segmentName, segme
               x: {
                   beginAtZero: true, // Ensure the x-axis starts at zero
                   min: 0, // Set the minimum value to 0
-                  max: 1 // Set the maximum value to 1
+                  max: 1, // Set the maximum value to 1
+                  ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
+                  },
+                  grid: {
+                    display: true, // Show gridlines on y-axis
+                    color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                    lineWidth: 1, // Set the gridline thickness
+                  }
+              },
+              y:{
+                ticks: {
+                  color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
+                },
+                grid: {
+                  display: true, // Show gridlines on y-axis
+                  color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                  lineWidth: 1, // Set the gridline thickness
+                }
               }
           },
           plugins: {
