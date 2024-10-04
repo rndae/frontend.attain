@@ -135,7 +135,7 @@ function colorRiskSegments(segmentMaxRiskDict) {
   });
 }
 
-function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
+export function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
   clearCameraMarkers(cameraMarkers);
   circles.forEach(circle => circle.setMap(null));
   circles = [];
