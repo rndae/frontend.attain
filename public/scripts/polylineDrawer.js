@@ -1,6 +1,7 @@
 import { addCameraMarkers, clearCameraMarkers } from './cameraModule.js';
 
 export let drawnSegments = {};
+let redSegments = {};
 let segmentPaths = {};
 let cameraMarkers = {};
 const riskColor = '#FF0000';
@@ -22,10 +23,17 @@ export async function setSegmentsOnMap(map) {
 }
 
 export function coloRiskSegmentsOnMap(map) {
+  Object.keys(redSegments).forEach(redSegmentId => 
+    redSegments[redSegmentId].risk = 0
+  );
+  //new Promise(resolve => setTimeout(resolve, 3000));
+  colorRiskSegmentsRedrawn(redSegments, map);
+  redSegments = {}
   getSegmentMaxRiskDictSimpleFormat().then(segmentMaxRiskDict => {
     if (!segmentMaxRiskDict)
       segmentMaxRiskDict = fakeFillMaxPred();
     colorRiskSegmentsRedrawn(segmentMaxRiskDict, map);
+    redSegments = segmentMaxRiskDict;
   })
   .catch(error => {
     console.error('Error fetching crash risk data: ', error);
@@ -165,7 +173,7 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
 
     google.maps.event.addListener(drawnSegments[segmentId], 'click', function (event) {
       const latLng = event ? event.latLng : this.getPath().getAt(0);
-      showSegmentInfoPopup(segmentId, latLng.lat(), latLng.lng(), map);
+      //showSegmentInfoPopup(segmentId, latLng.lat(), latLng.lng(), map);
       openNav(segmentId);
       zoomToSegmentById(segmentId, map);
     });
