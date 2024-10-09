@@ -13,7 +13,7 @@ export function addCameraMarkers(segmentMaxRiskDict, map) {
           longitude: camera.longitude,
           position: cameraPosition,
           map: null,
-          icon: '/images/camera.png',
+          icon: '/images/old-camera.jpg',
           title: camera.camera_name
         });
         cameraMarkers[segmentId].push(marker);
