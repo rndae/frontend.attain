@@ -4,7 +4,8 @@ let riskChart;
 let stdChart;
 
 function drawSpeedChart(type, data) {
-    data = data.slice(0, 5);
+    data = data.slice(10,15);
+    
     const ctx = document.getElementById('speedChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
     const speeds = data.map(item => item.speed > 0 ? item.speed : 0);
@@ -14,6 +15,7 @@ function drawSpeedChart(type, data) {
         datasets: [
             {
                 label: 'Speed',
+                color: 'white',
                 data: speeds,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -39,6 +41,7 @@ function drawSpeedChart(type, data) {
                 beginAtZero: true,
                 type: 'category',
                 ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
                     min: 0,
                     maxTicksLimit: 5,
                     callback: function(value, index, ticks) {
@@ -51,7 +54,9 @@ function drawSpeedChart(type, data) {
                 }
             },
             y: {
-                
+                ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
+                },
                 title: {
                     display: true,
                     align: 'center',
@@ -81,9 +86,11 @@ function drawSpeedChart(type, data) {
     });
 }
 function drawStdChart(type, data) {
-    data = data.slice(0, 5);
+    data = data.slice(10,15);
     const ctx = document.getElementById('stdChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
+    console.log(labels);
+    console.log(data);
     const speeds_std = data.map(item => item.speed_std > 0 ? item.speed_std : 0);
 
     const chartData = {
@@ -116,6 +123,7 @@ function drawStdChart(type, data) {
                 beginAtZero: true,
                 type: 'category',
                 ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
                     min: 0,
                     maxTicksLimit: 5,
                     callback: function(value, index, ticks) {
@@ -128,6 +136,9 @@ function drawStdChart(type, data) {
                 }
             },
             y: {
+                ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
+                },
                 
                 title: {
                     display: true,
@@ -159,7 +170,7 @@ function drawStdChart(type, data) {
 }
 
 function drawVolumeChart(type, data) {
-    data = data.slice(0, 5);
+    data = data.slice(10, 15);
     const ctx = document.getElementById('volumeChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
     const upVol = data.map(item => item.upstream_volume > 0 ? item.upstream_volume : 0);
@@ -205,9 +216,7 @@ function drawVolumeChart(type, data) {
                     display: true,
                     align: 'center',
                     text: 'Timesteps',
-                    ticks: {
-                        color: 'rgba(255, 255, 255, 1)', // Set y-axis label color
-                    },
+                    color: 'white',
                     font: {
                       family: 'Arial',
                       size: 14,
@@ -218,6 +227,7 @@ function drawVolumeChart(type, data) {
                 beginAtZero: true,
                 type: 'category',
                 ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
                     min: 0,
                     maxTicksLimit: 5,
                     callback: function(value, index, ticks) {
@@ -233,16 +243,20 @@ function drawVolumeChart(type, data) {
                 title: {
                 display: true,
                 align: 'center',
-                text: 'Volume',
+                text: 'Volume (per min)',
                 color: 'white',
                 font: {
                   family: 'Arial',
                   size: 14,
                   weight: 'bold',
                 },
+
             },
                 beginAtZero: true,
                 min: 0,
+                ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
+                },
                 
             }
         }
@@ -260,7 +274,7 @@ function drawVolumeChart(type, data) {
 }
 
 function drawRiskChart(type, data) {
-    data = data.slice(0, 5);
+    data = data.slice(10,15);
     const ctx = document.getElementById('riskChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
     
@@ -298,6 +312,7 @@ function drawRiskChart(type, data) {
                 beginAtZero: true,
                 type: 'category',
                 ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
                     min: 0,
                     maxTicksLimit: 5,
                     callback: function(value, index, ticks) {
@@ -323,6 +338,9 @@ function drawRiskChart(type, data) {
                 },
                 beginAtZero: true,
                 min: 0,
+                ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
+                },
                 
             }
         }

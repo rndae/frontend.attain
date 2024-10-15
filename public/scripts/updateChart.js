@@ -1,7 +1,5 @@
 function updateCharts(chartId, newData) {
-
-    newData = newData.slice(0, 5);
-
+    newData = newData.slice(10, 15);
     if (chartId === "speedChart") {
         speedChart.data.datasets[0].data = newData.map(item => item.speed);
         speedChart.data.labels = newData.map(item => item.time);

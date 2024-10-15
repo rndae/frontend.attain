@@ -145,14 +145,18 @@ function displayTwoScoresBarChart(ctx, canvasID, segmentType, segmentName, segme
 }
 
 
-
+let segmentInterval = null; // Global variable to store the interval
 
 function populateSegmentDropdowns(riskDataArray) {
   const segmentTypes = [basicType, mergeType, divergeType, expressType, weavingType, rampType, secondaryType];
+  let allSegments = [];
+
+  // Create dropdowns and store all segments in an array
   segmentTypes.forEach(type => {
     const dropdownMenu = document.getElementById(`${type.toLowerCase()}-segments-list`);
-    dropdownMenu.innerHTML = ''; 
-    const filteredArray = riskDataArray.filter(item => item.rank != undefined && item.rank.includes(type) || (item.type != undefined && item.type.includes(type)));
+    dropdownMenu.innerHTML = '';
+    const filteredArray = riskDataArray.filter(item => item.rank !== undefined && item.rank.includes(type) || (item.type !== undefined && item.type.includes(type)));
+    
     filteredArray.forEach(segment => {
       const segmentId = segment.segment_id;
       const dropdownItem = document.createElement('a');
@@ -165,11 +169,28 @@ function populateSegmentDropdowns(riskDataArray) {
         }
       });
       dropdownMenu.appendChild(dropdownItem);
+      allSegments.push(segmentId); // Store segmentId for automatic rotation
     });
   });
+
+    // Clear any previous interval before setting a new one
+    if (segmentInterval) {
+      clearInterval(segmentInterval);
+    }
+  
+  //Automatically cycle through segments every 5 seconds
+  let currentIndex = 0;
+  segmentInterval = setInterval(() => {
+    if (allSegments.length > 0) {
+      const currentSegmentId = allSegments[currentIndex];
+      triggerSegmentClick(currentSegmentId); // Trigger click programmatically
+      currentIndex = (currentIndex + 1) % allSegments.length; // Move to the next segment, loop back if needed
+    }
+  }, 5000); // 5000 ms = 5 seconds
 }
 
 function triggerSegmentClick(segmentId) {
+  console.log('triggerSegmentClick');
   const segmentPolyline = drawnSegments[segmentId];
   if (segmentPolyline) {
     const latLng = segmentPolyline.getPath().getAt(0);

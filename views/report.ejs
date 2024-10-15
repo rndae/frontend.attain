@@ -38,37 +38,14 @@
       }
     </script>
 
-<!-- Nav bar  -->
-    <nav class="navbar navbar-custom navbar-expand-lg navbar-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-    </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-brand navbar-nav mb-2">
-          <a href="/">
-                    <img class="logo-image" src="/img/logo.png" alt="" style="
-                    width: 110px;
-                    height: 30px;
-                    margin-top: 10px;
-                  ">
-                </a>
-        </div>
-        <div class="navbar-nav ml-auto" >
-          <a class="nav-item nav-link" href="/">CPED</a>
-          <a class="nav-item nav-link" href="/cped">CCTV</a>
-          <a class="nav-item nav-link" href="/report">Report</a>
-        </div>
-      </div>
-    </nav>
-<!-- end of Nav bar  -->
+
   </head>
 
   <body>
+
     <ul class="nav nav-tabs justify-content-center">
       <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#home">System Report</a></li>
-      <!-- <li class="nav-item ">
-        <a class="nav-link"data-toggle="tab" href="#menu1">PATM Report</a></li> -->
     </ul>
     <div class="row justify-content-center mb-0">
       <div class="tab-content">
@@ -80,12 +57,9 @@
             <label for="endDay">End Day:</label>
             <input type="date" id="endDay" name="endDay" min="startDay">
              <button type='button' onclick="datechecker()">Submit</button>
-
         </form>
 
-        <script>
 
-       </script>
       <section class="product-section bg-img">
        <button class="mb-4 mt-5" onclick="generatePDF()">Download as PDF</button>
        <hr>
@@ -114,357 +88,148 @@
           </div>
 
         <script>
-              function datechecker(){
-              var myStartDate = document.getElementById("startDay").value;
-              var myEndDate = document.getElementById("endDay").value;
-              document.getElementById("myPeriod").innerHTML = "Period: "+ myStartDate +" - "+myEndDate;
-              document.getElementById("Time").innerHTML = "Time: Full Day";
-              document.getElementById("Roadway").innerHTML = "Roadway Facility Type: All";
-              document.getElementById("topTitle").innerHTML = "Top Crash Prone Location by Facility Type";
+          function datechecker() {
+            const startDate = document.getElementById("startDay").value;
+            const endDate = document.getElementById("endDay").value;
+            const baseURL = 'http://10.32.93.91:8085/highCrashFreq/getDataOrderByDur/';
+            const roadTypes = ['Merge', 'Diverge', 'Weaving', 'ExpressRelated','Ramp'];
 
-              var getJSON = function(url, callback) {
-              var xhr = new XMLHttpRequest();
-              xhr.open('GET', url, true);
-              xhr.responseType = 'json';
+            document.getElementById("myPeriod").innerHTML = `Period: ${startDate} - ${endDate}`;
+            document.getElementById("Time").innerHTML = "Time: Full Day";
+            document.getElementById("Roadway").innerHTML = "Roadway Facility Type: All";
+            document.getElementById("topTitle").innerHTML = "Top Crash Prone Location by Facility Type";
 
-              xhr.onload = function() {
+            let summaryData = [];
+            let detailedData = {};
 
-                  var status = xhr.status;
+            function processAllData() {
+                let html = '<table class="top5 mb-5"><tr><th>Road ID</th><th>Road Type</th><th>Reported Cases</th></tr>';
+                
+                // Add summary rows
+                summaryData.forEach(item => {
+                    html += `<tr><td>${item.roadName}</td><td>${item.roadwayType}</td><td>${item.total}</td></tr>`;
+                });
+                html += '</table>';
 
-                  if (status == 200) {
-                      callback(null, xhr.response);
-                  } else {
-                      callback(status);
-                  }
-              };
-              xhr.send();
-              }; //end of getJson
-              var urlbasic = 'http://10.32.93.91:8085/highCrashFreq/getDataOrderByDur/'+myStartDate+'/'+myEndDate+'/merge';
-              var urlramp = 'http://10.32.93.91:8085/highCrashFreq/getDataOrderByDur/'+myStartDate+'/'+myEndDate+'/diverge';
-              var urlweaving = 'http://10.32.93.91:8085/highCrashFreq/getDataOrderByDur/'+myStartDate+'/'+myEndDate+'/weaving';
+                // Create detailed sections for each road type
+                roadTypes.forEach((type, i) => {
+                    html += createDetailedSection(type, `myChart${i + 1}`, detailedData[type]);
+                });
 
-              var url = [urlbasic,urlramp,urlweaving];
-              console.log('url'+urlbasic);
-
-              //  for (var i = 0; i<url.length;i++){
-              var html = "";
-              html += '<table class="top5 mb-5">'+'<tr>'+'<th>Road ID</th>'+'<th>Road Type</th>'+'<th>Reported Cases</th>'+'</tr>'
-
-                getJSON(urlbasic,  function(err, data) {
-                  if (err != null) {
-                     console.error(err);
-                  } else{
-                    console.log(data)
-
-                    html += '<tr>'+' <td>' + data[0].roadName +'</td>' + '<td>' + data[0].roadwayType +'</td>' + ' <td>' + data[0].total +'</td></tr>';
-
-                    var basicResult=[];
-
-                    if(data.length>5){
-                        for(var i = 0; i < 5;i++)
-                        basicResult.push(data[i]);
-                      }
-                    else{
-                        for(var i = 0; i< data.length;i++){
-                        basicResult.push(data[i]);
-                      }
-                    }
-                    console.log(basicResult);
-
-                  getJSON(urlweaving,  function(err, data) {
-                  if (err != null) {
-                     console.error(err);
-                  } else{
-
-                      html += '<tr>'+' <td>' + data[0].roadName +'</td>' + '<td>' + data[0].roadwayType +'</td>' + ' <td>' + data[0].total +'</td></tr>';
-
-                      var result = data[1].roadName;
-                      var weavingResult=[];
-
-                      if(data.length>5){
-                          for(var i = 0; i < 5;i++)
-                          weavingResult.push(data[i]);
-                        }
-                      else{
-                          for(var i = 0; i < data.length;i++){
-                          weavingResult.push(data[i]);
-                        }
-                      }
-
-                      console.log(weavingResult);
-
-                    getJSON(urlramp,  function(err, data) {
-                    if (err != null) {
-                       console.error(err);
-                    } else{
-
-                        html += '<tr>'+' <td>' + data[0].roadName +'</td>' + '<td>' + data[0].roadwayType +'</td>' + ' <td>' + data[0].total +'</td></tr></table>';
-
-                        var rampResult=[];
-
-                        if(data.length>5){
-                            for(var i = 0; i < 5;i++)
-                            rampResult.push(data[i]);
-                          }
-                        else{
-                            for(var i = 0; i < data.length;i++){
-                            rampResult.push(data[i]);
-                          }
-                        }
-
-                        console.log(rampResult);
-
-                        // Basic section
-                        html += '<div class="board"></div><div class=" heading-section text-center"><h2 class="font-weight-bold text-center text-color2 glow mt-5">TOP 5 CRASH PRONE LOCATION FOR FREEWAY-BASIC</h2></div>';
-
-                        html += '<div class="row justify-content-center"><div class="heading-section text-center"><canvas class="mychart mb-2" id="myChart"></canvas></div></div>';
-
-                        html += '<table class="details mb-5"><tr><th class = "bg-color3 text-center "></th><th class = "bg-color text-center "colspan="2">Peak</th><th class = "bg-color2 text-center" colspan="2">Non-Peak</th></tr><tr><th>Road ID</th><th>AM</th><th>PM</th><th>Daytime</th><th>Nighttime</th></tr>';
-
-                        for(var i = 0; i<basicResult.length;i++){
-                        html += '<tr><td>'+basicResult[i].roadName+'</td><td>'+basicResult[i].amPeak+'</td><td>'+basicResult[i].pmPeak+'</td><td>'+basicResult[i].dayTimeNonPeak+'</td><td>'+basicResult[i].nightTimeNonPeak+'</td></tr>';
-                        }
-
-
-                        // WEAVING section
-                        html += '</table><div class="board"><div class="board"></div><div class=" heading-section text-center"><h2 class="font-weight-bold text-center text-color2 glow mt-5">TOP 5 CRASH PRONE LOCATION FOR FREEWAY-WEAVING</h2></div>';
-
-                        html += '<div class="row justify-content-center"><div class="heading-section text-center"><canvas class="mychart mb-2" id="myChart2"></canvas></div></div>';
-
-                        html += '<table class="details mb-5"><tr><th class = "bg-color3 text-center "></th><th class = "bg-color text-center "colspan="2">Peak</th><th class = "bg-color2 text-center" colspan="2">Non-Peak</th></tr><tr><th>Road ID</th><th>AM</th><th>PM</th><th>Daytime</th><th>Nighttime</th></tr>';
-
-                        for(var i = 0; i<weavingResult.length;i++){
-                        html += '<tr><td>'+weavingResult[i].roadName+'</td><td>'+weavingResult[i].amPeak+'</td><td>'+weavingResult[i].pmPeak+'</td><td>'+weavingResult[i].dayTimeNonPeak+'</td><td>'+weavingResult[i].nightTimeNonPeak+'</td></tr>';
-                        }
-
-                        //Ramp section
-                        html += '</table><div class="board"><div class="board"></div><div class=" heading-section text-center"><h2 class="font-weight-bold text-center text-color2 glow mt-5">TOP 5 CRASH PRONE LOCATION FOR FREEWAY-RAMP</h2></div>';
-
-                        html += '<div class="row justify-content-center"><div class="heading-section text-center"><canvas class="mychart mb-2" id="myChart3"></canvas></div></div>';
-
-                        html += '<table class="details mb-5"><tr><th class = "bg-color3 text-center "></th><th class = "bg-color text-center "colspan="2">Peak</th><th class = "bg-color2 text-center" colspan="2">Non-Peak</th></tr><tr><th>Road ID</th><th>AM</th><th>PM</th><th>Daytime</th><th>Nighttime</th></tr>';
-
-                        for(var i = 0; i<rampResult.length;i++){
-                        html += '<tr><td>'+rampResult[i].roadName+'</td><td>'+rampResult[i].amPeak+'</td><td>'+rampResult[i].pmPeak+'</td><td>'+rampResult[i].dayTimeNonPeak+'</td><td>'+rampResult[i].nightTimeNonPeak+'</td></tr>';
-                        }
-
-                        html += '</table>';
-                        $('#aa').html(html);
-
-                       //Basic chart.js
-                       var nameBasic = [];
-                       for (var i = 0; i < basicResult.length; i++){
-                          nameBasic.push(basicResult[i].roadName);
-                       }
-                       var freqBasic = [];
-                       for (var i = 0; i < basicResult.length; i++){
-                          freqBasic.push(basicResult[i].total);
-                       }
-
-                       console.log(urlbasic);
-                       var ctx = document.getElementById('myChart').getContext('2d');
-                       var myChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: nameBasic,
-                                datasets: [
-                                {
-                                    label: 'Frequency',
-                                    yAxisID: 'Frequency',
-                                    data: freqBasic,
-                                    backgroundColor: [
-                                      '#ffc85c',
-                                        '#ffc85c',
-                                        '#ffc85c',
-                                        '#ffc85c',
-                                        '#ffc85c'
-                                    ],
-
-                                },
-                                // {
-                                //     label: 'Duration > 10 min',
-                                //     yAxisID: 'Duration',
-                                //     data: [12, 19, 3, 5, 2, 3],
-                                //     backgroundColor: [
-                                //         '#ffc85c',
-                                //         '#ffc85c',
-                                //         '#ffc85c',
-                                //         '#ffc85c',
-                                //         '#ffc85c'
-                                //     ],
-
-                                // }
-                                ]
-                            },
-                            options: {
-                                scales: {
-                            yAxes: [{
-                              id: 'Frequency',
-                              type: 'linear',
-                              position: 'left',
-                              ticks: {
-                beginAtZero: true
+                // Insert HTML and create charts
+                $('#aa').html(html);
+                roadTypes.forEach((type, i) => {
+                    createChart(`myChart${i + 1}`, detailedData[type].map(loc => loc.roadName), detailedData[type].map(loc => loc.total));
+                });
             }
 
-                            },
-                             // {
-                             //  id: 'Duration',
-                             //  type: 'linear',
-                             //  position: 'right',
-                             //            ticks: {
-                             //                beginAtZero: true
-                             //            }
-                             //        }
-                                    ]
-                                }
-                            }
-                        });
+            function processData(data, roadType) {
+                // Store summary data
+                summaryData.push({
+                    roadName: data[0].roadName,
+                    roadwayType: data[0].roadwayType,
+                    total: data[0].total
+                });
 
-                        //Weaving chart.js
-                       var nameWeaving = [];
-                       for (var i = 0; i < weavingResult.length; i++){
-                          nameWeaving.push(weavingResult[i].roadName);
-                       }
-                       var freqWeaving = [];
-                       for (var i = 0; i < weavingResult.length; i++){
-                          freqWeaving.push(weavingResult[i].total);
-                       }
+                // Store top 5 locations
+                detailedData[roadType] = data.slice(0, 5);
 
-                        var ctx2 = document.getElementById('myChart2').getContext('2d');
-                        var myChart2 = new Chart(ctx2, {
-                            type: 'bar',
-                            data: {
-                                labels: nameWeaving,
-                                datasets: [
-                                {
-                                    label: 'Frequency',
-                                    data: freqWeaving,
-                                    yAxisID: 'Frequency',
-                                    backgroundColor: [
-                                       '#ffc85c',
-                                        '#ffc85c',
-                                        '#ffc85c',
-                                        '#ffc85c',
-                                        '#ffc85c'
-                                    ],
+                // If we've processed all road types, generate the final output
+                if (summaryData.length === roadTypes.length) {
+                    processAllData();
+                }
+            }
 
-                                },
-                                // {
-                                //     label: 'Duration > 10 min',
-                                //     yAxisID: 'Duration',
+            function createDetailedSection(roadType, chartId, locations) {
+                return `
+                    <div class="board"></div>
+                    <div class="heading-section text-center">
+                        <h2 class="font-weight-bold text-center text-color2 glow mt-5">${roadType.toUpperCase()} SEGMENTS: TOP 5 LOCATIONS </h2>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="heading-section text-center">
+                            <canvas class="mychart mb-2" id="${chartId}"></canvas>
+                        </div>
+                    </div>
+                    <table class="details mb-5">
+                        <tr>
+                            <th class="bg-color3 text-center "></th>
+                            <th class="bg-color text-center" colspan="2">Peak</th>
+                            <th class="bg-color2 text-center" colspan="2">Non-Peak</th>
+                        </tr>
+                        <tr>
+                            <th>Road ID</th>
+                            <th>AM</th>
+                            <th>PM</th>
+                            <th>Daytime</th>
+                            <th>Nighttime</th>
+                        </tr>
+                        ${locations.map(loc => `
+                            <tr>
+                                <td>${loc.roadName}</td>
+                                <td>${loc.amPeak}</td>
+                                <td>${loc.pmPeak}</td>
+                                <td>${loc.dayTimeNonPeak}</td>
+                                <td>${loc.nightTimeNonPeak}</td>
+                            </tr>
+                        `).join('')}
+                    </table>
+                `;
+            }
 
-                                //     data: [12, 19, 3, 5, 2, 3],
-                                //     backgroundColor: [
-                                //         '#59886b',
-                                //        '#59886b',
-                                //        '#59886b',
-                                //        '#59886b',
-                                //        '#59886b'
-                                //     ],
+            function createChart(chartId, labels, data) {
+                const ctx = document.getElementById(chartId).getContext('2d');
+                return new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Frequency',
+                            yAxisID: 'Frequency',
+                            data: data,
+                            backgroundColor: Array(data.length).fill('#ffc85c')
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                id: 'Frequency',
+                                type: 'linear',
+                                position: 'left',
+                                ticks: { beginAtZero: true }
+                            }]
+                        }
+                    }
+                });
+            }
 
-                                // }
-                                ]
-                            },
-                            options: {
-                                scales: {
-      yAxes: [{
-        id: 'Frequency',
-        type: 'linear',
-        position: 'left',
-        ticks: {
-beginAtZero: true
-}
-      },
-      // {
-      //   id: 'Duration',
-      //   type: 'linear',
-      //   position: 'right',
-      //                                   ticks: {
-      //                                       beginAtZero: true
-      //                                   }
-      //                               }
-                                    ]
-                                }
-                            }
-                        });
+            function getJSON(url, callback) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.responseType = 'json';
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        callback(null, xhr.response);
+                    } else {
+                        callback(xhr.status);
+                    }
+                };
+                xhr.send();
+            }
 
-                        //Ramp chart.js
-                       var nameRamp = [];
-                       for (var i = 0; i < rampResult.length; i++){
-                          nameRamp.push(rampResult[i].roadName);
-                       }
-                       var freqRamp = [];
-                       for (var i = 0; i < rampResult.length; i++){
-                          freqRamp.push(rampResult[i].total);
-                       }
-                        var ctx3 = document.getElementById('myChart3').getContext('2d');
-                        var myChart3 = new Chart(ctx3, {
-                            type: 'bar',
-                            data: {
-                                labels: nameRamp,
-                                datasets: [
-                                {
-                                    label: 'Frequency',
-                                    yAxisID: 'Frequency',
-                                    data: freqRamp,
-                                    backgroundColor: [
-                                       '#ffc85c',
-                                        '#ffc85c',
-                                        '#ffc85c',
-                                        '#ffc85c',
-                                        '#ffc85c'
-                                    ],
-
-                                },
-                                // {
-                                //     label: 'Duration > 10 min',
-                                //                                         yAxisID: 'Duration',
-
-                                //     data: [12, 19, 3, 5, 2, 3],
-                                //     backgroundColor: [
-                                //        '#59886b',
-                                //        '#59886b',
-                                //        '#59886b',
-                                //        '#59886b',
-                                //        '#59886b'
-                                //     ],
-
-                                // }
-                                ]
-                            },
-                            options: {
-                                scales: {
-                                         yAxes: [{
-        id: 'Frequency',
-        type: 'linear',
-        position: 'left',
-        ticks: {
-beginAtZero: true
-}
-      },
-      // {
-      //   id: 'Duration',
-      //   type: 'linear',
-      //   position: 'right',
-      //                                   ticks: {
-      //                                       beginAtZero: true
-      //                                   }
-      //                               }
-                                    ]
-                                }
-                            }
-                        });
-
-
-                    } //end of weaving else
-
-                    })//end of getjson weaving
-                  } //end of ramp else
-                }) //end of getson ramp
-               } //end of basic else
-              })//end of basic getjson
-
-            } //end of datachecker
+            roadTypes.forEach((roadType) => {
+                const url = `${baseURL}${startDate}/${endDate}/${roadType}`;
+                getJSON(url, (err, data) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        processData(data, roadType);
+                    }
+                });
+            });
+        }
+                  
+              
 
 
         </script>   <!--    end of chart.js -->
