@@ -19,5 +19,9 @@ function updateCharts(chartId, newData) {
         stdChart.data.datasets[0].data = newData.map(item => item.speed_std > 0 ? item.speed_std : 0);
         stdChart.data.labels = newData.map(item => item.time);
         stdChart.update();
+    } else if (chartId === "severityChart") {
+        severityChart.data.datasets[0].data = newData.map(item => item.severity_score);
+        severityChart.data.labels = newData.map(item => item.time);
+        severityChart.update();
     }
 }

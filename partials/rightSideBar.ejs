@@ -34,8 +34,9 @@
       <canvas id="riskChart" width="400" height="300"></canvas>
     </div>
 
-
-
+    <div>
+      <canvas id="severityChart" width="400" height="300"></canvas>
+    </div>
 
   </div>
 <!-- 
@@ -69,6 +70,7 @@
           drawVolumeChart('intersection', chartData);
           drawRiskChart('intersection', chartData);
           drawStdChart('intersection', chartData);
+          drawSeverityChart('intersection', chartData);
           rightChartInstanced = true;
         });
     } else {
@@ -81,7 +83,8 @@
           updateCharts("speedChart", chartData);
           updateCharts("volumeChart", chartData);
           updateCharts("riskChart", chartData);  
-          updateCharts("stdChart", chartData);  
+          updateCharts("stdChart", chartData);
+          updateCharts("severityChart", chartData);
       });
     }
     } catch (error) {

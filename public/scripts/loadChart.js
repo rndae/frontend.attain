@@ -2,6 +2,7 @@ let speedChart;
 let volumeChart;
 let riskChart;
 let stdChart;
+let severityChart;
 
 
 function drawSpeedChart(type, data) {
@@ -54,7 +55,12 @@ function drawSpeedChart(type, data) {
                             return index;
                         }
                     }
-                }
+                },
+                grid: {
+                    display: true, // Show gridlines on x-axis
+                    color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                    lineWidth: 1, // Set the gridline thickness
+                  }
             },
             y: {
                 ticks: {
@@ -75,7 +81,11 @@ function drawSpeedChart(type, data) {
                 },
                 beginAtZero: true,
                 min: 0,
-
+                grid: {
+                    display: true, // Show gridlines on axis
+                    color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                    lineWidth: 1, // Set the gridline thickness
+                },
             }
         }
     };
@@ -140,16 +150,21 @@ function drawStdChart(type, data) {
                             return index;
                         }
                     }
-                }
+                },
+                grid: {
+                    display: true, // Show gridlines on axis
+                    color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                    lineWidth: 1, // Set the gridline thickness
+                },
             },
             y: {
                 ticks: {
                     color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
                     callback: function(value) {
-                        return Math.round(value); // Round the y-axis values to integers
+                        //return Math.round(value, 1); // Round the y-axis values to integers
+                        return Math.round(value * 10) / 10; // Rounds the y-axis values to one decimal place
                     }
                 },
-
                 title: {
                     display: true,
                     align: 'center',
@@ -163,7 +178,11 @@ function drawStdChart(type, data) {
                 },
                 beginAtZero: true,
                 min: 0,
-
+                grid: {
+                    display: true, // Show gridlines on axis
+                    color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                    lineWidth: 1, // Set the gridline thickness
+                },
             }
         }
     };
@@ -247,7 +266,12 @@ function drawVolumeChart(type, data) {
                             return index;
                         }
                     }
-                }
+                },
+                grid: {
+                    display: true, // Show gridlines on axis
+                    color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                    lineWidth: 1, // Set the gridline thickness
+                },
             },
             y: {
                 title: {
@@ -267,7 +291,11 @@ function drawVolumeChart(type, data) {
                 ticks: {
                     color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
                 },
-                
+                grid: {
+                    display: true, // Show gridlines on axis
+                    color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                    lineWidth: 1, // Set the gridline thickness
+                },
             }
         }
     };
@@ -332,7 +360,12 @@ function drawRiskChart(type, data) {
                             return index;
                         }
                     }
-                }
+                },
+                grid: {
+                    display: true, // Show gridlines on axis
+                    color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                    lineWidth: 1, // Set the gridline thickness
+                },
             },
             y: {
                 title: {
@@ -351,7 +384,11 @@ function drawRiskChart(type, data) {
                 ticks: {
                     color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
                 },
-                
+                grid: {
+                    display: true, // Show gridlines on axis
+                    color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                    lineWidth: 1, // Set the gridline thickness
+                },
             }
         }
     };
@@ -366,3 +403,96 @@ function drawRiskChart(type, data) {
         options: chartOptions
     });
 }
+
+
+function drawSeverityChart(type, data) {
+    data = data.slice(10,15);
+    const ctx = document.getElementById('severityChart').getContext('2d');
+    const labels = data.map((item, index) => index.toString());
+
+    const severityScores = data.map(item => item.severity_score > 0 ? Math.round(item.severity_score * 10) / 10 : 0);
+
+    const chartData = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Severity Score',
+                data: severityScores,
+                backgroundColor: 'rgba(255, 0, 1, 0.2)',
+                borderColor: 'rgba(255, 0, 1, 1)',
+                borderWidth: 1
+            }
+        ]
+    };
+
+    const chartOptions = {
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    align: 'center',
+                    text: 'Timesteps',
+                    color: 'white',
+                    font: {
+                      family: 'Arial',
+                      size: 14,
+                      weight: 'bold',
+                    },
+                },
+                beginAtZero: true,
+                type: 'category',
+                ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
+                    min: 0,
+                    maxTicksLimit: 5,
+                    callback: function(value, index, ticks) {
+                        if (index === ticks.length - 1) {
+                            return ticks.length - 1;
+                        } else {
+                            return index;
+                        }
+                    }
+                },
+                grid: {
+                    display: true, // Show gridlines on axis
+                    color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                    lineWidth: 1, // Set the gridline thickness
+                },
+            },
+            y: {
+                title: {
+                    display: true,
+                    align: 'center',
+                    text: 'Severity Score',
+                    color: 'white',
+                    font: {
+                      family: 'Arial',
+                      size: 14,
+                      weight: 'bold',
+                    },
+                },
+                beginAtZero: true,
+                min: 0,
+                ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
+                },
+                grid: {
+                    display: true, // Show gridlines on axis
+                    color: 'rgba(200, 200, 200, 0.4)', // Set the gridline color
+                    lineWidth: 1, // Set the gridline thickness
+                },
+            }
+        }
+    };
+
+    if (severityChart) {
+        severityChart.destroy();
+    }
+
+    severityChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: chartOptions
+    });
+}
+
