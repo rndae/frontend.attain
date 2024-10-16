@@ -175,7 +175,11 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
       const latLng = event ? event.latLng : this.getPath().getAt(0);
       //showSegmentInfoPopup(segmentId, latLng.lat(), latLng.lng(), map);
       openNav(segmentId);
-      zoomToSegmentById(segmentId, map);
+      try{      
+        zoomToSegmentById(segmentId, map);
+      }catch{
+        console.log('Likely segment does not have camera');
+      };
     });
 
     cameraMarkers = addCameraMarkers(segmentMaxRiskDict, map);
@@ -219,10 +223,15 @@ function zoomToSegmentById(segmentId, map) {
     const cameras = cameraMarkers[segmentId];
     if (cameras) {
       cameras.forEach(camera => {
-        bounds.extend(new google.maps.LatLng(camera.latitude, camera.longitude));
-        camera.setMap(map);
+        // Check if camera has valid latitude and longitude
+        if (camera.latitude != 'N/A') {
+          console.log(camera.latitude, camera.longitude);
+          bounds.extend(new google.maps.LatLng(camera.latitude, camera.longitude));
+          camera.setMap(map);
+        }
       });
     }
+    
 
     const center = bounds.getCenter();
 
