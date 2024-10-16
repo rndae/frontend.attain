@@ -193,11 +193,17 @@ function triggerSegmentClick(segmentId) {
   console.log('triggerSegmentClick');
   const segmentPolyline = drawnSegments[segmentId];
   if (segmentPolyline) {
-    const latLng = segmentPolyline.getPath().getAt(0);
-    const event = {
-      latLng: latLng
-    };
-    google.maps.event.trigger(segmentPolyline, 'click', event);
+    //const latLng = segmentPolyline.getPath().getAt(0);
+    const localLat = parseFloat(segmentPolyline.getPath().getAt(0).lat());
+    const localLng  = parseFloat(segmentPolyline.getPath().getAt(0).lng());
+    if (!isNaN(localLat) & !isNaN(localLng)){
+      console.log(localLat + " - - - " + localLng);
+      const latLng = new google.maps.LatLng(localLat, localLng);
+      const event = {
+        latLng: latLng
+      };
+      google.maps.event.trigger(segmentPolyline, 'click', event);
+    }
   }
 }
 
