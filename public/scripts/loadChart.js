@@ -3,11 +3,13 @@ let volumeChart;
 let riskChart;
 let stdChart;
 
+
 function drawSpeedChart(type, data) {
     data = data.slice(10,15);
-    
+
     const ctx = document.getElementById('speedChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
+
     const speeds = data.map(item => item.speed > 0 ? item.speed : 0);
 
     const chartData = {
@@ -25,6 +27,7 @@ function drawSpeedChart(type, data) {
     };
 
     const chartOptions = {
+        responsive: true,
         scales: {
             x: {
                 title: {
@@ -55,6 +58,7 @@ function drawSpeedChart(type, data) {
             },
             y: {
                 ticks: {
+                    //padding: -5,
                     color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
                 },
                 title: {
@@ -62,6 +66,7 @@ function drawSpeedChart(type, data) {
                     align: 'center',
                     text: 'Speed (mph)',
                     color: 'white',
+                    //padding: { top: 0, bottom: 0, },
                     font: {
                       family: 'Arial',
                       size: 14,
@@ -85,6 +90,8 @@ function drawSpeedChart(type, data) {
         options: chartOptions
     });
 }
+
+
 function drawStdChart(type, data) {
     data = data.slice(10,15);
     const ctx = document.getElementById('stdChart').getContext('2d');
@@ -138,8 +145,11 @@ function drawStdChart(type, data) {
             y: {
                 ticks: {
                     color: 'rgba(255, 255, 255, 0.8)', // Set y-axis label color
+                    callback: function(value) {
+                        return Math.round(value); // Round the y-axis values to integers
+                    }
                 },
-                
+
                 title: {
                     display: true,
                     align: 'center',
