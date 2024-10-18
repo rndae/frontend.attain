@@ -199,7 +199,7 @@ function drawStdChart(type, data) {
 }
 
 function drawVolumeChart(type, data) {
-    data = data.slice(10, 15);
+    data = data.slice(-5);
     const ctx = document.getElementById('volumeChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
     const upVol = data.map(item => item.upstream_volume > 0 ? item.upstream_volume : 0);

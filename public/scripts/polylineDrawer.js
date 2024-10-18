@@ -186,15 +186,28 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
     cameraMarkers = addCameraMarkers(segmentMaxRiskDict, map);
     const segmentMarker = new google.maps.LatLng(segmentPaths[segmentId][0].lat, segmentPaths[segmentId][0].lng);
     const marker = new google.maps.Marker({
-      latitude: segmentPaths[segmentId][0].lat, 
+      latitude: segmentPaths[segmentId][0].lat,
       longitude: segmentPaths[segmentId][0].lng,
       position: segmentMarker,
       map: map,
-      icon: '/images/old-camera.jpg',
+      //icon: '/images/old-camera.jpg',
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 10,
+        fillColor: '#FF4444',  // Bright red
+        fillOpacity: 0.8,
+        strokeColor: '#FFFFFF',
+        strokeWeight: 2
+        },
+        label: {
+          text: '!',
+          color: '#FFFFFF',
+          fontSize: '16px',
+          fontWeight: 'bold'
+        },
+        //animation: google.maps.Animation.BOUNCE,
     });
-    
   });
-
 }
 
 function showSegmentInfoPopup(segmentId, latitude, longitude, map) {
