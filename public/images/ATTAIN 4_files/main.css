@@ -1,0 +1,191 @@
+#map {
+    height: 100vh;
+    width: 100%;
+}
+
+.logo-image {
+    width: 8%;
+    height: 8%;
+}
+
+.bg-black {
+    background-color: #111;
+}
+
+.sidenav {
+    height: 95%;
+    position: fixed;
+    z-index: 1;
+    top: 52px; 
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    opacity: 0.9;
+}
+
+.sidenav .card {
+    background-color: #111;
+}
+
+.sidenav .list-group-item {
+    background-color: inherit;
+}
+
+#leftSidebar {
+    color: white;
+    text-align: left;
+    left: 0;
+    width: 340px;
+}
+
+#rightSidebar {
+    width: 0px;
+    color: white;
+    text-align: left;
+    right: 0;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    font-size: 30px;
+    margin-left: 20px;
+  }
+  
+  /* The button used to open the sidebar */
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    color: black;
+    background-color: white;
+    padding: 10px 15px;
+    border: none;
+    position:fixed;
+    right:0;
+    z-index: 3;
+  }
+  
+  /* Right bar button hover */
+  .openbtn:hover {
+    background-color: #444;
+  }
+
+.bottom-border {
+    content: "";
+    display: block;
+    border-bottom: 1px solid white;
+    margin: 0 15px;
+}
+
+/* Sidebar links */
+.sidenav a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #007bff;
+    background-color: #111;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #595757cc;
+}
+/* ---start right bar additional css */
+#Speed{
+    display:block
+}
+
+#speedChart{
+    /*
+    padding: 10px;
+    width:80%;
+    */
+    max-width:600px;
+    height:650px;
+}
+
+#trafficChart{
+    padding: 10px;
+    width:80%;
+    max-width:600px;
+    height:10px;
+}
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+  
+  .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+  }
+  
+  .tab button:hover {
+    background-color: #ddd;
+  }
+  
+  .tab button.active {
+    background-color: #ccc;
+  }
+  
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
+
+/* Sidebar dropdowns */
+.dropdown-container {
+    display: none;
+    background-color: #262626;
+    padding-left: 8px;
+    border-left: 2px dashed;
+    margin-left: 14px;
+}
+
+/* ---end right bar additional css */
+.dropdown-container a {
+    padding: 2px;
+    line-height: 1;
+    font-size: 16px;
+}
+
+/* Bootstrap overrides */
+.nav-tabs>li>a {
+    line-height: 1.5;
+    font-size: 11px;
+    color: #eec443;
+}
+
+.nav-tabs>li>a:hover {
+    color: #121211;
+}
+
+/* navbar won't overlap sidebar */
+.navbar {
+    margin-bottom: 0 !important;
+    z-index: 2;
+}
+
+/* sidebar responsiveness */
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 16px;
+    }
+}
