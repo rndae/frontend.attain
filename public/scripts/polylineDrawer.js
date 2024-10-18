@@ -181,9 +181,20 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
         console.log('Likely segment does not have camera');
       };
     });
-
+    console.log(segmentPaths[segmentId][0].lat, segmentPaths[segmentId][0].lng);
+    console.log('.............')
     cameraMarkers = addCameraMarkers(segmentMaxRiskDict, map);
+    const segmentMarker = new google.maps.LatLng(segmentPaths[segmentId][0].lat, segmentPaths[segmentId][0].lng);
+    const marker = new google.maps.Marker({
+      latitude: segmentPaths[segmentId][0].lat, 
+      longitude: segmentPaths[segmentId][0].lng,
+      position: segmentMarker,
+      map: map,
+      icon: '/images/old-camera.jpg',
+    });
+    
   });
+
 }
 
 function showSegmentInfoPopup(segmentId, latitude, longitude, map) {
