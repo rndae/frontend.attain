@@ -29,12 +29,30 @@ export function coloRiskSegmentsOnMap(map) {
     redSegments[redSegmentId].risk = 0
   );
   //new Promise(resolve => setTimeout(resolve, 3000));
-  colorRiskSegmentsRedrawn(redSegments, map);
+  colorRiskSegmentsRedrawn(redSegments, map, false);
   redSegments = {}
   getSegmentMaxRiskDictSimpleFormat().then(segmentMaxRiskDict => {
     if (!segmentMaxRiskDict)
       segmentMaxRiskDict = fakeFillMaxPred();
-    colorRiskSegmentsRedrawn(segmentMaxRiskDict, map);
+    colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, false);
+    redSegments = segmentMaxRiskDict;
+  })
+  .catch(error => {
+    console.error('Error fetching crash risk data: ', error);
+  });
+}
+
+export function coloRiskSegmentsOnFullMap(map) {
+  Object.keys(redSegments).forEach(redSegmentId => 
+    redSegments[redSegmentId].risk = 0
+  );
+  //new Promise(resolve => setTimeout(resolve, 3000));
+  colorRiskSegmentsRedrawn(redSegments, map, true);
+  redSegments = {}
+  getSegmentMaxRiskDictSimpleFormat().then(segmentMaxRiskDict => {
+    if (!segmentMaxRiskDict)
+      segmentMaxRiskDict = fakeFillMaxPred();
+    colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, true);
     redSegments = segmentMaxRiskDict;
   })
   .catch(error => {
@@ -145,9 +163,16 @@ function colorRiskSegments(segmentMaxRiskDict) {
   });
 }
 
-function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
+function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, showWarningMarker) {
   clearCameraMarkers(cameraMarkers);
-  clearWarningMarkers(warningMarkers);
+  
+
+  if (showWarningMarker){
+    clearWarningMarkers(warningMarkers);
+  }
+    
+  
+
   circles.forEach(circle => circle.setMap(null));
   circles = [];
 
@@ -184,35 +209,39 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
         console.log('Likely segment does not have camera');
       };
     });
-    console.log(segmentPaths[segmentId][10].lat, segmentPaths[segmentId][10].lng);
-    console.log('.............')
+
+
     cameraMarkers = addCameraMarkers(segmentMaxRiskDict, map);
-    const segmentMarker = new google.maps.LatLng(segmentPaths[segmentId][10].lat, segmentPaths[segmentId][10].lng);
-    if (!warningMarkers[segmentId]) {
-    warningMarkers[segmentId] = []; // Initialize array for new segmentId
+
+    if (showWarningMarker){
+      const segmentMarker = new google.maps.LatLng(segmentPaths[segmentId][10].lat, segmentPaths[segmentId][10].lng);
+      if (!warningMarkers[segmentId]) {
+      warningMarkers[segmentId] = []; // Initialize array for new segmentId
+      }
+      const marker = new google.maps.Marker({
+        latitude: segmentPaths[segmentId][10].lat,
+        longitude: segmentPaths[segmentId][10].lng,
+        position: segmentMarker,
+        map: map,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 10,
+          fillColor: '#FF4444',  // Bright red
+          fillOpacity: 0.8,
+          strokeColor: '#FFFFFF',
+          strokeWeight: 2
+          },
+          label: {
+            text: '!',
+            color: '#FFFFFF',
+            fontSize: '16px',
+            fontWeight: 'bold'
+          },
+          //animation: google.maps.Animation.BOUNCE,
+      });
+      warningMarkers[segmentId].push(marker);
     }
-    const marker = new google.maps.Marker({
-      latitude: segmentPaths[segmentId][10].lat,
-      longitude: segmentPaths[segmentId][10].lng,
-      position: segmentMarker,
-      map: map,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 10,
-        fillColor: '#FF4444',  // Bright red
-        fillOpacity: 0.8,
-        strokeColor: '#FFFFFF',
-        strokeWeight: 2
-        },
-        label: {
-          text: '!',
-          color: '#FFFFFF',
-          fontSize: '16px',
-          fontWeight: 'bold'
-        },
-        //animation: google.maps.Animation.BOUNCE,
-    });
-    warningMarkers[segmentId].push(marker);
+    
   });
 }
 
