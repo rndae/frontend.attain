@@ -1,9 +1,11 @@
 import { addCameraMarkers, clearCameraMarkers } from './cameraModule.js';
+import { clearWarningMarkers } from './warningModule.js';
 
 export let drawnSegments = {};
 let redSegments = {};
 let segmentPaths = {};
 let cameraMarkers = {};
+let warningMarkers = {};
 const riskColor = '#FF0000';
 const noRiskColor = '#00FF00';
 const riskPredictionNotFoundColor = "#D8D8D8";
@@ -145,6 +147,7 @@ function colorRiskSegments(segmentMaxRiskDict) {
 
 function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
   clearCameraMarkers(cameraMarkers);
+  clearWarningMarkers(warningMarkers);
   circles.forEach(circle => circle.setMap(null));
   circles = [];
 
@@ -181,16 +184,18 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
         console.log('Likely segment does not have camera');
       };
     });
-    console.log(segmentPaths[segmentId][0].lat, segmentPaths[segmentId][0].lng);
+    console.log(segmentPaths[segmentId][10].lat, segmentPaths[segmentId][10].lng);
     console.log('.............')
     cameraMarkers = addCameraMarkers(segmentMaxRiskDict, map);
-    const segmentMarker = new google.maps.LatLng(segmentPaths[segmentId][0].lat, segmentPaths[segmentId][0].lng);
+    const segmentMarker = new google.maps.LatLng(segmentPaths[segmentId][10].lat, segmentPaths[segmentId][10].lng);
+    if (!warningMarkers[segmentId]) {
+    warningMarkers[segmentId] = []; // Initialize array for new segmentId
+    }
     const marker = new google.maps.Marker({
-      latitude: segmentPaths[segmentId][0].lat,
-      longitude: segmentPaths[segmentId][0].lng,
+      latitude: segmentPaths[segmentId][10].lat,
+      longitude: segmentPaths[segmentId][10].lng,
       position: segmentMarker,
       map: map,
-      //icon: '/images/old-camera.jpg',
       icon: {
         path: google.maps.SymbolPath.CIRCLE,
         scale: 10,
@@ -207,6 +212,7 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map) {
         },
         //animation: google.maps.Animation.BOUNCE,
     });
+    warningMarkers[segmentId].push(marker);
   });
 }
 
