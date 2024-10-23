@@ -212,7 +212,7 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, showWarningMarker) {
 
 
     cameraMarkers = addCameraMarkers(segmentMaxRiskDict, map);
-
+    /**
     if (showWarningMarker){
       const segmentMarker = new google.maps.LatLng(segmentPaths[segmentId][10].lat, segmentPaths[segmentId][10].lng);
       if (!warningMarkers[segmentId]) {
@@ -241,7 +241,7 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, showWarningMarker) {
       });
       warningMarkers[segmentId].push(marker);
     }
-    
+    **/
   });
 }
 
