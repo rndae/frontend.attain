@@ -146,6 +146,7 @@ function displayTwoScoresBarChart(ctx, canvasID, segmentType, segmentName, segme
 
 
 let segmentInterval = null; // Global variable to store the interval
+let isLongInterval = false;
 
 function populateSegmentDropdowns(riskDataArray) {
   const segmentTypes = [basicType, mergeType, divergeType, expressType, weavingType, rampType, secondaryType];
@@ -177,16 +178,36 @@ function populateSegmentDropdowns(riskDataArray) {
     if (segmentInterval) {
       clearInterval(segmentInterval);
     }
-  
+
   //Automatically cycle through segments every 5 seconds
+  isLongInterval = false;
+
   let currentIndex = 0;
-  segmentInterval = setInterval(() => {
-    if (allSegments.length > 0) {
-      const currentSegmentId = allSegments[currentIndex];
-      triggerSegmentClick(currentSegmentId); // Trigger click programmatically
-      currentIndex = (currentIndex + 1) % allSegments.length; // Move to the next segment, loop back if needed
+  let intervalTime = 2000;
+
+  function startInterval() {
+    // Clear any previous interval
+    if (segmentInterval) {
+      clearInterval(segmentInterval);
     }
-  }, 5000); // 5000 ms = 5 seconds
+
+    segmentInterval = setInterval(() => {
+      if (allSegments.length > 0) {
+        const currentSegmentId = allSegments[currentIndex];
+        triggerSegmentClick(currentSegmentId); // Trigger click programmatically
+        currentIndex = (currentIndex + 1) % allSegments.length; // Move to the next segment, loop back if needed
+
+        // After triggering, set the interval to 15 seconds if not already set
+        if (!isLongInterval) {
+          isLongInterval = true;
+          intervalTime = 15000; // Change interval to 15 seconds
+          startInterval(); // Restart the interval with the longer time
+        }
+      }
+    }, intervalTime);
+  }
+
+  startInterval(); // Start the interval initially
 }
 
 function triggerSegmentClick(segmentId) {
