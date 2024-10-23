@@ -6,7 +6,7 @@ let severityChart;
 
 
 function drawSpeedChart(type, data) {
-    data = data.slice(10,15);
+    data = data.slice(-5);
 
     const ctx = document.getElementById('speedChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
@@ -103,7 +103,7 @@ function drawSpeedChart(type, data) {
 
 
 function drawStdChart(type, data) {
-    data = data.slice(10,15);
+    data = data.slice(-5);
     const ctx = document.getElementById('stdChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
     console.log(labels);
@@ -312,7 +312,7 @@ function drawVolumeChart(type, data) {
 }
 
 function drawRiskChart(type, data) {
-    data = data.slice(10,15);
+    data = data.slice(-5);
     const ctx = document.getElementById('riskChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
     
@@ -406,7 +406,7 @@ function drawRiskChart(type, data) {
 
 
 function drawSeverityChart(type, data) {
-    data = data.slice(10,15);
+    data = data.slice(-5);
     const ctx = document.getElementById('severityChart').getContext('2d');
     const labels = data.map((item, index) => index.toString());
 
