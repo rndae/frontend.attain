@@ -213,10 +213,10 @@ function drawVolumeChart(type, data) {
         labels: labels,
         datasets: [
             {
-                label: 'Upstream',
-                data: upVol,
-                backgroundColor: 'rgba(255, 192, 192, 0.2)',
-                borderColor: 'rgba(255, 192, 192, 1)',
+                label: 'Downstream',
+                data: downVol,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 1
             },
             {
@@ -227,10 +227,10 @@ function drawVolumeChart(type, data) {
                 borderWidth: 1
             },
             {
-                label: 'Downstream',
-                data: downVol,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                label: 'Upstream',
+                data: upVol,
+                backgroundColor: 'rgba(255, 192, 192, 0.2)',
+                borderColor: 'rgba(255, 192, 192, 1)',
                 borderWidth: 1
             },
         ]
