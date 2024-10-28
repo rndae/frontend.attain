@@ -212,12 +212,11 @@ function drawVolumeChart(type, data) {
     const chartData = {
         labels: labels,
         datasets: [
-
             {
-                label: 'Downstream',
-                data: downVol,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                label: 'Upstream',
+                data: upVol,
+                backgroundColor: 'rgba(255, 192, 192, 0.2)',
+                borderColor: 'rgba(255, 192, 192, 1)',
                 borderWidth: 1
             },
             {
@@ -228,13 +227,12 @@ function drawVolumeChart(type, data) {
                 borderWidth: 1
             },
             {
-                label: 'Upstream',
-                data: upVol,
-                backgroundColor: 'rgba(255, 192, 192, 0.2)',
-                borderColor: 'rgba(255, 192, 192, 1)',
+                label: 'Downstream',
+                data: downVol,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 1
             },
-
         ]
     };
 
@@ -297,7 +295,14 @@ function drawVolumeChart(type, data) {
                     lineWidth: 1, // Set the gridline thickness
                 },
             }
+        },
+        plugins: {
+        legend: {
+            labels: {
+                boxWidth: 30, // Adjust the box width (10 is smaller, adjust as needed)
+            }
         }
+    }
     };
 
     if (volumeChart) {
