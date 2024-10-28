@@ -29,12 +29,12 @@ export function coloRiskSegmentsOnMap(map) {
     redSegments[redSegmentId].risk = 0
   );
   //new Promise(resolve => setTimeout(resolve, 3000));
-  colorRiskSegmentsRedrawn(redSegments, map, false);
+  colorRiskSegmentsRedrawn(redSegments, map, false, false);
   redSegments = {}
   getSegmentMaxRiskDictSimpleFormat().then(segmentMaxRiskDict => {
     if (!segmentMaxRiskDict)
       segmentMaxRiskDict = fakeFillMaxPred();
-    colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, false);
+    colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, false, false);
     redSegments = segmentMaxRiskDict;
   })
   .catch(error => {
@@ -47,12 +47,12 @@ export function coloRiskSegmentsOnFullMap(map) {
     redSegments[redSegmentId].risk = 0
   );
   //new Promise(resolve => setTimeout(resolve, 3000));
-  colorRiskSegmentsRedrawn(redSegments, map, true);
+  colorRiskSegmentsRedrawn(redSegments, map, false, true);
   redSegments = {}
   getSegmentMaxRiskDictSimpleFormat().then(segmentMaxRiskDict => {
     if (!segmentMaxRiskDict)
       segmentMaxRiskDict = fakeFillMaxPred();
-    colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, true);
+    colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, false, true);
     redSegments = segmentMaxRiskDict;
   })
   .catch(error => {
@@ -163,15 +163,12 @@ function colorRiskSegments(segmentMaxRiskDict) {
   });
 }
 
-function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, showWarningMarker) {
+function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, showWarningMarker, lineTicker) {
   clearCameraMarkers(cameraMarkers);
-  
 
   if (showWarningMarker){
     clearWarningMarkers(warningMarkers);
   }
-    
-  
 
   circles.forEach(circle => circle.setMap(null));
   circles = [];
@@ -185,7 +182,10 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, showWarningMarker) {
     let strokeWeight = 2;
     if (isNaN(segmentMaxRiskDict[segmentId].risk) || segmentMaxRiskDict[segmentId].risk < 0) {
       strokeColor = riskPredictionNotFoundColor;
-    } else if (segmentMaxRiskDict[segmentId].risk > 0.8) {
+    } else if (segmentMaxRiskDict[segmentId].risk > 0.8 && lineTicker == true) {
+      strokeColor = riskColor;
+      strokeWeight = 15;
+    } else if (segmentMaxRiskDict[segmentId].risk > 0.8 && lineTicker == false) {
       strokeColor = riskColor;
       strokeWeight = 4;
     } else {
@@ -212,7 +212,7 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, showWarningMarker) {
 
 
     cameraMarkers = addCameraMarkers(segmentMaxRiskDict, map);
-    /**
+
     if (showWarningMarker){
       const segmentMarker = new google.maps.LatLng(segmentPaths[segmentId][10].lat, segmentPaths[segmentId][10].lng);
       if (!warningMarkers[segmentId]) {
@@ -241,7 +241,6 @@ function colorRiskSegmentsRedrawn(segmentMaxRiskDict, map, showWarningMarker) {
       });
       warningMarkers[segmentId].push(marker);
     }
-    **/
   });
 }
 
