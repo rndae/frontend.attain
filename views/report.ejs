@@ -92,7 +92,7 @@
             const startDate = document.getElementById("startDay").value;
             const endDate = document.getElementById("endDay").value;
             const baseURL = 'http://10.32.93.91:8085/highCrashFreq/getDataOrderByDur/';
-            const roadTypes = ['Merge', 'Diverge', 'Weaving', 'ExpressRelated','Ramp'];
+            const roadTypes = ['Basic', 'Merge', 'Diverge', 'Weaving', 'ExpressRelated','Ramp'];
 
             document.getElementById("myPeriod").innerHTML = `Period: ${startDate} - ${endDate}`;
             document.getElementById("Time").innerHTML = "Time: Full Day";
@@ -103,39 +103,56 @@
             let detailedData = {};
 
             function processAllData() {
+                // Sort summary data based on frequency in descending order
+                summaryData.sort((a, b) => b.total - a.total);
+
+                // Display top 1st entry separately if needed (optional)
+                const topEntry = summaryData[0];
                 let html = '<table class="top5 mb-5"><tr><th>Road ID</th><th>Road Type</th><th>Reported Cases</th></tr>';
-                
+
                 // Add summary rows
                 summaryData.forEach(item => {
                     html += `<tr><td>${item.roadName}</td><td>${item.roadwayType}</td><td>${item.total}</td></tr>`;
                 });
                 html += '</table>';
 
-                // Create detailed sections for each road type
+                // Create detailed sections for each road type that has data
                 roadTypes.forEach((type, i) => {
-                    html += createDetailedSection(type, `myChart${i + 1}`, detailedData[type]);
+                    if (detailedData[type] && detailedData[type].length > 0) { // Check if data exists for this road type
+                        html += createDetailedSection(type, `myChart${i + 1}`, detailedData[type]);
+                    }
                 });
 
-                // Insert HTML and create charts
+                // Insert HTML and create charts only for road types with data
                 $('#aa').html(html);
                 roadTypes.forEach((type, i) => {
-                    createChart(`myChart${i + 1}`, detailedData[type].map(loc => loc.roadName), detailedData[type].map(loc => loc.total));
+                    if (detailedData[type] && detailedData[type].length > 0) { // Check if data exists for this road type
+                        createChart(`myChart${i + 1}`, detailedData[type].map(loc => loc.roadName), detailedData[type].map(loc => loc.total));
+                    }
                 });
             }
 
             function processData(data, roadType) {
-                // Store summary data
-                summaryData.push({
-                    roadName: data[0].roadName,
-                    roadwayType: data[0].roadwayType,
-                    total: data[0].total
-                });
+                if (data && data.length > 0) {  // Check if data is not empty
+                    // Sort data by 'total' frequency in descending order
+                    data.sort((a, b) => b.total - a.total);
 
-                // Store top 5 locations
-                detailedData[roadType] = data.slice(0, 5);
+                    // Store summary data
+                    summaryData.push({
+                        roadName: data[0].roadName,
+                        roadwayType: data[0].roadwayType,
+                        total: data[0].total
+                    });
+
+                    // Store top 5 locations
+                    detailedData[roadType] = data.slice(0, 5);
+                } else {
+                    // If no data, set detailedData[roadType] to an empty array
+                    detailedData[roadType] = [];
+                }
 
                 // If we've processed all road types, generate the final output
-                if (summaryData.length === roadTypes.length) {
+                if (Object.keys(detailedData).length === roadTypes.length) {
                     processAllData();
                 }
             }
